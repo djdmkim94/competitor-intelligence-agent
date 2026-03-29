@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Competitor Intelligence Agent — Setup</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #FFFDF7;
@@ -19,19 +19,21 @@
   --accent-light: #2A4A7F;
   --orange: #DD6B20;
   --orange-light: #FEEBC8;
+  --teal: #319795;
+  --teal-light: #E6FFFA;
   --green: #48BB78;
   --green-light: #F0FFF4;
   --red-light: #FFF5F5;
-  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'DM Serif Display', Georgia, serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
 /* ── Header ── */
 .header { text-align: center; padding: 48px 24px 32px; }
-.header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+.header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
 .header h1 { font-family: var(--font-serif); font-size: 32px; font-weight: 400; color: var(--accent); letter-spacing: -0.5px; margin-bottom: 8px; }
 .header p { font-size: 15px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; }
 
@@ -42,14 +44,14 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .progress-bar { display: flex; gap: 6px; margin-bottom: 36px; }
 .progress-step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.4s ease; }
 .progress-step.active { background: var(--accent); }
-.progress-step.done { background: var(--green); }
+.progress-step.done { background: var(--teal); }
 
 /* ── Steps ── */
 .step { display: none; animation: fadeIn 0.35s ease; }
 .step.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-.step-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.step-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
 .step h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
 .step .step-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
 
@@ -127,7 +129,7 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
   border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer;
   transition: all 0.15s; background: var(--surface);
 }
-.suggestion-chip:hover { border-color: var(--accent); color: var(--accent); }
+.suggestion-chip:hover { border-color: var(--teal); color: var(--teal); }
 
 /* ── Buttons ── */
 .btn-row { display: flex; gap: 10px; margin-top: 32px; }
@@ -166,11 +168,11 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
 .copy-btn:hover { background: rgba(255,255,255,0.2); }
 
 .success-banner {
-  background: var(--green-light); border: 1.5px solid #C6F6D5; border-radius: 12px;
+  background: var(--teal-light); border: 1.5px solid #B2F5EA; border-radius: 12px;
   padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
 }
 .success-banner .icon { font-size: 20px; }
-.success-banner .msg { font-size: 14px; font-weight: 500; color: #276749; }
+.success-banner .msg { font-size: 14px; font-weight: 500; color: #234E52; }
 
 /* ── Responsive ── */
 @media (max-width: 600px) {

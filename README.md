@@ -1,88 +1,121 @@
-# OpenAI Competitor Intelligence Agent
+# Competitor Intelligence Agent
 
-## Team
-- **David & Jack** — Intelligence Agent (design, prompt engineering, output)
-- **Tatsuro & Ez** — Evaluation Agent (scoring framework, automated testing)
+**Free, open-source AI agent that delivers daily competitive intelligence reports — styled, sourced, and ready for your exec team.**
 
-## Project Structure
+Set up in 2 minutes. Uses your own Claude account. We never see your data.
 
-```
-competitor-intel-agent/
-├── README.md                          ← You are here
-├── SUBMISSION.md                      ← Final markdown submission (all 10 sections)
-├── report_output/
-│   └── openai_intel_report.html       ← Sample HTML report output
-├── knowledge_base/
-│   ├── openai_context.md              ← OpenAI's products, strategy, priorities
-│   ├── competitor_profiles.md         ← Tier 1-3 competitor baselines
-│   └── industry_benchmarks.md         ← Model leaderboards, pricing, market data
-├── prior_reports/
-│   └── (weekly reports saved here after each run)
-├── prompts/
-│   ├── agent_system_prompt.md         ← The full agent prompt (Section 2)
-│   └── prompt_log.md                  ← Log of all prompt iterations
-├── scripts/
-│   ├── run_agent.sh                   ← One-command agent runner
-│   └── generate_report.py            ← Python script to format HTML output
-└── eval/
-    └── (Tatsuro & Ez's evaluation framework goes here)
-```
+---
+
+## What It Does
+
+Every morning (or on your schedule), this agent:
+
+1. Scans the web for competitive signals — blog posts, product launches, executive tweets, developer sentiment, hiring patterns, open-source activity
+2. Analyzes findings through your company's lens — which product line is affected, how urgent, how confident
+3. Generates a structured report with threat levels, must-knows, and sourced findings
+4. Delivers it as a styled HTML dashboard and markdown file
+
+## Who It's For
+
+- **Strategy & ops teams** tracking competitive landscape
+- **Product managers** monitoring feature launches and benchmarks
+- **Marketing leads** watching competitor messaging and positioning
+- **Founders** who need a 5-minute daily brief on what competitors are doing
 
 ## Quick Start
 
-### Prerequisites
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed (`npm install -g @anthropic-ai/claude-code`)
-- Anthropic API key set: `export ANTHROPIC_API_KEY=your_key`
-- (Optional) Exa API key: `export EXA_API_KEY=your_key`
+### Option A: Use the Setup Wizard (non-technical)
 
-### Run the Agent
+1. Go to [the setup wizard](https://competitor-intel-agent.up.railway.app) and answer 5 questions
+2. Download your generated `config.yaml`
+3. Fork this repo and replace `config.yaml` with yours
+4. Set up a [Claude Code scheduled trigger](https://claude.ai/code/scheduled) pointing to your fork
+
+### Option B: Edit config directly
+
+1. Fork this repo
+2. Edit `config.yaml` — set your company, competitors, channels, and schedule
+3. Set up a [Claude Code scheduled trigger](https://claude.ai/code/scheduled) pointing to your fork
+
+### Option C: Run manually
 
 ```bash
-# Option 1: One-command run
-chmod +x scripts/run_agent.sh
-./scripts/run_agent.sh
-
-# Option 2: Run directly with Claude Code
-claude-code --system-prompt prompts/agent_system_prompt.md \
-  "Generate the weekly competitive intelligence report for OpenAI. \
-   Today's date is $(date +%Y-%m-%d). \
-   Read the knowledge base files in knowledge_base/ for context. \
-   Output a structured report following the schema in the system prompt."
+# Clone and run with Claude Code
+git clone https://github.com/djdmkim94/competitor-intelligence-agent.git
+cd competitor-intelligence-agent
+claude
+# Then paste: "Read config.yaml and prompts/agent_system_prompt.md,
+#   then run a competitive intelligence scan and generate the report."
 ```
 
-### After Running
-1. Review the generated report
-2. Save a copy to `prior_reports/week_of_YYYY-MM-DD.md`
-3. Update `knowledge_base/competitor_profiles.md` with any new findings
-4. Log the prompt used in `prompts/prompt_log.md`
+## How It Works
 
-## How to Edit & Contribute
+```
+config.yaml          →  Defines your company, competitors, channels
+prompts/             →  System prompt that drives the agent
+knowledge_base/      →  Baseline context (competitor profiles, benchmarks)
+prior_reports/       →  Historical reports for trend detection
+report_output/       →  Styled HTML dashboard reports
+setup-wizard/        →  Browser-based config generator (setup-wizard branch)
+```
 
-### For Jack (Data Sources)
-- Review and update `knowledge_base/competitor_profiles.md` — add any competitors or sources I missed
-- Review `knowledge_base/openai_context.md` — make sure OpenAI's product descriptions are accurate
-- Add specific Twitter/X accounts to monitor in the agent prompt
+## Report Structure
 
-### For Tatsuro & Ez (Evaluation)
-- Create your evaluation framework in the `eval/` directory
-- The agent's output schema is defined in `SUBMISSION.md` Section 5
-- Suggested approach: 10 test scenarios with known-correct answers, score on signal detection accuracy, threat-level assignment, and source citation quality
+Each report includes:
 
-### For Everyone
-- All prompt changes should be logged in `prompts/prompt_log.md`
-- If you change the agent prompt, update both `prompts/agent_system_prompt.md` AND `SUBMISSION.md` Section 2
+| Section | Audience | What's In It |
+|---|---|---|
+| **C-Suite Dashboard** | CEO, CPO, CSO | Threat levels (HIGH/MED/LOW), confidence scores, top 3 must-knows |
+| **Product Sections** | PMs, PMMs, BD | Findings organized by your product lines |
+| **Hiring Signals** | Strategy | Job board patterns that reveal competitor intent |
+| **Horizon Watch** | Everyone | Emerging challengers and future tech to monitor |
+| **Sources** | Everyone | Every finding linked to its source URL |
 
-## Submission Checklist
-- [ ] All 10 sections present in SUBMISSION.md
-- [ ] Agent prompt is complete and not summarized
-- [ ] At least one real sample output included
-- [ ] At least one concrete failure example in Section 10
-- [ ] Technologies justified (not just listed)
-- [ ] HTML report renders correctly
-- [ ] Prompt log shows iteration history
+## Customization
 
-## Timeline
-- **Saturday night**: First draft (David)
-- **Sunday morning**: Jack reviews data sources & knowledge base
-- **Monday 12pm Taiwan / 6pm Berkeley**: Team sync (optional)
-- **Tuesday 5pm Berkeley / Wednesday 8am Taiwan**: Final submission
+Everything is controlled by `config.yaml`:
+
+- **Your company** — name, description, product lines
+- **Competitors** — Tier 1 (deep weekly analysis), Tier 2 (weekly scan), Tier 3 (monthly horizon)
+- **Search channels** — Reddit, Hacker News, Twitter/X, GitHub, job boards
+- **Report settings** — schedule, format, threat level definitions
+
+## Example Output
+
+See real generated reports in `report_output/`:
+- `week_of_2026-03-23.html` — styled HTML dashboard
+- `week_of_2026-03-28.html` — styled HTML dashboard
+
+## Cost
+
+| Component | Cost |
+|---|---|
+| This repo | Free |
+| Setup wizard | Free |
+| Claude account | Your own account (Pro $20/mo or API usage) |
+| Hosting (optional) | Railway free tier or Vercel free tier |
+
+**The AI usage runs on your own Claude account.** We never see your API key or your reports.
+
+## Tech Stack
+
+- **Agent runtime**: Claude Code with web search
+- **Config**: YAML (human-readable, easy to edit)
+- **Reports**: Styled HTML + Markdown
+- **Setup wizard**: Static HTML/CSS/JS (no backend)
+- **Scheduling**: Claude Code scheduled triggers
+
+## Contributing
+
+PRs welcome. Main areas:
+- Adding more competitor suggestion mappings to the setup wizard
+- Improving the system prompt for better signal detection
+- Adding new report sections or visualizations
+
+## License
+
+MIT
+
+---
+
+Built by [David Kim](https://github.com/djdmkim94) with Claude Code.
