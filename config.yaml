@@ -1,0 +1,133 @@
+# Competitor Intelligence Agent — Configuration
+# Fork this repo, edit this file, and set up your own daily intelligence scan.
+#
+# How to use:
+#   1. Replace "company" with YOUR company
+#   2. Replace "competitors" with YOUR competitive landscape
+#   3. Customize search channels and report settings
+#   4. Set up a Claude Code scheduled trigger or GitHub Action
+
+# ─────────────────────────────────────────────
+# YOUR COMPANY — The lens through which all signals are evaluated
+# ─────────────────────────────────────────────
+company:
+  name: "OpenAI"
+  description: "Leading commercial AI company operating across consumer, enterprise, and developer markets"
+  products:
+    - name: "ChatGPT"
+      type: "Consumer"
+      stakeholder: "PMM"
+      description: "Conversational AI product (web, mobile, desktop)"
+      focus_areas:
+        - "Competitor messaging and positioning changes"
+        - "Customer sentiment on Twitter/X and Reddit"
+        - "Marketing campaigns and GTM shifts"
+        - "Competitor hiring in marketing/growth roles"
+
+    - name: "Codex"
+      type: "Enterprise"
+      stakeholder: "PM"
+      description: "AI-powered coding assistant for developers and teams"
+      focus_areas:
+        - "New feature launches by coding tool competitors"
+        - "Benchmark comparisons and performance claims"
+        - "Enterprise adoption signals and case studies"
+        - "Developer sentiment on GitHub, HN, Reddit"
+        - "Competitor hiring in engineering/product roles"
+
+    - name: "API & Models"
+      type: "Platform"
+      stakeholder: "BD"
+      description: "API access to OpenAI model family for developers"
+      focus_areas:
+        - "New model releases, capabilities, and pricing"
+        - "Partnership and cloud provider integrations"
+        - "Open-source ecosystem shifts"
+        - "Infrastructure and compute partnerships"
+
+# ─────────────────────────────────────────────
+# COMPETITORS — Who you're watching
+# ─────────────────────────────────────────────
+competitors:
+  tier_1:  # Deep analysis every report cycle
+    - name: "Anthropic"
+      products: ["Claude", "Claude Code", "Claude API"]
+      twitter: ["@AnthropicAI", "@DarioAmodei"]
+      careers_url: "careers.anthropic.com"
+      why: "Primary rival across all product lines"
+
+    - name: "Google DeepMind"
+      products: ["Gemini", "Gemini Code Assist", "Gemini API", "NotebookLM"]
+      twitter: ["@GoogleDeepMind", "@demaborsa"]
+      careers_url: "careers.google.com"
+      why: "Strongest distribution advantage"
+
+    - name: "xAI"
+      products: ["Grok", "Grok API"]
+      twitter: ["@xai", "@elonmusk"]
+      careers_url: "x.ai/careers"
+      why: "Aggressive scaling, X/Twitter integration"
+
+    - name: "Meta AI"
+      products: ["LLaMA", "Meta AI assistant"]
+      twitter: ["@ylecun", "@AIatMeta"]
+      careers_url: "metacareers.com"
+      why: "Open-source pressure, consumer reach via social apps"
+
+  tier_2:  # Weekly scan for notable signals
+    - name: "DeepSeek"
+      products: ["DeepSeek V3", "DeepSeek R1"]
+      why: "Cost-efficient models challenging pricing assumptions"
+
+    - name: "Mistral AI"
+      products: ["Mistral Large", "Le Chat", "Mistral API"]
+      why: "European market and open-weight models"
+
+    - name: "Cohere"
+      products: ["Command R+", "Embed", "Rerank"]
+      why: "Enterprise-focused RAG and search"
+
+  tier_3:  # Monthly horizon scan
+    - name: "Runway"
+      category: "Video/world models"
+    - name: "Pika"
+      category: "Video generation"
+    - name: "Figure AI"
+      category: "Robotics-AI convergence"
+    - name: "1X Technologies"
+      category: "Robotics-AI convergence"
+
+# ─────────────────────────────────────────────
+# SEARCH CHANNELS — Where the agent looks for signals
+# ─────────────────────────────────────────────
+search_channels:
+  web_search: true          # Competitor blogs, news, press releases
+  twitter_executives: true  # Posts from key people listed above
+  reddit:
+    enabled: true
+    subreddits:
+      - "r/ChatGPT"
+      - "r/ClaudeAI"
+      - "r/LocalLLaMA"
+      - "r/programming"
+  hackernews: true           # Developer sentiment and product reactions
+  github: true               # Open-source repos, star velocity, new releases
+  job_boards: true           # Career page monitoring for hiring signals
+
+# ─────────────────────────────────────────────
+# REPORT SETTINGS
+# ─────────────────────────────────────────────
+report:
+  schedule: "7am PT weekdays"   # Used as a reference; actual cron is set in the trigger
+  output_formats:
+    - "markdown"    # Saved to prior_reports/
+    - "html"        # Saved to report_output/ using the styled template
+  threat_levels:
+    high: "Competitor launched something that directly threatens market position. Requires leadership attention this week."
+    medium: "Notable signal indicating strategic shift or emerging threat. Radar-level, may need response in 2-4 weeks."
+    low: "No significant threats. Business as usual, but noteworthy signals for awareness."
+  confidence_scoring:
+    high: "3+ independent sources or primary source (official blog, press release)"
+    medium: "2 sources or single credible source (major outlet, verified executive)"
+    low: "Single source, unverified, or inference/rumor"
+  finding_format: "**Company Name** — Description of the signal"
