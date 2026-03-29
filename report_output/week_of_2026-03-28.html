@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #FAFAF8;
+  --bg: #FFFDF7;
   --surface: #FFFFFF;
-  --surface-alt: #F5F4F0;
-  --text: #1A1A18;
-  --text-secondary: #6B6A65;
-  --text-tertiary: #9C9A92;
-  --border: #E8E7E2;
-  --border-light: #F0EFEA;
-  --accent: #1D1D1B;
-  --blue-text: #1E40AF;
+  --surface-alt: #F7FAFC;
+  --text: #2D3748;
+  --text-secondary: #718096;
+  --text-tertiary: #A0AEC0;
+  --border: #E2E8F0;
+  --border-light: #EDF2F7;
+  --accent: #1A365D;
+  --blue-text: #DD6B20;
   --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -39,9 +39,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
 .threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
 .threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
-.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
-.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
-.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-level-badge.high { background: rgba(229,62,62,0.15); color: #FC8181; }
+.threat-level-badge.medium { background: rgba(221,107,32,0.15); color: #F6AD55; }
+.threat-level-badge.low { background: rgba(72,187,120,0.15); color: #68D391; }
 .threat-card-body { padding: 16px 24px 20px; }
 .confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
@@ -81,6 +81,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
 .signal-card h4 .company-name { font-weight: 700; }
 .signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card ul { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 8px 18px; padding: 0; }
+.signal-card ul li { margin-bottom: 4px; }
+.signal-card ul li:last-child { margin-bottom: 0; }
 .signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
 .signal-card .source a { color: var(--blue-text); text-decoration: none; }
 
@@ -233,25 +236,25 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Paid subscriber growth "skyrocketing" per credit card transaction analysis</h4>
-        <p>TechCrunch analysis of billions of anonymized credit card transactions shows Claude gaining paid subscribers in record numbers. Growth driven by: (1) Super Bowl ads mocking ChatGPT for showing ads, (2) Pentagon refusal generating massive brand goodwill, (3) Claude Code's surging popularity. However, Claude remains "a long way behind ChatGPT" in total paid subscribers, and OpenAI is still gaining new subscribers at a rapid rate.</p>
+        <ul><li>Credit card transaction analysis shows record subscriber growth, driven by Super Bowl ads mocking ChatGPT, Pentagon refusal brand goodwill, and Claude Code popularity</li><li>Claude remains "a long way behind ChatGPT" in total paid subscribers &mdash; OpenAI still gaining at a rapid rate</li></ul>
         <div class="source">Source: <a href="https://techcrunch.com/2026/03/28/anthropics-claude-popularity-with-paying-consumers-is-skyrocketing/">TechCrunch</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Capacity constraints forcing peak-hour throttling for 7% of users</h4>
-        <p>Claude's five-hour session limits reduced during peak hours (5am&ndash;11am PT weekdays) for Free/Pro/Max users. Root cause: demand outstripping GPU capacity after QuitGPT movement drove 295% ChatGPT uninstall spike and Claude hit #1 on App Store. Anthropic's annualized revenue jumped from $14B to $19B in weeks. This is simultaneously a threat (they're growing fast) and an opportunity (frustrated Claude users may return to ChatGPT).</p>
+        <ul><li>Peak-hour limits tightened (5am&ndash;11am PT) for all tiers; ~7% of users affected. Root cause: demand outstripping GPU capacity after QuitGPT drove 295% ChatGPT uninstall spike</li><li>ARR jumped $14B &rarr; $19B in weeks &mdash; a threat (growing fast) and an opportunity (frustrated users may return to ChatGPT)</li></ul>
         <div class="source">Source: <a href="https://www.theregister.com/2026/03/26/anthropic_tweaks_usage_limits/">The Register</a> &middot; <a href="https://www.pcworld.com/article/3100787/anthropic-confirms-its-been-adjusting-claude-usage-limits.html">PCWorld</a> &middot; <a href="https://www.pymnts.com/artificial-intelligence-2/2026/ai-usage-limits-are-becoming-the-new-reality-for-consumers/">PYMNTS</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Google</span> &mdash; Gemini surpasses 750M MAUs; Personal Intelligence now free for all US users</h4>
-        <p>March Gemini Drop: Personal Intelligence (connecting Gmail, Photos, YouTube) is now free. Lyria 3 Pro music generation launched (3-minute tracks). Gemini Live holds context "twice as long." Gemini Canvas rolling out in Google Search. The embedding strategy continues &mdash; AI everywhere Google already lives.</p>
+        <ul><li>Personal Intelligence (Gmail, Photos, YouTube integration) now free for all US users; Lyria 3 Pro music generation and Gemini Canvas in Search also launched</li><li>750M MAUs as of Q4 2025 &mdash; embedding strategy continues: AI everywhere Google already lives</li></ul>
         <div class="source">Source: <a href="https://tech-insider.org/google-gemini-750-million-users-march-2026-updates/">Tech-Insider</a> &middot; <a href="https://blog.google/innovation-and-ai/products/gemini-app/gemini-drop-updates-march-2026/">Google Blog</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">xAI</span> &mdash; "Doubling down" on Grok Imagine video after Sora shutdown, but key staff departing</h4>
-        <p>Musk announced "the next Grok Imagine release will be epic" — filling the vacuum left by Sora. Current capabilities: 10-second videos at 720p/1080p with lip-sync and ambient audio. However, co-founder Guodong Zhang (who led Imagine) and video strategist Haotian Liu both departed this month, complicating the push.</p>
+        <ul><li>Filling the Sora vacuum: 10-second videos at 720p/1080p with lip-sync and ambient audio; Musk says next release will be "epic"</li><li>Key departures complicate the push: co-founder Guodong Zhang (Imagine lead) and video strategist Haotian Liu both left this month</li></ul>
         <div class="source">Source: <a href="https://www.bloomberg.com/news/articles/2026-03-25/musk-s-xai-doubling-down-on-ai-videos-after-openai-nixes-sora">Bloomberg</a></div>
       </div>
     </div>
@@ -262,13 +265,13 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">QuitGPT</span> &mdash; 2.5M participants; ChatGPT uninstalls surged 295%; lasting brand damage</h4>
-        <p>The QuitGPT movement following OpenAI's Pentagon deal claimed 2.5 million participants. ChatGPT uninstalls surged 295% in a single day. Claude hit #1 on the US App Store. While the acute crisis has passed, the narrative that "OpenAI chose the Pentagon, Anthropic chose principles" has calcified in developer and consumer communities.</p>
+        <ul><li>2.5M participants; ChatGPT uninstalls surged 295% in one day; Claude hit #1 on US App Store</li><li>Acute crisis passed, but "OpenAI chose the Pentagon, Anthropic chose principles" narrative has calcified in dev communities</li></ul>
         <div class="source">Source: <a href="https://techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal/">TechCrunch</a> &middot; <a href="https://futurism.com/artificial-intelligence/humongous-numbers-uninstall-chatgpt">Futurism</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Claude Code users reporting rapid rate limit drain, suspect bugs</h4>
-        <p>Pro users hitting limits in under 2 hours during peak times. Vocal complaints on MacRumors, Reddit, and Hacker News. Anthropic has not confirmed whether a bug is involved. This frustration creates a concrete opening for Codex and Copilot to recapture users hitting Claude's ceiling.</p>
+        <ul><li>Pro users exhausting 5-hour limits in under 2 hours during peak times; vocal complaints on MacRumors, Reddit, and HN</li><li>Creates a concrete opening for Codex and Copilot to recapture users hitting Claude's ceiling</li></ul>
         <div class="source">Source: <a href="https://www.macrumors.com/2026/03/26/claude-code-users-rapid-rate-limit-drain-bug/">MacRumors</a></div>
       </div>
     </div>
@@ -279,13 +282,13 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Super Bowl ads still paying dividends &mdash; "Claude will never show you ads"</h4>
-        <p>The anti-ChatGPT ad campaign directly attacked OpenAI and has been cited by TechCrunch as a key driver of paid subscriber growth. Effective brand positioning that exploits a real vulnerability &mdash; ChatGPT does show ads in the free tier. This messaging has become a persistent consumer-facing differentiator.</p>
+        <ul><li>Anti-ChatGPT Super Bowl ads cited by TechCrunch as a key driver of paid subscriber growth</li><li>Exploits a real vulnerability &mdash; ChatGPT shows ads in free tier; messaging has become a persistent differentiator</li></ul>
         <div class="source">Source: <a href="https://techcrunch.com/2026/03/28/anthropics-claude-popularity-with-paying-consumers-is-skyrocketing/">TechCrunch</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Google</span> &mdash; Gemini features added to Google TV across US, Canada, expanding to UK/ANZ</h4>
-        <p>Richer visual answers, narrated deep dives, and sports updates rolling out. Also launched Lyria 3 Pro for music generation. Embedding AI in every Google surface continues to be their primary GTM strategy &mdash; a distribution advantage API-only competitors cannot match.</p>
+        <ul><li>Richer visual answers, narrated deep dives, and sports updates rolling out on Google TV across US/Canada, expanding to UK/ANZ</li><li>Embedding AI in every Google surface remains their primary GTM &mdash; a distribution advantage API-only competitors cannot match</li></ul>
         <div class="source">Source: <a href="https://blog.google/products-and-platforms/platforms/google-tv/new-gemini-features-march-2026/">Google Blog</a></div>
       </div>
     </div>
@@ -300,19 +303,19 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Claude Code at $2.5B ARR; computer use, Channels, and Cowork shipped</h4>
-        <p>Claude Code revenue more than doubled since January 2026. New features: computer use (point, click, navigate without setup), bare mode for scripted calls, Claude Code Channels (Telegram/Discord). Persistent agent threads (Cowork) rolling out on Pro/Max. MCP hit 97M monthly SDK downloads. The product is evolving from "code assistant" to "digital worker."</p>
+        <ul><li>Revenue doubled since Jan 2026. New: computer use, bare mode, Channels (Telegram/Discord), persistent agent threads (Cowork) on Pro/Max</li><li>MCP at 97M monthly SDK downloads &mdash; product evolving from "code assistant" to "digital worker"</li></ul>
         <div class="source">Source: <a href="https://www.bloomberg.com/news/articles/2026-03-03/anthropic-nears-20-billion-revenue-run-rate-amid-pentagon-feud">Bloomberg</a> &middot; <a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">NVIDIA</span> &mdash; Nemotron 3 Super: 120B open-weight model for agentic reasoning</h4>
-        <p>Hybrid Mamba-Transformer MoE architecture with 12B active parameters. 1M-token context window. 5x higher throughput than comparable models. Scores 85.6% on PinchBench (best open model). Already integrated into CodeRabbit, Factory, and Greptile. Published 10T tokens of training data. This gives any company a powerful open-source backbone for agentic coding without depending on frontier lab APIs.</p>
+        <ul><li>12B active params (120B total), 1M context, 5x throughput, 85.6% PinchBench (best open model). Already in CodeRabbit, Factory, Greptile</li><li>Published 10T tokens of training data alongside model &mdash; any company can now build competitive agents without frontier lab APIs</li></ul>
         <div class="source">Source: <a href="https://nvidianews.nvidia.com/news/nvidia-debuts-nemotron-3-family-of-open-models">NVIDIA Newsroom</a> &middot; <a href="https://www.marktechpost.com/2026/03/11/nvidia-releases-nemotron-3-super-a-120b-parameter-open-source-hybrid-mamba-attention-moe-model-delivering-5x-higher-throughput-for-agentic-ai/">MarkTechPost</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Industry</span> &mdash; The "agent" race is fully underway across all major tools</h4>
-        <p>Every major coding tool has now shipped agent capabilities: GitHub Copilot Agent Mode, Cursor Background Agents, Windsurf Cascade, Claude Code Cowork. The competitive axis has shifted from "AI autocomplete" to "autonomous software engineer." Codex's cloud-based autonomous agent approach is aligned with this trend, but Claude Code's terminal-native approach and SWE-bench lead remain advantages.</p>
+        <ul><li>All major tools now shipping agents: Copilot Agent Mode, Cursor Background Agents, Windsurf Cascade, Claude Code Cowork</li><li>Competitive axis shifted from "AI autocomplete" to "autonomous software engineer" &mdash; Codex aligned but Claude's SWE-bench lead persists</li></ul>
         <div class="source">Source: <a href="https://www.nxcode.io/resources/news/openai-codex-vs-cursor-vs-claude-code-ai-coding-tools-2026">NxCode</a></div>
       </div>
     </div>
@@ -368,7 +371,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4>Key delta from last week</h4>
-        <p>Codex's token efficiency (2&ndash;4x fewer tokens per task) is a real cost advantage for enterprise. Claude Code's revenue growth ($2.5B ARR) proves the market values raw capability over cost efficiency at this stage. NVIDIA's Nemotron 3 Super being free raises the "good enough open model" bar for all tools.</p>
+        <ul><li>Codex token efficiency (2&ndash;4x fewer tokens/task) is a real enterprise cost advantage; Claude Code's $2.5B ARR proves market values raw capability over cost</li><li>NVIDIA Nemotron 3 Super being free raises the "good enough open model" bar for all coding agents</li></ul>
         <div class="source">Source: <a href="https://www.nxcode.io/resources/news/ai-coding-tools-pricing-comparison-2026">NxCode</a></div>
       </div>
     </div>
@@ -379,7 +382,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Claude Code rate limit frustration creating a window for Codex</h4>
-        <p>Users reporting rapid rate limit drain, suspecting bugs. Pro users exhausting 5-hour limits in under 2 hours during peak times. Medium analysis ("Claude Code in March 2026: The Economics of the Quota") argues flat-rate subscription models are struggling to sustain usage patterns. The $200/mo tier "only worth it if AI coding is your primary productivity lever." This pricing tension creates an opening for usage-based or bundled alternatives like Codex.</p>
+        <ul><li>Pro users exhausting 5-hour limits in under 2 hours; Medium analysis argues flat-rate subscriptions are struggling to sustain usage patterns</li><li>$200/mo tier "only worth it if AI coding is your primary productivity lever" &mdash; pricing tension creates opening for bundled alternatives like Codex</li></ul>
         <div class="source">Source: <a href="https://www.macrumors.com/2026/03/26/claude-code-users-rapid-rate-limit-drain-bug/">MacRumors</a> &middot; <a href="https://medium.com/@william.couturier/claude-code-in-march-2026-the-economics-of-the-quota-792449b63edb">Medium</a></div>
       </div>
     </div>
@@ -421,25 +424,25 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Google</span> &mdash; Gemini 3 Deep Think targets frontier reasoning for science and engineering</h4>
-        <p>Launched March 26. Positioned for "harder technical use cases, not casual chat" &mdash; science, research, and engineering. A Rutgers mathematician used it to identify a subtle logical flaw in a peer-reviewed paper that human reviewers missed. API early access opening to researchers and enterprises. This is Google's clearest play yet for the frontier reasoning segment that o1/o3 currently leads.</p>
+        <ul><li>Positioned for hard science/engineering &mdash; a Rutgers mathematician used it to find a logical flaw in a peer-reviewed paper that human reviewers missed</li><li>API early access opening to researchers and enterprises &mdash; Google's clearest play yet for the frontier reasoning market o1/o3 leads</li></ul>
         <div class="source">Source: <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-deep-think/">Google Blog</a> &middot; <a href="https://chromeunboxed.com/googles-new-gemini-3-deep-think-update-pushes-the-boundaries-of-ai-reasoning/">Chrome Unboxed</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">NVIDIA</span> &mdash; Nemotron 3 Super + 10T tokens of training data released open-weight</h4>
-        <p>120B total parameters, 12B active, hybrid Mamba-Transformer MoE, 1M context, 5x throughput. Designed for multi-agent reasoning (software dev, cybersecurity triage). This lowers the barrier for any company to build competitive agentic AI without depending on frontier lab APIs. Already in CodeRabbit, Factory, Greptile.</p>
+        <ul><li>120B total / 12B active, hybrid Mamba-Transformer MoE, 1M context, 5x throughput &mdash; designed for multi-agent reasoning</li><li>Lowers barrier for any company to build competitive agentic AI without frontier lab API dependency</li></ul>
         <div class="source">Source: <a href="https://nvidianews.nvidia.com/news/nvidia-debuts-nemotron-3-family-of-open-models">NVIDIA Newsroom</a> &middot; <a href="https://www.opensourceforu.com/2026/03/nvidia-pushes-open-ai-agents-with-nemotron-3-super-release/">Open Source For You</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Claude Mythos still in testing; no new timeline. Capacity constraints may delay release.</h4>
-        <p>No new public information on Mythos (Capybara) release timeline since last week's leak. Claude Opus 4.6 pricing unchanged at $5/$25 per M tokens. Sonnet 4.6 with 1M context (beta) continues rollout. The capacity crunch Anthropic is experiencing suggests they may prioritize infrastructure scaling over new model launches.</p>
+        <ul><li>No new timeline since last week's leak. Opus 4.6 pricing unchanged ($5/$25 per M tokens); Sonnet 4.6 1M context (beta) continues rollout</li><li>Capacity crunch suggests Anthropic may prioritize infrastructure scaling over launching Mythos</li></ul>
         <div class="source">Source: <a href="https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/">Fortune</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Xiaomi</span> &mdash; MiMo-V2-Pro confirmed as "Hunter Alpha" mystery model; 1.5T tokens processed</h4>
-        <p>The mystery model initially suspected to be DeepSeek V4 turned out to be Xiaomi's MiMo-V2-Pro. Reuters reports it has processed over 1.5 trillion tokens since launch. A new entrant from outside the usual suspects &mdash; signals that Chinese consumer tech companies are becoming competitive model builders.</p>
+        <ul><li>Mystery "Hunter Alpha" model turned out to be Xiaomi, not DeepSeek V4 &mdash; has processed 1.5T+ tokens since launch</li><li>Signals Chinese consumer tech companies (not just AI labs) are becoming competitive model builders</li></ul>
         <div class="source">Source: <a href="https://www.japantimes.co.jp/business/2026/03/19/tech/mystery-ai-model-china-buzz/">Japan Times</a></div>
       </div>
     </div>
@@ -450,19 +453,19 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">OpenAI (Internal)</span> &mdash; Sora shutdown kills Disney $1B investment; compute reallocated to AGI</h4>
-        <p>Sora shut down March 24. Disney's three-year licensing deal (200+ characters from Disney/Marvel/Pixar/Star Wars) is void &mdash; no money had changed hands. Downloads had fallen 66% from November peak to 1.13M in February. OpenAI cited compute cost reallocation. The IPO narrative now depends entirely on ChatGPT + Codex + API.</p>
+        <ul><li>Sora shut down March 24; Disney's 3-year deal (200+ characters) void before money changed hands. Downloads had fallen 66% from peak</li><li>Compute reallocated to coding/reasoning/AGI &mdash; IPO narrative now depends entirely on ChatGPT + Codex + API</li></ul>
         <div class="source">Source: <a href="https://variety.com/2026/digital/news/openai-shutting-down-sora-video-disney-1236698277/">Variety</a> &middot; <a href="https://www.cnbc.com/2026/03/24/openai-shutters-short-form-video-app-sora-as-company-reels-in-costs.html">CNBC</a> &middot; <a href="https://www.hollywoodreporter.com/business/digital/openai-shutting-down-sora-ai-video-app-1236546187/">Hollywood Reporter</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Anthropic</span> &mdash; Won preliminary injunction against Pentagon blacklisting</h4>
-        <p>Judge Rita Lin's 43-page ruling: "Punishing Anthropic for bringing public scrutiny to the government's contracting position is classic illegal First Amendment retaliation." And: "Nothing in the governing statute supports the Orwellian notion that an American company may be branded a potential adversary." Injunction takes effect ~April 2 unless DOD appeals to Ninth Circuit. Restores federal customer access and validates the "principled refusal" brand narrative.</p>
+        <ul><li>Judge Lin's 43-page ruling: "classic illegal First Amendment retaliation." Injunction takes effect ~April 2 unless DOD appeals to Ninth Circuit</li><li>Restores federal customer access and validates Anthropic's "principled refusal" brand narrative</li></ul>
         <div class="source">Source: <a href="https://www.cnbc.com/2026/03/26/anthropic-pentagon-dod-claude-court-ruling.html">CNBC</a> &middot; <a href="https://www.cnn.com/2026/03/26/business/anthropic-pentagon-injunction-supply-chain-risk">CNN</a> &middot; <a href="https://techcrunch.com/2026/03/26/anthropic-wins-injunction-against-trump-administration-over-defense-department-saga/">TechCrunch</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">xAI</span> &mdash; Grok granted Pentagon classified access; Senator Warren demands answers</h4>
-        <p>Pentagon signed agreement giving Grok access to classified military systems. Senator Warren's letter to Secretary Hegseth cites concerns about antisemitic content generation, violent crime instructions, and CSAM. Demanded details by March 27. If Grok suffers a data leak in classified environments, the fallout would affect all AI companies seeking government contracts.</p>
+        <ul><li>Pentagon granted Grok classified access; Warren's letter cites antisemitic content, violent crime instructions, and CSAM concerns</li><li>A data leak in classified environments would affect all AI companies seeking government contracts &mdash; not just xAI</li></ul>
         <div class="source">Source: <a href="https://www.warren.senate.gov/newsroom/press-releases/warren-raises-questions-about-pentagon-granting-classified-access-to-elon-musks-grok-ai-sidestepping-national-security-concerns">Warren Senate</a> &middot; <a href="https://techcrunch.com/2026/03/16/warren-presses-pentagon-over-decision-to-grant-xai-access-to-classified-networks/">TechCrunch</a></div>
       </div>
     </div>
@@ -473,13 +476,13 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
       <div class="signal-card">
         <h4><span class="company-name">Huawei</span> &mdash; 950PR chip gaining ByteDance and Alibaba orders; 750K units planned for 2026</h4>
-        <p>Priced at ~$6,900/card (DDR) to ~$9,700 (HBM version). Mass production starting next month. The chip is "more compatible with NVIDIA's CUDA software system" and excels at inference. DeepSeek V4 already optimized for Huawei chips. Combined with DeepSeek's MoE efficiency, this creates a parallel cost structure for Chinese AI that is structurally cheaper than the Western NVIDIA-dependent ecosystem.</p>
+        <ul><li>~$6,900/card (DDR) to ~$9,700 (HBM); 750K units planned for 2026. More CUDA-compatible than predecessor; excels at inference</li><li>DeepSeek V4 already optimized for Huawei &mdash; Chinese AI stack consolidating into a structurally cheaper alternative to Western NVIDIA ecosystem</li></ul>
         <div class="source">Source: <a href="https://www.cnbc.com/2026/03/27/bytedance-alibaba-planning-to-order-huaweis-new-ai-chip-reuters.html">CNBC</a> &middot; <a href="https://beijingtimes.com/business/2026/03/28/huaweis-new-ai-chip-gains-traction-with-bytedance-and-alibaba-amidst-nvidia-restrictions/">Beijing Times</a></div>
       </div>
 
       <div class="signal-card">
         <h4><span class="company-name">Tencent</span> &mdash; Launched full AI product family: QClaw, Lighthouse, WorkBuddy</h4>
-        <p>QClaw for individuals, Lighthouse for developers, WorkBuddy for enterprises. This is a real product family, not a one-off experiment &mdash; signals Tencent moving from model provider to platform. Another Chinese entrant building a complete stack.</p>
+        <ul><li>QClaw (individuals), Lighthouse (developers), WorkBuddy (enterprises) &mdash; a real product family, not a one-off</li><li>Signals Tencent moving from model provider to platform; another Chinese entrant building a complete stack</li></ul>
         <div class="source">Source: <a href="https://www.labla.org/latest-ai-model-releases-past-24-hours/ai-model-releases-industry-updates-march-27-28-2026/">labla.org</a></div>
       </div>
     </div>

@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #FAFAF8;
+  --bg: #FFFDF7;
   --surface: #FFFFFF;
-  --surface-alt: #F5F4F0;
-  --text: #1A1A18;
-  --text-secondary: #6B6A65;
-  --text-tertiary: #9C9A92;
-  --border: #E8E7E2;
-  --border-light: #F0EFEA;
-  --accent: #1D1D1B;
-  --blue-text: #1E40AF;
+  --surface-alt: #F7FAFC;
+  --text: #2D3748;
+  --text-secondary: #718096;
+  --text-tertiary: #A0AEC0;
+  --border: #E2E8F0;
+  --border-light: #EDF2F7;
+  --accent: #1A365D;
+  --blue-text: #DD6B20;
   --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -39,9 +39,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
 .threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
 .threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
-.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
-.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
-.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-level-badge.high { background: rgba(229,62,62,0.15); color: #FC8181; }
+.threat-level-badge.medium { background: rgba(221,107,32,0.15); color: #F6AD55; }
+.threat-level-badge.low { background: rgba(72,187,120,0.15); color: #68D391; }
 .threat-card-body { padding: 16px 24px 20px; }
 .confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
@@ -80,6 +80,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
 .signal-card h4 .company-name { font-weight: 700; }
 .signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card ul { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 8px 18px; padding: 0; }
+.signal-card ul li { margin-bottom: 4px; }
+.signal-card ul li:last-child { margin-bottom: 0; }
 .signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
 .signal-card .source a { color: var(--blue-text); text-decoration: none; }
 

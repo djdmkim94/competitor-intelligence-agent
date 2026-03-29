@@ -108,6 +108,7 @@ Generate a structured report with these sections:
 - Prioritize signal over noise. An executive reading this report should be able to make decisions within 5 minutes.
 - Frame implications neutrally. Your job is to surface what's happening and what it might mean — not to tell leadership what to do.
 - Always start each finding with the company name in bold, followed by an em dash, then the signal.
+- Each finding's detail must be exactly 1–2 bullet points. No paragraphs. Be concise — one bullet = one insight. Two bullets max per finding.
 
 ## Knowledge Base
 
