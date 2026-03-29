@@ -175,6 +175,8 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
 .success-banner .msg { font-size: 14px; font-weight: 500; color: #234E52; }
 
 /* ── Responsive ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+
 @media (max-width: 600px) {
   .checkbox-grid, .radio-grid { grid-template-columns: 1fr; }
   .header h1 { font-size: 26px; }
@@ -364,41 +366,62 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
 
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="prevStep(3)">Back</button>
-      <button class="btn btn-primary" onclick="generateConfig(); nextStep(5);">Generate my config</button>
+      <button class="btn btn-primary" onclick="buildReviewCards(); nextStep(5);">Next</button>
     </div>
   </div>
 
-  <!-- ══════════ STEP 5: Review & Download ══════════ -->
+  <!-- ══════════ STEP 5: API Key & Generate ══════════ -->
   <div class="step" id="step-5">
     <div class="step-label">Step 5 of 5</div>
-    <h2>Your config is ready</h2>
-    <p class="step-desc">Review, then download your config file and follow the 3-step setup below.</p>
-
-    <div class="success-banner">
-      <span class="icon">&#9889;</span>
-      <span class="msg">Config generated! Download it and drop it into your forked repo.</span>
-    </div>
+    <h2>Connect your Claude account</h2>
+    <p class="step-desc">Your API key is sent directly to Anthropic's servers. We never store it.</p>
 
     <div id="review-cards"></div>
 
-    <div style="position: relative; margin-bottom: 24px;">
-      <button class="copy-btn" onclick="copyConfig()">Copy</button>
-      <div class="output-box" id="config-output"></div>
-    </div>
-
-    <button class="btn btn-primary" onclick="downloadConfig()" style="width: 100%; margin-bottom: 32px;">Download config.yaml</button>
-
-    <div class="review-card" style="border-color: var(--orange); background: #FFFBF5;">
-      <h4 style="color: var(--orange);">How to get your reports running (3 steps)</h4>
-      <ol style="font-size: 14px; color: var(--text-secondary); line-height: 2; padding-left: 18px;">
-        <li>Fork the repo: <a href="https://github.com/djdmkim94/competitor-intelligence-agent" target="_blank" style="color: var(--orange); font-weight: 600;">github.com/djdmkim94/competitor-intelligence-agent</a></li>
-        <li>Replace the <code style="background: var(--orange-light); padding: 2px 6px; border-radius: 4px; font-size: 12px;">config.yaml</code> in your fork with the one you just downloaded</li>
-        <li>Set up a <a href="https://claude.ai/code/scheduled" target="_blank" style="color: var(--orange); font-weight: 600;">Claude Code scheduled trigger</a> pointing to your forked repo</li>
-      </ol>
+    <div class="field-group">
+      <label class="field-label">Claude API Key</label>
+      <input type="text" id="api-key" placeholder="sk-ant-api03-..." style="font-family: var(--font-mono); font-size: 13px;">
+      <div class="field-hint">Get your key at <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color: var(--teal);">console.anthropic.com/settings/keys</a> &mdash; we never see or store this.</div>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="prevStep(4)">Back &mdash; Edit config</button>
+      <button class="btn btn-secondary" onclick="prevStep(4)">Back</button>
+      <button class="btn btn-primary" id="generate-btn" onclick="generateReport()">Generate My Report</button>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" style="display: none; text-align: center; padding: 48px 0;">
+      <div style="display: inline-block; width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+      <p style="margin-top: 16px; font-size: 15px; font-weight: 500; color: var(--accent);">Generating your intelligence report...</p>
+      <p style="font-size: 13px; color: var(--text-tertiary); margin-top: 4px;">This takes 30&ndash;60 seconds. Your API key is sent directly to Anthropic.</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" style="display: none; margin-top: 20px; padding: 16px 20px; background: var(--red-light); border: 1.5px solid #FED7D7; border-radius: 12px;">
+      <p style="font-size: 14px; font-weight: 500; color: #9B2C2C;" id="error-msg"></p>
+    </div>
+
+    <!-- Success State -->
+    <div id="success-state" style="display: none; margin-top: 24px;">
+      <div class="success-banner">
+        <span class="icon">&#9889;</span>
+        <span class="msg">Report generated! Scroll down to view.</span>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+        <button class="btn btn-primary" onclick="downloadReport()" style="flex: 1;">Download Report (Markdown)</button>
+        <button class="btn btn-secondary" onclick="copyReport()">Copy</button>
+      </div>
+
+      <div class="output-box" id="report-output" style="max-height: 600px;"></div>
+
+      <div class="review-card" style="border-color: var(--teal); background: var(--teal-light); margin-top: 24px;">
+        <h4 style="color: #234E52;">Want this automatically every day?</h4>
+        <ol style="font-size: 14px; color: #2D3748; line-height: 2; padding-left: 18px;">
+          <li>Fork the repo: <a href="https://github.com/djdmkim94/competitor-intelligence-agent" target="_blank" style="color: var(--teal); font-weight: 600;">github.com/djdmkim94/competitor-intelligence-agent</a></li>
+          <li>Set up a <a href="https://claude.ai/code/scheduled" target="_blank" style="color: var(--teal); font-weight: 600;">Claude Code scheduled trigger</a> pointing to your fork</li>
+        </ol>
+      </div>
     </div>
   </div>
 
@@ -527,11 +550,12 @@ document.getElementById('company-name').addEventListener('input', function() {
   }
 });
 
-// ── Generate Config ──
-function generateConfig() {
+// ── Collect Config ──
+let reportMarkdown = '';
+
+function getConfig() {
   const companyName = document.getElementById('company-name').value || 'My Company';
   const companyDesc = document.getElementById('company-desc').value || '';
-
   const products = [];
   document.querySelectorAll('.product-entry').forEach(entry => {
     const name = entry.querySelector('.product-name').value;
@@ -539,79 +563,86 @@ function generateConfig() {
     const stakeholder = entry.querySelector('.product-stakeholder').value;
     if (name) products.push({ name, type: type || 'General', stakeholder: stakeholder || 'Team' });
   });
-
   const channels = [];
   document.querySelectorAll('.checkbox-card.checked input').forEach(cb => channels.push(cb.value));
+  return {
+    company: { name: companyName, description: companyDesc },
+    products,
+    tier1: state.tier1,
+    tier2: state.tier2,
+    channels,
+    subreddits: state.subreddits
+  };
+}
 
+function buildReviewCards() {
+  const config = getConfig();
   const freq = document.querySelector('input[name="frequency"]:checked').value;
   const freqMap = { daily_weekdays: 'Weekdays at 7am', weekly_monday: 'Mondays at 7am', weekly_friday: 'Fridays at 5pm' };
-
-  // Build YAML
-  let yaml = '# Competitor Intelligence Agent Configuration\n';
-  yaml += '# Generated by setup wizard\n\n';
-
-  yaml += 'company:\n';
-  yaml += '  name: "' + companyName + '"\n';
-  yaml += '  description: "' + companyDesc + '"\n';
-  yaml += '  products:\n';
-  products.forEach(p => {
-    yaml += '    - name: "' + p.name + '"\n';
-    yaml += '      type: "' + p.type + '"\n';
-    yaml += '      stakeholder: "' + p.stakeholder + '"\n';
-  });
-
-  yaml += '\ncompetitors:\n';
-  yaml += '  tier_1:\n';
-  state.tier1.forEach(c => { yaml += '    - name: "' + c + '"\n'; });
-  if (state.tier1.length === 0) yaml += '    # Add your core competitors here\n';
-  yaml += '  tier_2:\n';
-  state.tier2.forEach(c => { yaml += '    - name: "' + c + '"\n'; });
-  if (state.tier2.length === 0) yaml += '    # Add rising challengers here\n';
-
-  yaml += '\nsearch_channels:\n';
-  yaml += '  web_search: true\n';
-  channels.forEach(ch => {
-    if (ch === 'reddit') {
-      yaml += '  reddit:\n    enabled: true\n    subreddits:\n';
-      state.subreddits.forEach(s => { yaml += '      - "' + s + '"\n'; });
-      if (state.subreddits.length === 0) yaml += '      # Add subreddits here\n';
-    } else {
-      yaml += '  ' + ch + ': true\n';
-    }
-  });
-
-  yaml += '\nreport:\n';
-  yaml += '  schedule: "' + freqMap[freq] + '"\n';
-  yaml += '  output_formats:\n    - "markdown"\n    - "html"\n';
-  yaml += '  finding_format: "**Company Name** - Description of the signal"\n';
-  yaml += '  max_bullets_per_finding: 2\n';
-
-  configYaml = yaml;
-  document.getElementById('config-output').textContent = yaml;
-
-  // Review cards
   const rc = document.getElementById('review-cards');
   rc.innerHTML = '';
-  rc.innerHTML += '<div class="review-card"><h4>Company</h4><div class="value">' + companyName + '</div></div>';
-  rc.innerHTML += '<div class="review-card"><h4>Products</h4><div class="tags">' + products.map(p => '<span class="review-tag">' + p.name + ' (' + p.type + ')</span>').join('') + '</div></div>';
-  rc.innerHTML += '<div class="review-card"><h4>Tier 1 Competitors</h4><div class="tags">' + state.tier1.map(c => '<span class="review-tag">' + c + '</span>').join('') + '</div></div>';
-  if (state.tier2.length) rc.innerHTML += '<div class="review-card"><h4>Tier 2 Challengers</h4><div class="tags">' + state.tier2.map(c => '<span class="review-tag">' + c + '</span>').join('') + '</div></div>';
+  rc.innerHTML += '<div class="review-card"><h4>Company</h4><div class="value">' + config.company.name + '</div></div>';
+  if (config.products.length) rc.innerHTML += '<div class="review-card"><h4>Products</h4><div class="tags">' + config.products.map(p => '<span class="review-tag">' + p.name + ' (' + p.type + ')</span>').join('') + '</div></div>';
+  if (config.tier1.length) rc.innerHTML += '<div class="review-card"><h4>Tier 1 Competitors</h4><div class="tags">' + config.tier1.map(c => '<span class="review-tag">' + c + '</span>').join('') + '</div></div>';
+  if (config.tier2.length) rc.innerHTML += '<div class="review-card"><h4>Tier 2 Challengers</h4><div class="tags">' + config.tier2.map(c => '<span class="review-tag">' + c + '</span>').join('') + '</div></div>';
   rc.innerHTML += '<div class="review-card"><h4>Schedule</h4><div class="value">' + freqMap[freq] + '</div></div>';
 }
 
-// ── Download ──
-function downloadConfig() {
-  const blob = new Blob([configYaml], { type: 'text/yaml' });
+// ── Generate Report via API ──
+async function generateReport() {
+  const apiKey = document.getElementById('api-key').value.trim();
+  if (!apiKey || !apiKey.startsWith('sk-ant-')) {
+    showError('Please enter a valid Claude API key (starts with sk-ant-)');
+    return;
+  }
+
+  const config = getConfig();
+
+  // Show loading, hide others
+  document.getElementById('generate-btn').disabled = true;
+  document.getElementById('loading-state').style.display = 'block';
+  document.getElementById('error-state').style.display = 'none';
+  document.getElementById('success-state').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey, config })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to generate report');
+    }
+
+    reportMarkdown = data.report;
+    document.getElementById('report-output').textContent = reportMarkdown;
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('success-state').style.display = 'block';
+  } catch (err) {
+    showError(err.message);
+    document.getElementById('loading-state').style.display = 'none';
+  }
+  document.getElementById('generate-btn').disabled = false;
+}
+
+function showError(msg) {
+  document.getElementById('error-msg').textContent = msg;
+  document.getElementById('error-state').style.display = 'block';
+}
+
+// ── Download & Copy ──
+function downloadReport() {
+  const blob = new Blob([reportMarkdown], { type: 'text/markdown' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'config.yaml';
+  const date = new Date().toISOString().split('T')[0];
+  a.download = 'intel-report-' + date + '.md';
   a.click();
 }
-function copyConfig() {
-  navigator.clipboard.writeText(configYaml);
-  const btn = document.querySelector('.copy-btn');
-  btn.textContent = 'Copied!';
-  setTimeout(() => btn.textContent = 'Copy', 2000);
+function copyReport() {
+  navigator.clipboard.writeText(reportMarkdown);
 }
 </script>
 </body>
