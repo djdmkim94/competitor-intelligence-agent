@@ -445,15 +445,35 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
     <div id="success-state" style="display: none; margin-top: 24px;">
       <div class="success-banner">
         <span class="icon">&#9889;</span>
-        <span class="msg">Report generated! Scroll down to view.</span>
+        <span class="msg">Your report is ready!</span>
       </div>
 
-      <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-        <button class="btn btn-primary" onclick="downloadReport()" style="flex: 1;">Download Report (Markdown)</button>
-        <button class="btn btn-secondary" onclick="copyReport()">Copy</button>
+      <!-- View Toggle -->
+      <div style="display: flex; gap: 4px; margin-bottom: 16px; background: var(--surface-alt); padding: 3px; border-radius: 8px; border: 1px solid var(--border);">
+        <button class="btn" id="toggle-html" onclick="toggleView('html')" style="flex: 1; padding: 8px; font-size: 13px; background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 6px;">Styled Report</button>
+        <button class="btn" id="toggle-md" onclick="toggleView('md')" style="flex: 1; padding: 8px; font-size: 13px; background: transparent; color: var(--text-secondary); border-radius: 6px;">Raw Markdown</button>
       </div>
 
-      <div class="output-box" id="report-output" style="max-height: 600px;"></div>
+      <!-- Styled HTML View (default) -->
+      <div id="html-view">
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button class="btn btn-primary" onclick="downloadHtml()" style="flex: 1;">Download HTML Report</button>
+          <button class="btn btn-secondary" onclick="openHtmlNewTab()">Open in New Tab</button>
+        </div>
+        <div id="html-frame-container" style="border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: white;">
+          <iframe id="report-iframe" style="width: 100%; height: 700px; border: none;"></iframe>
+        </div>
+      </div>
+
+      <!-- Raw Markdown View (secondary) -->
+      <div id="md-view" style="display: none;">
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button class="btn btn-primary" onclick="downloadReport()" style="flex: 1;">Download Markdown</button>
+          <button class="btn btn-secondary" onclick="copyReport()">Copy</button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-tertiary); margin-bottom: 10px;">Use this to create your own report or paste into any markdown editor.</p>
+        <div class="output-box" id="report-output" style="max-height: 600px;"></div>
+      </div>
 
       <div class="review-card" style="border-color: var(--teal); background: var(--teal-light); margin-top: 24px;">
         <h4 style="color: #234E52;">Want this automatically every day?</h4>
@@ -592,6 +612,7 @@ document.getElementById('company-name').addEventListener('input', function() {
 
 // ── Collect Config ──
 let reportMarkdown = '';
+let reportHtml = '';
 
 function getConfig() {
   const companyName = document.getElementById('company-name').value || 'My Company';
@@ -657,7 +678,11 @@ async function generateReport() {
     }
 
     reportMarkdown = data.report;
+    reportHtml = data.html;
     document.getElementById('report-output').textContent = reportMarkdown;
+    // Render styled HTML in iframe
+    const iframe = document.getElementById('report-iframe');
+    iframe.srcdoc = reportHtml;
     document.getElementById('loading-state').style.display = 'none';
     document.getElementById('success-state').style.display = 'block';
   } catch (err) {
@@ -683,6 +708,33 @@ function downloadReport() {
 }
 function copyReport() {
   navigator.clipboard.writeText(reportMarkdown);
+}
+
+// ── HTML Report Actions ──
+function downloadHtml() {
+  const blob = new Blob([reportHtml], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const date = new Date().toISOString().split('T')[0];
+  a.download = 'sprout-scout-report-' + date + '.html';
+  a.click();
+}
+function openHtmlNewTab() {
+  const win = window.open();
+  win.document.write(reportHtml);
+  win.document.close();
+}
+
+// ── View Toggle ──
+function toggleView(view) {
+  document.getElementById('html-view').style.display = view === 'html' ? 'block' : 'none';
+  document.getElementById('md-view').style.display = view === 'md' ? 'block' : 'none';
+  document.getElementById('toggle-html').style.background = view === 'html' ? 'var(--surface)' : 'transparent';
+  document.getElementById('toggle-html').style.color = view === 'html' ? 'var(--text)' : 'var(--text-secondary)';
+  document.getElementById('toggle-html').style.boxShadow = view === 'html' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none';
+  document.getElementById('toggle-md').style.background = view === 'md' ? 'var(--surface)' : 'transparent';
+  document.getElementById('toggle-md').style.color = view === 'md' ? 'var(--text)' : 'var(--text-secondary)';
+  document.getElementById('toggle-md').style.boxShadow = view === 'md' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none';
 }
 </script>
 </body>
