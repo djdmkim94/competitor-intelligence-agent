@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Competitor Intelligence Agent — Setup</title>
+<title>Sprout Scout — Competitor Intelligence Agent</title>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -186,8 +186,36 @@ label.field-label { display: block; font-size: 13px; font-weight: 600; margin-bo
 <body>
 
 <div class="header">
+  <!-- Logo: sapling inside radar, fine lines only -->
+  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 12px;">
+    <!-- Radar rings -->
+    <circle cx="40" cy="40" r="36" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="40" cy="40" r="26" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="40" cy="40" r="16" stroke="#E2E8F0" stroke-width="1"/>
+    <!-- Radar crosshairs -->
+    <line x1="40" y1="4" x2="40" y2="76" stroke="#E2E8F0" stroke-width="0.75"/>
+    <line x1="4" y1="40" x2="76" y2="40" stroke="#E2E8F0" stroke-width="0.75"/>
+    <!-- Radar sweep line -->
+    <line x1="40" y1="40" x2="62" y2="14" stroke="#319795" stroke-width="1.25" stroke-linecap="round" opacity="0.6"/>
+    <!-- Sapling stem -->
+    <line x1="40" y1="58" x2="40" y2="34" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Sapling leaves (3 pairs + top) -->
+    <path d="M40 34 C40 30, 34 28, 32 31" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <path d="M40 34 C40 30, 46 28, 48 31" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <path d="M40 40 C40 37, 33 35, 31 38" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <path d="M40 40 C40 37, 47 35, 49 38" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <path d="M40 46 C40 43, 34 42, 33 44" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <path d="M40 46 C40 43, 46 42, 47 44" stroke="#319795" stroke-width="1.25" fill="none" stroke-linecap="round"/>
+    <!-- Ground line -->
+    <line x1="34" y1="58" x2="46" y2="58" stroke="#1A365D" stroke-width="1" stroke-linecap="round"/>
+    <!-- Radar blip dots -->
+    <circle cx="55" cy="22" r="2" fill="#319795" opacity="0.5"/>
+    <circle cx="22" cy="50" r="1.5" fill="#319795" opacity="0.35"/>
+    <circle cx="60" cy="48" r="1.5" fill="#319795" opacity="0.4"/>
+  </svg>
   <div class="eyebrow">Free &amp; Open Source</div>
-  <h1>Competitor Intelligence Agent</h1>
+  <h1 style="font-size: 38px; letter-spacing: -1px;">Sprout Scout</h1>
+  <p style="font-size: 14px; color: var(--text-tertiary); margin-top: -4px; margin-bottom: 8px; letter-spacing: 0.5px;">(Competitor Intelligence Agent)</p>
   <p>Set up your own AI-powered competitive intelligence reports in 2 minutes. Uses your own Claude account &mdash; we never see your data.</p>
   <div style="display: inline-flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; justify-content: center;">
     <div style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: #F7FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12px; font-weight: 500; color: #718096;">
