@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #FFFDF7;
+  --bg: #FAFAF8;
   --surface: #FFFFFF;
-  --surface-alt: #F7FAFC;
-  --text: #2D3748;
-  --text-secondary: #718096;
-  --text-tertiary: #A0AEC0;
-  --border: #E2E8F0;
-  --border-light: #EDF2F7;
-  --accent: #1A365D;
-  --blue-text: #DD6B20;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
   --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -39,9 +39,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
 .threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
 .threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
-.threat-level-badge.high { background: rgba(229,62,62,0.15); color: #FC8181; }
-.threat-level-badge.medium { background: rgba(221,107,32,0.15); color: #F6AD55; }
-.threat-level-badge.low { background: rgba(72,187,120,0.15); color: #68D391; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
 .threat-card-body { padding: 16px 24px 20px; }
 .confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
@@ -80,9 +80,6 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 .signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
 .signal-card h4 .company-name { font-weight: 700; }
 .signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
-.signal-card ul { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 8px 18px; padding: 0; }
-.signal-card ul li { margin-bottom: 4px; }
-.signal-card ul li:last-child { margin-bottom: 0; }
 .signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
 .signal-card .source a { color: var(--blue-text); text-decoration: none; }
 
@@ -132,7 +129,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
     <div class="meta">
       <span>Week of March 23–29, 2026</span>
       <span class="dot"></span>
-      <span>Generated March 28, 2026</span>
+      <span>Generated March 29, 2026</span>
       <span class="dot"></span>
       <span>Agent v1.0</span>
     </div>
@@ -172,15 +169,15 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
     <div class="threat-card">
       <div class="threat-card-header">
         <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
-        <span class="threat-level-badge low">Low</span>
+        <span class="threat-level-badge medium">Medium</span>
       </div>
       <div class="threat-card-body">
         <div class="confidence-line">
           <span class="confidence-label">Confidence</span>
-          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot"></span></span>
         </div>
-        <div class="signal-text">No major model releases or pricing changes this week from Tier 1 competitors. DeepSeek R2 rumored but unconfirmed.</div>
-        <div class="implication">Stable week — focus resources on internal roadmap execution and upcoming model launch prep.</div>
+        <div class="signal-text"><span class="company-name">Zhipu AI</span> — GLM-5 achieves 95.8% SWE-bench Verified under MIT license, trained entirely on Huawei Ascend chips. Chinese models now 61% of OpenRouter token consumption.</div>
+        <div class="implication">Open-source models trained on non-US hardware reaching frontier performance — pricing pressure and geopolitical implications for API revenue.</div>
       </div>
     </div>
   </div>
@@ -200,7 +197,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
       </li>
       <li>
         <span class="num">03</span>
-        <span><span class="company-name">Meta</span> — Posted 14 new "world model researcher" roles across Menlo Park and London in a single week. Largest batch of world-model hires across any competitor. Signals significant investment in video/spatial understanding.</span>
+        <span><span class="company-name">Zhipu AI / Open Source</span> — Chinese models hit 61% of global API token consumption on OpenRouter. GLM-5 (MIT license, Huawei chips) posts 95.8% SWE-bench — best open-source coding score. Non-US AI supply chain maturing fast.</span>
         <span class="tag tag-api">API & Models</span>
       </li>
     </ul>
@@ -226,6 +223,11 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
         <h4><span class="company-name">xAI</span> — Pushing Grok as "unfiltered" alternative in new campaign</h4>
         <p>New ad creatives on X/Twitter lean heavily into "no guardrails" positioning. While targeting a niche audience, it's generating disproportionate engagement. Twitter/X impressions on Grok-related posts up roughly 40% week-over-week based on visible engagement metrics.</p>
         <div class="source">Source: <a href="#">twitter.com/xAI</a> · <a href="#">theverge.com</a></div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">Perplexity</span> — Search-as-chat usage growing 40% month-over-month</h4>
+        <p>Perplexity Pro subscriptions reportedly surging, with the product increasingly replacing both Google Search and ChatGPT for research tasks. Developer and knowledge-worker segments are core adopters. The "search → answer" pipeline competes directly with ChatGPT's most common use case.</p>
+        <div class="source">Source: <a href="#">twitter.com/AravSrinivas</a> · <a href="#">techcrunch.com</a></div>
       </div>
     </div>
     <div class="section">
@@ -269,6 +271,16 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
         <p>Shipped an update enabling persistent project context across sessions and deeper terminal integration. Developer reception on Hacker News positive, with several posts calling it "the first AI coding tool that understands my codebase." Direct competitor to Codex's enterprise positioning.</p>
         <div class="source">Source: <a href="#">docs.anthropic.com</a> · <a href="#">news.ycombinator.com</a></div>
       </div>
+      <div class="signal-card">
+        <h4><span class="company-name">Cursor</span> — Shipped enterprise SSO and team management features</h4>
+        <p>Cursor for Business now supports SAML SSO, centralized billing, and usage analytics for teams. Signals aggressive push from bottoms-up developer adoption into top-down enterprise sales. First "Enterprise Sales" job listing posted this week confirms the strategic shift.</p>
+        <div class="source">Source: <a href="#">cursor.com/blog</a> · <a href="#">cursor.com/careers</a></div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">Cognition</span> — Devin attracting enterprise pilot interest despite autonomy concerns</h4>
+        <p>Multiple reports of Fortune 500 companies piloting Devin for automated code migration and test generation. The "AI software engineer" positioning is differentiated from copilot-style tools. Trust and correctness remain open questions for production code, but the paradigm shift is notable.</p>
+        <div class="source">Source: <a href="#">twitter.com/cognition_labs</a> · <a href="#">theinformation.com</a></div>
+      </div>
     </div>
     <div class="section">
       <h3>Benchmark & performance signals</h3>
@@ -299,9 +311,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
           <div class="trend trend-up">↑ new signal</div>
         </div>
         <div class="hiring-card">
-          <div class="company">Meta (LLaMA)</div>
-          <div class="detail">No new coding-tool-specific hires. Research roles remain focused on pre-training and alignment.</div>
-          <div class="trend">→ stable</div>
+          <div class="company">Cognition (Devin)</div>
+          <div class="detail">5 new ML engineer roles. Hiring for "enterprise deployment" and "reliability engineering" — signals push from demo to production-grade.</div>
+          <div class="trend trend-up">↑ +3 vs last week</div>
         </div>
       </div>
     </div>
@@ -312,9 +324,14 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
       <h3>Model releases & pricing</h3>
       <div class="section-desc">New model launches, capability updates, and pricing changes</div>
       <div class="signal-card">
-        <h4>No major Tier 1 model releases this week</h4>
-        <p>Quiet week across the board. Anthropic, Google, xAI, and Meta all had no new model releases or pricing changes. DeepSeek R2 continues to be rumored but no official announcement or benchmark results have surfaced.</p>
-        <div class="source">Source: Web search across competitor blogs, no new results</div>
+        <h4><span class="company-name">Zhipu AI</span> — GLM-5 sets new open-source coding benchmark under MIT license</h4>
+        <p>GLM-5 (744B MoE, 40B active params) achieves 95.8% on SWE-bench Verified — the highest open-source coding score. Notably trained entirely on Huawei Ascend 910B chips, demonstrating non-NVIDIA frontier training viability. MIT license means any developer can deploy without restrictions.</p>
+        <div class="source">Source: <a href="#">github.com/THUDM/GLM-5</a> · <a href="#">nxcode.io</a></div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">DeepSeek</span> — V3.2-Speciale variant surpasses GPT-5 on reasoning benchmarks</h4>
+        <p>DeepSeek's latest reasoning-tuned variant posts 94.2% MMLU and 89.3 on AIME 2025, surpassing GPT-5 on multiple reasoning benchmarks. Massive developer adoption continues — one of the most-used models on OpenRouter by token volume.</p>
+        <div class="source">Source: <a href="#">openrouter.ai/rankings</a> · <a href="#">llm-stats.com</a></div>
       </div>
     </div>
     <div class="section">
@@ -335,9 +352,14 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
       <h3>Open-source ecosystem activity</h3>
       <div class="section-desc">GitHub trends, repo activity, and community adoption signals</div>
       <div class="signal-card">
-        <h4><span class="company-name">Meta / Open Source</span> — LLaMA ecosystem repos see steady growth, no breakout moments</h4>
-        <p>LLaMA-related repos on GitHub continue steady growth in stars and forks. No new major fine-tunes or derivative models released this week. Community is in a "building" phase, consolidating around existing tooling rather than launching new paradigms.</p>
-        <div class="source">Source: <a href="#">github.com/meta-llama</a></div>
+        <h4><span class="company-name">Open Source Ecosystem</span> — Chinese models hit 61% of OpenRouter token consumption</h4>
+        <p>MiniMax M2.5 (#1 at 4.55T tokens), Moonshot Kimi K2.5 (#2 at 4.02T tokens), and DeepSeek V3.2 dominate OpenRouter usage. Programming workloads now account for 50%+ of all API tokens (up from 11% in early 2025). Agent-driven workflows generate more than half of all output tokens. The shift toward open-weight, cost-efficient models is accelerating.</p>
+        <div class="source">Source: <a href="#">openrouter.ai/rankings</a> · <a href="#">dataconomy.com</a></div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">Alibaba / Qwen</span> — Qwen 3.5 emerges as the largest open-source model family</h4>
+        <p>48 model variants now available on OpenRouter spanning 9B to 397B MoE. Competitive with GPT-5.2 on multiple benchmarks, 262K native context extendable to 1M+, supporting 200+ languages. Qwen3-Coder offered free on OpenRouter, driving significant experimentation volume in coding workflows.</p>
+        <div class="source">Source: <a href="#">openrouter.ai</a> · <a href="#">huggingface.co/Qwen</a></div>
       </div>
     </div>
   </div>
@@ -348,14 +370,24 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
       <div class="section-desc">Tier 2 competitors showing notable activity this week</div>
       <div class="horizon-grid">
         <div class="horizon-card tier2">
-          <div class="tier-label">Tier 2 · Rising</div>
-          <h4><span class="company-name">DeepSeek</span> — R2 model rumored with reasoning improvements</h4>
-          <p>No official confirmation yet, but technical community chatter on Twitter/X and Chinese AI forums suggests imminent release. If performance claims hold, pricing pressure on API tier could intensify.</p>
+          <div class="tier-label">Rising · China</div>
+          <h4><span class="company-name">Moonshot AI (Kimi)</span> — #2 by global token usage, MIT-licensed frontier model</h4>
+          <p>Kimi K2.5 now the second-most-used model on OpenRouter globally (4.02T tokens). MIT license and natively multimodal architecture make it a credible alternative to proprietary APIs. Strong consumer traction in China competing directly with ByteDance's Doubao.</p>
         </div>
         <div class="horizon-card tier2">
-          <div class="tier-label">Tier 2 · Stable</div>
-          <h4><span class="company-name">Mistral AI</span> — Quiet week, European pipeline growing</h4>
-          <p>No new model releases. European enterprise pipeline reportedly growing based on LinkedIn posts from Mistral team. GDPR-compliance positioning continues to be their key differentiator.</p>
+          <div class="tier-label">Rising · China</div>
+          <h4><span class="company-name">ByteDance (Seed 2.0)</span> — #6 Arena overall, #3 in vision</h4>
+          <p>Seed 2.0 has quietly climbed to #6 on the LMSYS Chatbot Arena and #3 in the vision arena. Aggressive pricing and integration across ByteDance's product ecosystem (Doubao consumer app, TikTok) could pressure both consumer and API product lines.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · EU</div>
+          <h4><span class="company-name">Mistral AI</span> — Large 3 ships with Apache 2.0, 256K context</h4>
+          <p>Mistral Large 3 (675B MoE) released under Apache 2.0 — the most permissive license for a frontier-class model. European enterprise pipeline growing. GDPR-compliance remains their key differentiator in regulated industries.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · Tools</div>
+          <h4><span class="company-name">Cognition</span> — Devin + Windsurf merger creates full-spectrum AI coding competitor</h4>
+          <p>Cognition's acquisition of Windsurf/Codeium creates the only company spanning both IDE copilot (Windsurf) and autonomous agent (Devin). Combined product portfolio directly challenges Codex, Cursor, and Claude Code simultaneously. Integration risk is real, but if successful, this is the most comprehensive AI coding competitor.</p>
         </div>
       </div>
     </div>
@@ -381,7 +413,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
     <p>This report was generated by the OpenAI Competitive Intelligence Agent v1.0. All signals are sourced from publicly available information. Confidence scores reflect source corroboration, not strategic certainty. For internal use only.</p>
     <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
     <div class="sources-list" id="sources">
-      anthropic.com/blog<br>cloud.google.com/blog<br>ai.meta.com/blog<br>x.ai/blog<br>careers.anthropic.com<br>careers.google.com<br>twitter.com/AnthropicAI<br>twitter.com/xAI<br>twitter.com/ylecun<br>reddit.com/r/ChatGPT<br>reddit.com/r/ClaudeAI<br>reddit.com/r/LocalLLaMA<br>news.ycombinator.com<br>github.com/meta-llama<br>swebench.com<br>techcrunch.com
+      anthropic.com/blog<br>cloud.google.com/blog<br>ai.meta.com/blog<br>x.ai/blog<br>cursor.com/blog<br>careers.anthropic.com<br>careers.google.com<br>cursor.com/careers<br>twitter.com/AnthropicAI<br>twitter.com/xAI<br>twitter.com/ylecun<br>twitter.com/AravSrinivas<br>twitter.com/cursor_ai<br>twitter.com/cognition_labs<br>reddit.com/r/ChatGPT<br>reddit.com/r/ClaudeAI<br>reddit.com/r/LocalLLaMA<br>news.ycombinator.com<br>github.com/meta-llama<br>github.com/THUDM/GLM-5<br>huggingface.co/Qwen<br>openrouter.ai/rankings<br>swebench.com<br>llm-stats.com<br>techcrunch.com<br>theinformation.com<br>dataconomy.com
     </div>
   </footer>
 

@@ -1,0 +1,172 @@
+[
+  {
+    "scenario_id": 1,
+    "name": "Anthropic Mythos Leak Detection",
+    "description": "Anthropic's next-gen Claude Mythos model was leaked via public data cache, described as 'step change in capabilities' with 'unprecedented cybersecurity risks'. Anthropic confirmed testing with early access customers.",
+    "ground_truth_sources": [
+      "https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/",
+      "https://www.bloomberg.com/news/articles/2026-03-27/claude-ai-maker-anthropic-said-to-weigh-ipo-as-soon-as-october"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "multiple",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["Mythos", "step change", "leak", "IPO"],
+      "should_not_mention": ["fabricated details not in sources"]
+    }
+  },
+  {
+    "scenario_id": 2,
+    "name": "Google ChatGPT Migration Tool",
+    "description": "Google launched a tool in the March 2026 Gemini Drop that lets users transfer their AI chat history from other providers (specifically targeting ChatGPT) to Gemini.",
+    "ground_truth_sources": [
+      "https://www.bloomberg.com/news/articles/2026-03-26/google-gemini-adds-tool-to-make-it-easier-to-switch-from-chatgpt",
+      "https://blog.google/innovation-and-ai/products/gemini-app/gemini-drop-updates-march-2026/"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "chatgpt",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["migration", "chat history", "transfer", "ChatGPT"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 3,
+    "name": "Cursor $29.3B Valuation and Automations Launch",
+    "description": "Cursor/Anysphere raised $2.3B at $29.3B valuation (Accel, Coatue, Google, NVIDIA). Launched Automations (autonomous cloud agents) on March 5. Acquired Graphite code review tool. 60% revenue from enterprise.",
+    "ground_truth_sources": [
+      "https://techfundingnews.com/anysphere-soars-to-29-3b-valuation-with-2-3b-funding-redefining-the-future-of-coding/",
+      "https://www.infoworld.com/article/4110558/cursor-owner-anysphere-agrees-to-buy-graphite-code-review-tool.html"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "codex",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["$29.3B", "$2.3B", "Automations", "Graphite", "enterprise"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 4,
+    "name": "Google Jules GA with Gemini 3 Pro",
+    "description": "Google's autonomous coding agent Jules exited public beta, now powered by Gemini 3 Pro (surpasses 2.5 Pro on coding). Available on subscription tiers: Pro (5x limits) and Ultra (20x limits). Gemini Code Assist now free for individual devs.",
+    "ground_truth_sources": [
+      "https://developers.googleblog.com/jules-gemini-3/",
+      "https://9to5google.com/2026/03/17/google-ai-pro-ultra-features/"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "codex",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["Jules", "Gemini 3", "beta", "free"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 5,
+    "name": "DeepSeek V4 Imminent Release",
+    "description": "DeepSeek V4 is imminent — multimodal (text/image/video), ~1T parameters (32B active), 1M+ context. V4 Lite appeared on website March 9. Trained on Huawei and Cambricon chips. Tops LMSYS coding leaderboard alongside Claude 4.6.",
+    "ground_truth_sources": [
+      "https://technode.com/2026/03/02/deepseek-plans-v4-multimodal-model-release-this-week-sources-say/",
+      "https://www.nxcode.io/resources/news/deepseek-v4-release-specs-benchmarks-2026"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "api",
+      "threat_level": "HIGH",
+      "confidence": "MEDIUM",
+      "should_mention": ["V4", "multimodal", "trillion", "Huawei", "coding leaderboard"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 6,
+    "name": "Chinese Models 61% of OpenRouter Token Usage",
+    "description": "Chinese AI models now account for 61% of total token consumption on OpenRouter. Top 3 by token volume are all Chinese: MiniMax M2.5 (4.55T tokens), Moonshot Kimi K2.5 (4.02T tokens), DeepSeek. Programming is 50%+ of all API tokens.",
+    "ground_truth_sources": [
+      "https://www.indexbox.io/blog/chinese-ai-models-dominate-global-usage-surpass-us-developers-in-token-ranking/",
+      "https://www.teamday.ai/blog/top-ai-models-openrouter-2026"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "api",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["61%", "Chinese", "OpenRouter", "MiniMax", "Kimi"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 7,
+    "name": "Zhipu GLM-5 Best Open-Source Coding",
+    "description": "Zhipu AI's GLM-5 (744B MoE, 40B active) achieves 95.8% on SWE-bench Verified — highest open-source coding score. Trained entirely on Huawei Ascend 910B chips. MIT license. Zhipu IPO'd on HKEX Jan 2026, stock rallied 250%+.",
+    "ground_truth_sources": [
+      "https://www.nxcode.io/resources/news/glm-5-open-source-744b-model-complete-guide-2026",
+      "https://thediplomat.com/2026/03/could-zhipu-emerge-as-the-ai-stock-of-2026-amid-wider-market-uncertainty/"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "api",
+      "threat_level": "HIGH",
+      "confidence": "HIGH",
+      "should_mention": ["GLM-5", "95.8%", "SWE-bench", "Huawei", "MIT"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 8,
+    "name": "Perplexity Platform Evolution",
+    "description": "Perplexity evolved from search tool to full AI platform: Personal Computer (always-on Mac mini agent), Comet (enterprise assistant), API Platform (Agent API, Search API, Embeddings API), Market Research pilot. Premium data partnerships with CB Insights, PitchBook.",
+    "ground_truth_sources": [
+      "https://www.axios.com/2026/03/11/perplexity-personal-computer-mac",
+      "https://www.vktr.com/ai-news/perplexity-tests-market-research-agent-for-pro-max-users/"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "chatgpt",
+      "threat_level": "HIGH",
+      "confidence": "MEDIUM",
+      "should_mention": ["Personal Computer", "platform", "API", "enterprise"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 9,
+    "name": "xAI $20B Funding and X Algorithm Integration",
+    "description": "xAI raised $20B Series E (NVIDIA, Cisco, Fidelity, QIA). Grok will power X's recommendation algorithm — Nikita Bier called it 'the most important change ever made to X'. Doubling down on Grok Imagine video gen after OpenAI pulled back Sora.",
+    "ground_truth_sources": [
+      "https://www.bloomberg.com/news/articles/2026-03-25/musk-s-xai-doubling-down-on-ai-videos-after-openai-nixes-sora",
+      "https://www.pcguide.com/news/groks-next-update-will-be-the-most-important-change-to-x-ever-and-elon-musk-says-xai-is-doubling-down-on-imagine/"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "chatgpt",
+      "threat_level": "MEDIUM",
+      "confidence": "HIGH",
+      "should_mention": ["$20B", "algorithm", "Grok Imagine", "video"],
+      "should_not_mention": []
+    }
+  },
+  {
+    "scenario_id": 10,
+    "name": "Cognition Devin+Windsurf Integration Status",
+    "description": "Cognition grew to 200+ employees after Windsurf acquisition. Valued at $10B+. But Devin and Windsurf products 'remain largely separate' as of March 2026. Cognition is a smaller player vs Cursor ($29.3B) and Claude Code.",
+    "ground_truth_sources": [
+      "https://sfstandard.com/2026/03/24/grind-sf-startup-racing-build-ai-software-engineer/",
+      "https://venturebeat.com/programming-development/remaining-windsurf-team-and-tech-acquired-by-cognition-makers-of-devin-were-friends-with-anthropic-again"
+    ],
+    "expected": {
+      "signal_detected": true,
+      "product_line": "codex",
+      "threat_level": "MEDIUM",
+      "confidence": "MEDIUM",
+      "should_mention": ["Devin", "Windsurf", "integration", "200"],
+      "should_not_mention": []
+    }
+  }
+]
