@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — July 21, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; margin-bottom: 28px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.trend-bar strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card.urgent { border-left: 3px solid #EF4444; }
+.signal-card.watch { border-left: 3px solid #F59E0B; }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
+.badge-new { background: #ECFDF5; color: #065F46; }
+.badge-standing { background: #F5F3FF; color: #5B21B6; }
+.badge-resolved { background: #F0F9FF; color: #0369A1; }
+.badge-ends-today { background: #FEF2F2; color: #991B1B; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.pricing-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table td:first-child { font-weight: 600; color: var(--text); }
+.pricing-table .highlight { background: #FFF7ED; }
+.pricing-table .new-signal { background: #F0FDF4; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence — Daily Update</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>July 21, 2026</span>
+      <span class="dot"></span>
+      <span>Generated July 21, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-bar">
+    <strong>Trend note vs. July 20:</strong> Five signals define today: (1) <strong>xAI Grok 4.6 (2T params) completing pre-training this week</strong> — direct response to Kimi K3; public launch late Aug–Sept; will run on Cursor's 50K enterprise clients. (2) <strong>Anthropic Claude Science launched in beta</strong> — 60+ scientific database integrations, multi-agent architecture with reviewer agent; second new vertical in 14 days (after Claude for Teachers); IPO-timed TAM expansion. (3) <strong>Tencent HY3 free promo ends today</strong> — 6.13T tokens processed free; post-promo retention test begins now at $0.14/$0.58. (4) <strong>Chinese model OpenRouter share hits record 58%</strong> (updated from ~44-46% reported July 20) — US providers at 30% combined; structural inversion vs. June 2025. (5) <strong>Anthropic Fable 5 elevated errors July 21, 11:19 AM (resolved)</strong> — sixth service event in 2026. Standing: Gemini 3.5 Pro unshipped (July 31 at ~81%), GitHub brownout #2 July 23, DeepSeek alias cleanup July 24, Kimi K3 open weights July 27.
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Launched Claude Science (AI workbench for researchers, 60+ databases, multi-agent with reviewer agent). Second new consumer vertical in 14 days after Claude for Teachers. Both timed to active IPO investor meetings ($965B valuation, $47B ARR). Pro user billing sticker shock persists; Fable 5 elevated error today (resolved) amplified migration conversations.</div>
+        <div class="implication">Anthropic is building a TAM-expansion narrative for IPO investors — every new vertical (science, education) signals a platform story, not a chatbot story. The post-billing-split 24hr window is the highest-value ChatGPT messaging window in 6 weeks.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">xAI / SpaceXAI</span> — Grok 4.5 trained on trillions of Cursor usage tokens; Grok 4.6 (2T) completing pre-training this week. GitHub brownout #2 in 2 days (July 23) forces 3.1M developers to migration decisions. Meta Watermelon internally matching GPT-5.5 (unverified). Grok 4.6 + Cursor enterprise clients = potential closed-loop coding stack.</div>
+        <div class="implication">The GitHub Models shutdown creates a forced developer migration NOW. The window to capture this cohort closes July 30. SpaceXAI's Cursor data flywheel (Grok trained on Cursor interactions) is a novel competitive moat that Codex does not currently match.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Chinese Open-Source / Tencent HY3</span> — Chinese model share on OpenRouter hits record 58% today (US at 30%). HY3 free promo ends now — retention test determines whether this share is durable. Kimi K3 open weights 6 days away. Grok 4.6 (2T) is the first US-origin large-scale response. API revenue moat is now compliance + reliability + integration depth, not price or benchmarks.</div>
+        <div class="implication">The structural inversion of OpenRouter share (China 58%, US 30%) is the single most important long-term API revenue signal of the month. HY3's post-promo behavior in the next 48 hours is the early read on durability. Kimi K3 open weights July 27 is still the most consequential near-term event.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">xAI / SpaceXAI</span> — Grok 4.6 (2-trillion parameters) completing initial pre-training this week per Elon Musk's July 18 announcement. Trained on Colossus 2 (555K GB200/GB300 GPUs). Positioned to surpass Kimi K3 in capability. Public launch estimated late August–September. Deployed through Cursor (50K enterprise clients, $4B ARR) and X/Twitter (700M+ MAU) — broadest potential distribution of any upcoming frontier model. This is xAI's direct competitive response to Chinese open-source dominance.</span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Tencent HY3</span> — Free promotional window ends today (July 21). 6.13 trillion tokens processed free over 2 weeks; peak 15.4% OpenRouter market share. Post-promo: $0.14/$0.58 per million input/output tokens. Tencent reports ~20x token consumption growth during promo, suggesting genuine developer integration. First paid-retention data accumulates starting now. If ≥20-25% of promo volume persists at paid rates, HY3 becomes the 4th durable Chinese inference provider at scale — accelerating the Chinese model share inversion further.</span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Anthropic</span> — Launched Claude Science in beta: AI workbench for scientists with 60+ scientific database integrations (genomics, proteomics, structural biology, cheminformatics), multi-agent pipeline (primary agent + specialized sub-agents + dedicated reviewer agent for citation verification), up to $30K in credits for 50 funded projects. Available to Pro/Max/Team/Enterprise. Second new vertical in 14 days after Claude for Teachers (US K-12 education). Both launches coincide with active IPO investor meetings. Allen Institute validated 100+ page literature reviews in days vs. 2+ years previously.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt')">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex')">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api')">API & Models</button>
+    <button class="tab" onclick="showTab('hiring')">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon')">Horizon Watch</button>
+  </div>
+
+  <!-- CHATGPT TAB -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging & positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products today</div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-new">NEW</span><span class="company-name">Anthropic</span> — Claude Science: AI workbench for scientific researchers</h4>
+        <p>60+ scientific database integrations (genomics, proteomics, structural biology, cheminformatics). Multi-agent architecture: primary agent orchestrates, specialized sub-agents divide work, dedicated reviewer agent audits citations and calculations before output. Beta on macOS/Linux for Pro/Max/Team/Enterprise. $30K in credits for 50 funded projects (applications closed July 15). Allen Institute validated 100+ page literature reviews in days vs. 2 years previously.</p>
+        <p>This is Anthropic's second new consumer/prosumer vertical in 14 days (after Claude for Teachers). Both launched during active IPO investor meetings ($965B valuation at $47B ARR, Goldman/Morgan Stanley/JPMorgan). The pattern signals an investor-facing narrative: Anthropic is not a chatbot — it is a platform for every knowledge vertical. ChatGPT's research use case is directly targeted.</p>
+        <div class="source">Source: <a href="https://www.anthropic.com/news/claude-science-ai-workbench">anthropic.com/news/claude-science-ai-workbench</a> · <a href="https://techcrunch.com/2026/06/30/anthropics-claude-science-bets-on-workflow-not-a-new-model-to-win-over-scientists/">TechCrunch</a> · <a href="https://www.techradar.com/pro/anthropic-launches-ai-workbench-for-scientists-using-claude">TechRadar</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Anthropic</span> — Claude for Teachers: free premium access for US K-12 educators</h4>
+        <p>All US K-12 educators (verified) get free premium Claude access, teaching skills library, and standards-aligned curriculum tools across all 50 states. Sign-up through June 30, 2027. Continues to accumulate institutional educator sign-ups. Second consumer vertical alongside Claude Science.</p>
+        <p>Anthropic's "safety-first" brand continues to provide procurement credibility advantage with school administrators that ChatGPT Edu does not easily match on messaging alone. Both education and science verticals share a common Anthropic positioning asset: institutional trust.</p>
+        <div class="source">Source: <a href="https://thehill.com/policy/technology/5968601-claude-for-teachers-launch/">The Hill</a> · <a href="https://www.chalkbeat.org/2026/07/14/anthropic-launches-claude-for-teachers-as-ai-companies-battle-for-classrooms/">Chalkbeat</a></div>
+      </div>
+
+      <div class="signal-card watch">
+        <h4><span class="badge badge-resolved">RESOLVED</span><span class="company-name">Anthropic</span> — Fable 5 elevated errors, July 21 at 11:19 AM (resolved)</h4>
+        <p>Claude status page recorded elevated errors across Fable 5 on July 21, 2026. Incident resolved. Sixth Anthropic service disruption in 2026. Timing: simultaneous with the post-July 20 billing split, when Pro users are evaluating alternatives in real-time.</p>
+        <p>The billing transition + same-day service incident combination maximizes visibility for the reliability narrative. GPT-5.6's stable pricing and service record become the natural contrast in this 24–48 hour window. "Stable, affordable AI" messaging is most effective right now.</p>
+        <div class="source">Source: <a href="https://community.designtaxi.com/topic/33532-is-claude-anthropic-ai-down-july-21-2026">DesignTAXI Community</a> · <a href="https://statusgator.com/services/claude">StatusGator</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">xAI</span> — Grok 4.6 (2T parameters) completing pre-training this week; Grok 4.5 EU still blocked</h4>
+        <p>Musk announced July 18 that Grok 4.6 finishes initial training "next week" (i.e., this week). Positioned as superior in "all aspects" to Grok 4.5 while maintaining comparable inference speed. Public launch estimated late August–September via Colossus 2 infrastructure. Grok 4.5 EU access remains blocked across 27 markets — uncontested ChatGPT advantage requiring no action.</p>
+        <div class="source">Source: <a href="https://dataconomy.com/2026/07/20/musk-xai-grok-4-6-2t-model-training-next-week/">Dataconomy</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Google</span> — Gemini 3.5 Pro still unshipped; 4+ days past July 17 target</h4>
+        <p>No Gemini 3.5 Pro in the public API as of July 21. Model fell short of internal quality goals on hallucination rates and reliability — DeepMind reportedly scrapped and rebuilt the base model. Polymarket July 31 GA at ~81%; August 7 at ~73%. Google's consumer AI narrative disrupted. No ChatGPT defensive action required this week.</p>
+        <div class="source">Source: <a href="https://www.cometapi.com/gemini-3-5-pro-release-date-rumored-specifications-all-we-know-in-2026-updated-july-2026/">CometAPI</a> · <a href="https://www.benzinga.com/trading-ideas/movers/26/07/60521930/google-parent-alphabet-stock-still-sliding-after-reports-of-months-long-gemini-delay">Benzinga</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment</h3>
+      <div class="section-desc">UX reactions and user discussions on Reddit and Hacker News</div>
+
+      <div class="signal-card watch">
+        <h4><span class="company-name">Anthropic Pro community</span> — Billing sticker shock persisting; Pro-to-Max upgrade vs. alternative migration conversations live</h4>
+        <p>r/ClaudeAI discussions from July 20–21 show real cost impact among Pro users transitioning to pay-as-you-go at $10/$50 per million tokens. Three migration patterns emerging: (1) upgrade to Max ($100/month) to retain Fable 5 at 50% limits, (2) switch primary usage to Claude Sonnet 5 (promo $2/$10 through August 31), (3) evaluate alternatives including ChatGPT Plus/Pro. No churn data yet — community is qualitative.</p>
+        <p>The 24–48 hours after yesterday's billing change are the highest-value window for "stable, affordable AI" messaging. GPT-5.6 Luna at $1/$6 or ChatGPT Plus at $20/month with full GPT-5.6 family access is the direct cost contrast to Fable 5 Pro's credit transition.</p>
+        <div class="source">Source: Community synthesis — r/ClaudeAI. Confidence: MEDIUM (qualitative)</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Developer community</span> — AI coding tool sentiment is pragmatic; verification capacity beats generation speed</h4>
+        <p>Hacker News and Reddit discussions in mid-July 2026 reflect a maturation shift: core bottleneck is no longer code generation speed but verification capacity, pricing stability, and session behavior. Claude Code rated most capable for complex reasoning; session limit complaints partially addressed by August 19 extension. Augment AI (not tracked) showing cancellations tied to credit model changes — cautionary signal for any tool disrupting pricing mid-subscription.</p>
+        <div class="source">Source: <a href="https://www.developersdigest.tech/blog/what-hacker-news-gets-right-about-ai-coding-agents-2026">Developers Digest</a> · Community synthesis. Confidence: MEDIUM</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Marketing & GTM signals</h3>
+      <div class="section-desc">Campaign and positioning moves with consumer implications</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — IPO-timed vertical expansion strategy now visible across two consecutive product launches</h4>
+        <p>Claude for Teachers (education, July 2026) + Claude Science (research, launched July 1) in 14 days signals a deliberate IPO investor narrative: Anthropic is a platform for every knowledge vertical, not a chatbot. Active investor meetings with Goldman Sachs, Morgan Stanley, JPMorgan. $965B valuation at $47B ARR (20x revenue) requires a compelling TAM expansion story.</p>
+        <p>Each new Anthropic vertical is also a proof point for OpenAI's adjacent market opportunity. If Anthropic can IPO on a science + education + coding + enterprise story, OpenAI defends that same narrative with existing products. PMM should evaluate whether OpenAI's vertical positioning is clearly communicated to the same investor and media audience.</p>
+        <div class="source">Source: <a href="https://www.cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings.html">CNBC July 15</a> · <a href="https://fortune.com/2026/06/01/anthropic-confidentially-files-ipo-965-billion-valuation/">Fortune June 2026</a>. Confidence: HIGH</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODEX TAB -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches & moves</h3>
+      <div class="section-desc">New capabilities from enterprise coding tools</div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-new">NEW</span><span class="company-name">xAI / SpaceXAI</span> — Grok 4.5 trained on trillions of Cursor usage tokens; Grok 4.6 (2T) in pre-training</h4>
+        <p>Bloomberg confirmed Grok 4.5 was trained on trillions of tokens of Cursor IDE data (real-world coding interactions). Now available at $2/$6 per million input/output tokens. Grok 4.6 (2T parameters) completing initial training this week — likely to extend the Cursor data flywheel at twice the parameter scale.</p>
+        <p>A model trained on real-world Cursor usage patterns creates a differentiation advantage within the Cursor environment that no other competitor currently matches. If Grok 4.6 ships and is made default in Cursor post-acquisition (Q3 regulatory close pending), the combined SpaceXAI-Cursor stack becomes a closed-loop competitive system. Enterprise model-neutrality concerns across Cursor's 50K clients are escalating.</p>
+        <div class="source">Source: <a href="https://www.bloomberg.com/news/articles/2026-07-08/spacexai-cursor-unveil-grok-ai-model-for-legal-finance-tasks">Bloomberg July 8</a> · <a href="https://cryptobriefing.com/spacexai-cursor-ai-model-acquisition/">CryptoBriefing</a>. Confidence: HIGH on Grok 4.5. MEDIUM on Grok 4.6 trajectory.</div>
+      </div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-standing">STANDING · 2 DAYS</span><span class="company-name">GitHub Models</span> — Brownout #2 arrives July 23; full shutdown July 30</h4>
+        <p>Second of two scheduled service interruptions (brownouts) arriving in 2 days. ~3.1M GitHub Models developers are at peak migration decision pressure. Full shutdown July 30. Microsoft's official path: Azure AI Foundry (heavier lift, not free). Community alternatives: OpenRouter (DeepSeek V4 Flash $0.14/M, Kimi K3 $3/M, post-promo HY3 $0.14/M), GPT-5.6 Luna ($1/M input) — the "official" upgrade path from a Microsoft-adjacent developer's perspective.</p>
+        <p>July 23–30 is the peak competitive window for capturing this 3.1M developer cohort. The migration is forced (not elective). GPT-5.6 Luna's $1/M pricing is the most visible cost-competitive capture path. BD should confirm whether direct API conversion campaigns are active for this cohort.</p>
+        <div class="source">Source: <a href="https://github.blog/changelog/2026-07-01-github-models-is-being-fully-retired-on-july-30-2026/">GitHub Changelog</a> · <a href="https://devops.com/github-retires-its-free-ai-model-playground-what-developers-need-to-know/">DevOps.com</a>. Confidence: HIGH</div>
+      </div>
+
+      <div class="signal-card watch">
+        <h4><span class="badge badge-new">UPDATED</span><span class="company-name">Meta</span> — Watermelon internally matched GPT-5.5 on benchmarks per Alexandr Wang (unverified)</h4>
+        <p>Meta Superintelligence Labs chief Alexandr Wang told employees July 2–3 that Watermelon (in training, not yet released) has matched OpenAI's GPT-5.5 on closely watched AI benchmarks. Uses 10x more compute than "Avocado" (internal codename for Muse Spark 1.1). No public release date; no publicly published benchmarks; unverified company benchmarks.</p>
+        <p>If Watermelon ships at Muse Spark pricing ($1.25/$4.25) or below with frontier capability, Meta becomes a Tier 1 coding API competitor with WhatsApp/Instagram/Facebook consumer distribution (3B+ users) as a force multiplier. Watch for public signals Q4 2026 / Q1 2027.</p>
+        <div class="source">Source: <a href="https://www.aol.com/articles/alexandr-wang-says-metas-coming-235204000.html">AOL</a> · <a href="https://americanbazaaronline.com/2026/07/03/meta-ai-chief-says-watermelon-model-has-caught-up-to-gpt-5-5-484022/">American Bazaar</a>. Confidence: MEDIUM (internal benchmarks, single-source)</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Claude Code (Anthropic)</span> — Limits extended to August 19; 46% senior developer love; no new signals July 21</h4>
+        <p>Claude Code weekly limits extended 50% above baseline through August 19 (announced July 18). 46% of senior engineers name Claude Code as most-loved tool (vs. 19% Cursor, 9% Copilot) per JetBrains Ecosystem 2026 and Pragmatic Engineer surveys. Fable 5 elevated error July 21 (resolved) was minor and not Claude Code-specific. No new feature announcements today.</p>
+        <div class="source">Source: Standing signal from July 20 report. JetBrains Ecosystem 2026, Pragmatic Engineer. Confidence: HIGH</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Google</span> — Gemini 3.5 Pro unshipped; coding stack on Flash-tier only</h4>
+        <p>Gemini Code Assist, Jules, and Antigravity 2.0 all run on Gemini 3.5 Flash — not a competitive frontier model. This window (Gemini 3.5 Pro delayed; Cursor enterprise neutrality concerns; GitHub Models shutdown) is the maximum effectiveness period for Codex and Claude Code against Google's coding stack. Enterprise procurement conversations where Gemini 3.5 Pro was a competitor are back to Flash-tier alternatives.</p>
+        <div class="source">Source: Standing signal. Confidence: HIGH</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Competitive landscape snapshot — July 21, 2026</h3>
+      <div class="section-desc">Market share estimates and key developments by tool</div>
+      <div class="signal-card">
+        <table class="pricing-table">
+          <thead>
+            <tr><th>Tool</th><th>Est. Share</th><th>Key Development July 21</th></tr>
+          </thead>
+          <tbody>
+            <tr class="highlight">
+              <td>GitHub Copilot (Microsoft)</td>
+              <td>~51%</td>
+              <td><strong>Brownout #2 July 23 (2 days)</strong>; full shutdown July 30; migration decisions happening now</td>
+            </tr>
+            <tr class="highlight">
+              <td>Cursor / SpaceXAI</td>
+              <td>~26%</td>
+              <td>Grok 4.5 trained on Cursor data (trillions of tokens); Grok 4.6 (2T) training this week; "Sand" agent in dev; Q3 acquisition close pending</td>
+            </tr>
+            <tr>
+              <td>Claude Code (Anthropic)</td>
+              <td>~18%</td>
+              <td>Limits extended to Aug 19; 46% senior dev love; Fable 5 error July 21 (resolved); admin features stable</td>
+            </tr>
+            <tr>
+              <td>Codex (OpenAI)</td>
+              <td>Undisclosed</td>
+              <td>GPT-5.6 Sol globally live; standing signals only</td>
+            </tr>
+            <tr class="new-signal">
+              <td>Meta Muse Spark 1.1</td>
+              <td>New entrant</td>
+              <td>$1.25/$4.25; agentic/multimodal; <strong>Watermelon internally matching GPT-5.5 (unverified, in training)</strong></td>
+            </tr>
+            <tr>
+              <td>Google (Code Assist + Jules)</td>
+              <td>Growing</td>
+              <td>Gemini 3.5 Pro <strong>still not launched</strong> — day 4+ past July 17 target; Flash-tier only; July 31 at ~81%</td>
+            </tr>
+            <tr>
+              <td>Devin / Cognition</td>
+              <td>Growing</td>
+              <td>Stable; no new signals</td>
+            </tr>
+            <tr>
+              <td>AWS Kiro</td>
+              <td>Emerging</td>
+              <td>GA since May 7; no new signals</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">Community reactions from HN, Reddit, and developer surveys</div>
+      <div class="signal-card">
+        <h4><span class="company-name">Post-HY3 promo</span> — Developer migration patterns forming as paid pricing begins</h4>
+        <p>Developers who used Tencent HY3 free via base URL swap in coding tools (OpenAI-compatible API endpoint) during the promo period are now facing $0.14/$0.58. The "trivially easy" integration (base URL swap) means switching cost is low in both directions — adoption was frictionless, so post-promo retention depends primarily on quality-to-price perception rather than lock-in. OpenRouter traffic data from July 22 will provide the first quantitative read.</p>
+        <div class="source">Source: <a href="https://www.techtimes.com/articles/320292/20260713/tencent-hy3-tops-openrouter-charts-base-url-swap-runs-it-free-codex-cli.htm">TechTimes July 13</a>. Confidence: MEDIUM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & MODELS TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases & pricing</h3>
+      <div class="section-desc">New model launches, capability updates, and pricing changes</div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-new">NEW</span><span class="company-name">xAI</span> — Grok 4.6 (2 trillion parameters) completing pre-training this week</h4>
+        <p>Elon Musk confirmed July 18 that Grok 4.6 finishes initial training "next week." Architecture: 2T parameters (vs. Grok 4.5's 1.5T V9 base). Trained on Colossus 2 (555,000 GB200 and GB300 GPUs — equivalent to 1.4M H100s). Musk claims Grok 4.6 will be "superior in all aspects" while maintaining Grok 4.5's inference speed and token efficiency. Public launch estimated 4–6 weeks post-training (late August to mid-September). Explicitly framed as xAI's response to Kimi K3.</p>
+        <p>A 2T US-origin model deployed through Cursor (50K enterprise clients) and X/Twitter (700M+ MAU) would be the broadest distribution of any upcoming frontier-scale model. If it delivers on capability claims at Grok 4.5 pricing ($2/$6), it undercuts Anthropic Fable 5 ($10/$50) by 8x on output while matching frontier performance.</p>
+        <div class="source">Source: <a href="https://dataconomy.com/2026/07/20/musk-xai-grok-4-6-2t-model-training-next-week/">Dataconomy</a> · <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262040652-spacex-ai-musk-kimi-k3-tsla-xai-grok4-6-tradingkey">TradingKey</a> · <a href="https://digiexe.com/blog/xai-responds-to-kimi-k3/">Digiexe</a>. Confidence: MEDIUM (training confirmed; capability claims unverified; pricing unconfirmed)</div>
+      </div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-ends-today">ENDS TODAY</span><span class="company-name">Tencent HY3</span> — Free promo ends July 21; paid retention test begins now</h4>
+        <p>295B MoE (21B active), 256K context, Apache 2.0. Free window processed 6.13T tokens over 2 weeks; peak 15.4% OpenRouter market share (more than double DeepSeek's typical weekly volume). Post-promo pricing: $0.14/$0.58 per million input/output tokens. Tencent-cited data shows ~20x token consumption growth during promo, suggesting genuine developer workflow integration, not curiosity exploration.</p>
+        <p>$0.14/$0.58 makes HY3 approximately 52x cheaper per output token than Fable 5 ($10/$50) and 10x cheaper than GPT-5.6 Luna ($1/$6). If post-promo retention holds ≥20–25% of promo volume, HY3 becomes the 4th durable Chinese inference provider at scale — and developers who built agentic pipelines on it at $0.58/M output will face painful switching cost to return to US-provider pricing.</p>
+        <div class="source">Source: <a href="https://openrouter.ai/tencent/hy3:free">OpenRouter tencent/hy3:free</a> · <a href="https://www.benzinga.com/markets/tech/26/07/60543652/chinese-ai-models-overtake-us-rivals-as-token-share-among-american-firms-hits-record-58">Benzinga</a>. Confidence: HIGH on promo data; MEDIUM on retention projection</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING · 6 DAYS</span><span class="company-name">Moonshot AI</span> — Kimi K3 open weights on track for July 27 (MIT-style)</h4>
+        <p>No delay signals. 2.8T parameters (896 experts, 16 active), 1M context, Kimi Delta Attention (6.3x faster decoding). 1.4TB in 4-bit format (requires 64+ accelerators for self-hosting). Modified-MIT license. Confirmed 4th globally (behind Claude Fable 5, GPT-5.6 Sol; ahead of Claude Opus 4.8). Beats Fable 5 on Frontend Code Arena benchmark per Tom's Hardware.</p>
+        <p>July 27 remains the most consequential upcoming event for closed-source API revenue. Enterprise self-hosting at frontier quality for compute cost only becomes viable for organizations with sufficient infrastructure. Cloud providers will offer K3 inference within days of weight release.</p>
+        <div class="source">Source: <a href="https://cryptobriefing.com/kimi-k3-open-weights-july-27/">CryptoBriefing</a> · <a href="https://www.axios.com/2026/07/16/moonshot-kimi-ai-china-model-openai-anthropic">Axios</a> · <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/moonshot-releases-2-8-trillion-parameter-kimi-k3">Tom's Hardware</a>. Confidence: MEDIUM (company statement; no delay signals)</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING · 3 DAYS</span><span class="company-name">DeepSeek</span> — V4 alias cleanup July 24; no V5; $1.5B funding in active talks</h4>
+        <p>deepseek-chat and deepseek-reasoner model IDs deprecate July 24; official IDs become deepseek-v4-flash and deepseek-v4-pro. API housekeeping only — no new model. DeepSeek V4 Flash at $0.14/$0.38 (off-peak) remains the price floor for Chinese inference. $1.5B round at $71B valuation: active talks (Bloomberg, TechCrunch July 14). IPO preparations begun for mainland China listing, target 2027.</p>
+        <div class="source">Source: DeepSeek API Docs · <a href="https://www.bloomberg.com/news/articles/2026-07-14/deepseek-mulls-new-funding-weeks-after-7-billion-round-ft-says">Bloomberg</a>. Confidence: HIGH</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing snapshot — July 21, 2026</h3>
+      <div class="section-desc">Current market pricing for frontier models</div>
+      <div class="signal-card">
+        <table class="pricing-table">
+          <thead>
+            <tr><th>Provider</th><th>Model</th><th>Input / Output ($/1M)</th><th>Context</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td><td>GPT-5.6 Sol</td><td>$5 / $30</td><td>1M</td><td>Globally live</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td><td>GPT-5.6 Terra</td><td>$2.50 / $15</td><td>1M</td><td>Globally live</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td><td>GPT-5.6 Luna</td><td>$1 / $6</td><td>1M</td><td>Globally live — primary GitHub Models migration target</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td><td>Grok 4.5</td><td>$2 / $6</td><td>TBD</td><td>Live globally; EU blocked</td>
+            </tr>
+            <tr class="new-signal">
+              <td>SpaceXAI</td><td>Grok 4.6</td><td>TBD</td><td>TBD</td><td><strong>Pre-training completes this week</strong>; public launch late Aug–Sept</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td><td>Claude Fable 5</td><td>$10 / $50</td><td>1M</td><td>Billing split July 20: Max/Team Premium included (50% limits); Pro pay-as-you-go</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td><td>Claude Sonnet 5</td><td>$2 / $10 (promo → Aug 31)</td><td>1M</td><td>Generally available</td>
+            </tr>
+            <tr>
+              <td>Google</td><td>Gemini 3.5 Flash</td><td>$0.10 / $0.40</td><td>1M</td><td>Generally available</td>
+            </tr>
+            <tr class="highlight">
+              <td>Google</td><td>Gemini 3.5 Pro</td><td>Unconfirmed</td><td>2M (rumored)</td><td><strong>STILL NOT LAUNCHED</strong> — day 4+ past July 17 target; July 31 at ~81%</td>
+            </tr>
+            <tr>
+              <td>Meta</td><td>Muse Spark 1.1</td><td>$1.25 / $4.25</td><td>1M</td><td>Public via Meta Model API</td>
+            </tr>
+            <tr>
+              <td>Moonshot</td><td>Kimi K3</td><td>$3 / $15</td><td>1M</td><td>Live; open weights July 27 (MIT-style)</td>
+            </tr>
+            <tr class="highlight">
+              <td>Tencent</td><td>HY3</td><td><strong>FREE → $0.14 / $0.58 TODAY</strong></td><td>256K</td><td>Free promo ends July 21; paid retention test begins</td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td><td>V4 Flash</td><td>$0.14 / $0.38 (off-peak)</td><td>1M+</td><td>Alias cleanup July 24 (housekeeping only)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Open-source & ecosystem signals</h3>
+      <div class="section-desc">OpenRouter market share, GitHub activity, and structural trends</div>
+
+      <div class="signal-card urgent">
+        <h4><span class="badge badge-new">UPDATED</span><span class="company-name">OpenRouter market share</span> — Chinese providers at record 58%; US at 30% (updated from 44-46% reported July 20)</h4>
+        <p>As of July 20–21, 2026: Chinese AI models account for a record 58% of tokens processed on OpenRouter (Benzinga confirmed). US providers collectively hold 30%. The 12-month inversion: US was 70%, China was less than 10% in June 2025. DeepSeek holds 17.6% (5.13T weekly tokens, single-largest vendor); Alibaba Qwen 13.9% (2.77T tokens); Claude at 13.3%. The 3+ percentage-point jump since mid-July was partly driven by Tencent HY3's free promo — post-July 21 data will reveal the normalized rate without the promotional distortion.</p>
+        <p>The structural drivers (capability gap near zero with K3 4th globally, price gap ~10x on output, MIT/Apache licensing removing legal barriers) are unchanged. The US competitive moat is now compliance, reliability, and enterprise integration depth — not benchmark performance or price. At current trajectory, US share may fall below 25% if K3 open weights drive significant cloud provider adoption after July 27.</p>
+        <div class="source">Source: <a href="https://www.benzinga.com/markets/tech/26/07/60543652/chinese-ai-models-overtake-us-rivals-as-token-share-among-american-firms-hits-record-58">Benzinga July 20</a> · <a href="https://officechai.com/ai/share-of-us-models-being-used-on-openrouter-has-collapsed-from-70-to-30-over-the-past-year/">OfficeChai</a>. Confidence: HIGH</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Mistral AI</span> — Open-weight sparse MoE in July early access; €4B data center buildout; approaching $23B valuation</h4>
+        <p>New "fat but sparse" MoE family in July early access (research, government, industrial partners). Apache 2.0 licensed. Robostral Navigate (physical navigation model) shipped July 8. >$400M ARR; €4B data center commitment (France + Sweden); Airbus, BMW, EDF as enterprise launch customers. New 10 MW inference facility in Les Ulis opening Q3 2026. No new signals for July 21 beyond standing position.</p>
+        <div class="source">Source: <a href="https://www.techtimes.com/articles/319798/20260706/mistral-ai-targets-frontier-gap-open-weight-model-entering-july-early-access.htm">TechTimes July 6</a>. Confidence: HIGH on early access; MEDIUM on MoE specs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIRING TAB -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring & resource signals</h3>
+      <div class="section-desc">Cross-cutting job board analysis and headcount signals</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — IPO-stage operational signals visible; two vertical launches in 14 days imply accelerating PM/engineering headcount</h4>
+        <p>Claude Science (60+ database integrations, multi-agent architecture, credit program management) and Claude for Teachers both require dedicated product, engineering, and partnerships headcount beyond what's visible externally. IPO investor meetings active (Goldman/Morgan Stanley/JPMorgan, CNBC July 15). Formal enterprise communications function operating at IPO readiness (pre-announcement to enterprise customers on July 18 before Claude Code limit extension). $965B valuation at $47B ARR.</p>
+        <div class="source">Source: <a href="https://www.cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings.html">CNBC July 15</a> · <a href="https://fortune.com/2026/06/01/anthropic-confidentially-files-ipo-965-billion-valuation/">Fortune June 2026</a>. Confidence: HIGH on IPO meetings; MEDIUM on inferred headcount</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Meta Superintelligence Labs</span> — Watermelon in training implies large ML infra team under Alexandr Wang</h4>
+        <p>Watermelon uses "an order of magnitude more compute than Avocado" (Muse Spark 1.1). Wang joined Meta from Scale AI in May 2026. "Order of magnitude more compute" implies a significantly larger infrastructure and ML engineering team than shipped Muse Spark 1.1. No new specific job posting data for July 21.</p>
+        <div class="source">Source: <a href="https://www.aol.com/articles/alexandr-wang-says-metas-coming-235204000.html">AOL</a> · <a href="https://americanbazaaronline.com/2026/07/03/meta-ai-chief-says-watermelon-model-has-caught-up-to-gpt-5-5-484022/">American Bazaar</a>. Confidence: MEDIUM (inferred)</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI / SpaceXAI</span> — Colossus 2 operation and Grok 4.6 training imply large infrastructure engineering headcount</h4>
+        <p>Colossus 2 operates 555,000 GB200 and GB300 GPUs — the largest single AI compute cluster known to be in operation. Active Grok 4.6 pre-training implies a significant ML infrastructure team operating at scale. No new hiring signals specific to July 21.</p>
+        <div class="source">Source: Inference from Colossus 2 scale (Musk announcement). Confidence: LOW on July 21 specifics</div>
+      </div>
+
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Two new vertical product launches in 14 days (Claude Science + Claude for Teachers) imply PM, engineering, and partnerships headcount not visible via job boards. IPO investor meetings signal pre-IPO compensation structures.</div>
+          <div class="trend trend-up">↑ inferred headcount acceleration</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Meta Superintelligence Labs</div>
+          <div class="detail">Alexandr Wang (ex-Scale AI CEO) leading division. Watermelon at 10x Muse Spark compute implies large ML infra team expansion. No public job board data today.</div>
+          <div class="trend trend-up">↑ inferred scaling</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google DeepMind</div>
+          <div class="detail">Organizational fragmentation (4 parallel AI coding teams) persists per Bloomberg July 16. No new departures today. Noam Shazeer → OpenAI; John Jumper/Jonas Adler/Alexander Pritzel → Anthropic (prior standing signals).</div>
+          <div class="trend">→ no new signal</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">No new signals</div>
+          <div class="detail">Cognition (Devin + Windsurf), SpaceXAI/Cursor, Cohere, Mistral, GitHub/Microsoft — no new specific hiring signals for July 21.</div>
+          <div class="trend">→ stable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORIZON WATCH TAB -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Rising challengers</h3>
+      <div class="section-desc">Notable signals from Tier 2 competitors</div>
+
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Escalating · 6 days</div>
+          <h4><span class="company-name">Moonshot AI (Kimi K3)</span> — Open-weight frontier at 2.8T scale; July 27 is the inflection point</h4>
+          <p>Kimi K3 confirmed 4th globally. Open weights July 27 (MIT-style) remain on track — no delay signals. At 1.4TB in 4-bit format (64+ accelerators), cloud providers will offer K3 inference within days. The moment open weights ship, enterprise self-hosting at frontier quality for compute cost only becomes viable for the first time. API revenue argument at the frontier collapses for enterprises with sufficient infrastructure. K3 Swarm Max (parallel multi-agent) directly targets agent-driven workloads now generating >50% of all API output tokens.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Active · Ends Today</div>
+          <h4><span class="company-name">Tencent HY3</span> — Retention test begins; post-promo data accumulates starting now</h4>
+          <p>Free window processed 6.13T tokens; 15.4% peak OpenRouter share. Paid pricing starts today at $0.14/$0.58. ~20x token growth during promo suggests genuine integration. Apache 2.0 license, strong coding/tool-call benchmarks are independent of the promo. Retention rate in the next 48–72 hours is the decisive signal for whether Chinese open-source developer lock-in is durable or promotional.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Stable · EU Sovereign</div>
+          <h4><span class="company-name">Mistral AI</span> — Open-weight sparse MoE in early access; €4B buildout</h4>
+          <p>Apache 2.0 open-weight MoE in July early access. Robostral Navigate shipped July 8. >$400M ARR; €4B data center (France + Sweden); Airbus/BMW/EDF as enterprise customers. New 10 MW inference facility Q3 2026. No new July 21 signals. EU sovereign AI positioning ($1B ARR target) makes Mistral structurally competitive for European enterprise where US-hosted APIs face GDPR exposure.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Stable · Price Floor</div>
+          <h4><span class="company-name">DeepSeek</span> — V4 stable; $1.5B raise active; IPO 2027; alias cleanup July 24</h4>
+          <p>V4 Flash at $0.14/$0.38 (off-peak) remains the price floor for Chinese inference. $1.5B round at $71B valuation: active talks (Bloomberg, TechCrunch). IPO preparation begun for mainland China listing, target 2027. Beijing National AI Investment Fund voting rights remain the US enterprise procurement risk. Alias cleanup July 24 is API housekeeping only — no new model.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech & governance</h3>
+      <div class="section-desc">Monthly horizon scan — emerging technologies and strategic shifts</div>
+
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 → Tier 2 Escalation · Late Aug–Sept</div>
+          <h4><span class="company-name">xAI Grok 4.6</span> — 2T-parameter US response to Chinese open-source wave</h4>
+          <p>Completing pre-training this week; public launch estimated late August to mid-September. If it ships at or above Kimi K3 capability at Grok 4.5 pricing ($2/$6), it is the first US-origin large-scale competitive response to Chinese open-weight dominance. Deployed through Cursor (50K enterprise) and X/Twitter (700M+ MAU), it would have the broadest potential distribution of any upcoming frontier model. Confidence: MEDIUM on timeline; HIGH on training.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Q4 2026 / Q1 2027</div>
+          <h4><span class="company-name">Meta Watermelon</span> — Internally matching GPT-5.5; Tier 1 threat if shipped at Muse Spark pricing</h4>
+          <p>Alexandr Wang's July 2 employee town hall: Watermelon has matched GPT-5.5 on internal benchmarks. Uses 10x more compute than Avocado (Muse Spark). Still in training; no public release date. If it ships at $1.25/$4.25 or below with frontier capability, Meta becomes a Tier 1 API competitor with 3B+ consumer distribution (WhatsApp, Instagram, Facebook) as a force multiplier. Watch Q4 2026 for public signals. Confidence: MEDIUM.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · July–Aug Window · LOW Confidence</div>
+          <h4><span class="company-name">Anthropic Honeycomb / Claude Opus 5</span> — Leak; zero official confirmation</h4>
+          <p>"Honeycomb EAP" briefly appeared in Cursor model picker July 9, then pulled. No API model ID, no system card, no official statement. Reported specs: 1M context, "xhigh" reasoning, Opus 4.8 safety fallback. Community speculation: mid-July to early-August launch window. No new signals July 21. If it ships before Gemini 3.5 Pro, Anthropic holds both the coding and general reasoning summit for the second consecutive cycle. Confidence: LOW.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Structural · Year-End</div>
+          <h4><span class="company-name">TSMC N3 scarcity</span> — Structural floor for US inference pricing intact through Q4 2026</h4>
+          <p>TSMC N3 fully allocated through Q4 2026. June 2026 revenue +68% YoY ($39.6B Q2 record). Anthropic's Samsung 2nm chip talks (confirmed July 2) and DeepSeek's Huawei Ascend buildout are 2027+ responses. US-hosted inference pricing floor intact through year-end. Grok 4.6 and any future US frontier models face same compute constraints. Confidence: HIGH.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent v1.0. All signals are sourced from publicly available information as of July 21, 2026. Confidence scores reflect source corroboration, not strategic certainty. For internal use only.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <a href="https://dataconomy.com/2026/07/20/musk-xai-grok-4-6-2t-model-training-next-week/">Dataconomy — Musk Teases Next-generation 2T Grok AI Model</a><br>
+      <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262040652-spacex-ai-musk-kimi-k3-tsla-xai-grok4-6-tradingkey">TradingKey — Elon Musk Announces 2T Parameter Grok 4.6</a><br>
+      <a href="https://digiexe.com/blog/xai-responds-to-kimi-k3/">Digiexe — Musk Confirms 2T-Parameter Grok 4.6</a><br>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-08/spacexai-cursor-unveil-grok-ai-model-for-legal-finance-tasks">Bloomberg — SpaceXAI, Cursor Launch Grok 4.5 for Finance/Legal</a><br>
+      <a href="https://cryptobriefing.com/spacexai-cursor-ai-model-acquisition/">CryptoBriefing — SpaceXAI and Cursor joint AI model</a><br>
+      <a href="https://www.anthropic.com/news/claude-science-ai-workbench">Anthropic — Claude Science workbench</a><br>
+      <a href="https://techcrunch.com/2026/06/30/anthropics-claude-science-bets-on-workflow-not-a-new-model-to-win-over-scientists/">TechCrunch — Claude Science</a><br>
+      <a href="https://www.techradar.com/pro/anthropic-launches-ai-workbench-for-scientists-using-claude">TechRadar — Claude Science</a><br>
+      <a href="https://community.designtaxi.com/topic/33532-is-claude-anthropic-ai-down-july-21-2026">DesignTAXI Community — Claude outage July 21</a><br>
+      <a href="https://www.cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings.html">CNBC — Anthropic IPO investor meetings</a><br>
+      <a href="https://fortune.com/2026/06/01/anthropic-confidentially-files-ipo-965-billion-valuation/">Fortune — Anthropic IPO $965B valuation</a><br>
+      <a href="https://openrouter.ai/tencent/hy3:free">OpenRouter — tencent/hy3:free</a><br>
+      <a href="https://www.benzinga.com/markets/tech/26/07/60543652/chinese-ai-models-overtake-us-rivals-as-token-share-among-american-firms-hits-record-58">Benzinga — Chinese AI Models 58% OpenRouter share</a><br>
+      <a href="https://officechai.com/ai/share-of-us-models-being-used-on-openrouter-has-collapsed-from-70-to-30-over-the-past-year/">OfficeChai — US models collapsed from 70% to 30%</a><br>
+      <a href="https://cryptobriefing.com/kimi-k3-open-weights-july-27/">CryptoBriefing — Kimi K3 open weights July 27</a><br>
+      <a href="https://www.axios.com/2026/07/16/moonshot-kimi-ai-china-model-openai-anthropic">Axios — Kimi K3 frontier-level results</a><br>
+      <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/moonshot-releases-2-8-trillion-parameter-kimi-k3">Tom's Hardware — Kimi K3 2.8T</a><br>
+      <a href="https://www.aol.com/articles/alexandr-wang-says-metas-coming-235204000.html">AOL — Alexandr Wang on Watermelon</a><br>
+      <a href="https://americanbazaaronline.com/2026/07/03/meta-ai-chief-says-watermelon-model-has-caught-up-to-gpt-5-5-484022/">American Bazaar — Watermelon GPT-5.5 parity</a><br>
+      <a href="https://github.blog/changelog/2026-07-01-github-models-is-being-fully-retired-on-july-30-2026/">GitHub Changelog — GitHub Models retirement</a><br>
+      <a href="https://devops.com/github-retires-its-free-ai-model-playground-what-developers-need-to-know/">DevOps.com — GitHub Models retirement</a><br>
+      <a href="https://www.cometapi.com/gemini-3-5-pro-release-date-rumored-specifications-all-we-know-in-2026-updated-july-2026/">CometAPI — Gemini 3.5 Pro delay</a><br>
+      <a href="https://www.benzinga.com/trading-ideas/movers/26/07/60521930/google-parent-alphabet-stock-still-sliding-after-reports-of-months-long-gemini-delay">Benzinga — Alphabet stock Gemini delay</a><br>
+      <a href="https://www.bloomberg.com/news/articles/2026-07-14/deepseek-mulls-new-funding-weeks-after-7-billion-round-ft-says">Bloomberg — DeepSeek funding</a><br>
+      <a href="https://www.techtimes.com/articles/319798/20260706/mistral-ai-targets-frontier-gap-open-weight-model-entering-july-early-access.htm">TechTimes — Mistral open-weight MoE early access</a><br>
+      <a href="https://www.developersdigest.tech/blog/what-hacker-news-gets-right-about-ai-coding-agents-2026">Developers Digest — HN AI coding agent sentiment</a><br>
+      <a href="https://thehill.com/policy/technology/5968601-claude-for-teachers-launch/">The Hill — Claude for Teachers</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
