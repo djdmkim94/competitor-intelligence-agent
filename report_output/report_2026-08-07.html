@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — August 7, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-banner strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new-signal { border-left: 3px solid #7C3AED; }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .new-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #7C3AED; color: white; padding: 2px 8px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+.signal-card .correction-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #B45309; color: white; padding: 2px 8px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+.pricing-table th { text-align: left; padding: 10px 12px; background: var(--surface-alt); font-weight: 600; font-size: 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table .highlight td { background: rgba(124,58,237,0.04); color: var(--text); font-weight: 500; }
+.pricing-table .correction td { background: rgba(180,83,9,0.04); }
+.pricing-table .provider { font-weight: 600; color: var(--text); }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+.trend-neutral { color: var(--text-tertiary); }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier2-new { border-left-color: #7C3AED; }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .pricing-table { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>August 7, 2026</span>
+      <span class="dot"></span>
+      <span>Generated August 7, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-banner">
+    <strong>5 new signals vs. August 6:</strong> (1) <strong>Grok 4.6 LAUNCHED</strong> (Aug 7) — 1.5T params, improved SFT/RL, live in SpaceXAI Cursor; no official 4.6 benchmarks yet. (2) <strong>Gemini 3.5 Pro missed August 7 Polymarket window</strong> — deployment issues; 9th consecutive delay; "next week" target. (3) <strong>Meta Muse Code — first covered today</strong> (launched Aug 5–6, missed in prior reports); Terminal-Bench 82.9%, contributor-tier pricing $0.10/$0.20/MTok — most aggressive terminal coding pricing in market. (4) <strong>Qwen3.8-Max open weights confirmed released.</strong> (5) <strong>Data correction: Claude Sonnet 5 has 1M context</strong> (not 200K as listed Aug 5–6 reports). Standing: Atlas T-2 days (Aug 9); Grok 4.7 ~Aug 18–25; Sonnet 5 promo ends Aug 31 + tokenizer hike Sep 1; o3 retiring ChatGPT Aug 26; Kimi K3 OFAC no formal action; GLM-5.5 no official launch; Anthropic IPO roadshow active ($965B, $47B ARR, October Nasdaq target).
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge medium">Medium</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Google</span> — Gemini 3.5 Pro missed the August 7 Polymarket window (73% odds) due to "deployment issues" — 9th consecutive delay. Two-horse ChatGPT/Claude comparison cycle extends for at least another week. No new consumer-facing threats from Grok 4.6 (developer/coding only) or Meta Muse Code (terminal CLI, not consumer).</div>
+        <div class="implication">Each additional Gemini 3.5 Pro delay day is a gift — prepare three-way ChatGPT/Claude/Gemini positioning now for a next-week launch. Anthropic IPO roadshow ($47B ARR) continues to elevate Claude's enterprise credibility.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta</span> — Muse Code launches with Terminal-Bench 82.9% (above Codex: 81.8%) and contributor-tier pricing of $0.10/$0.20/MTok — a 20x undercut of GPT-5.6 Luna. <span class="company-name">xAI</span> — Grok 4.6 live in SpaceXAI Cursor today. August 7 is the most active competitive day for terminal coding in this cycle.</div>
+        <div class="implication">Three-way terminal coding positioning is now firm: Claude Code #1 (86.7%), Muse Code #2 (82.9%), Codex (81.8%). Publish a concrete async-cloud-sandbox throughput benchmark before Grok 4.7 (~Aug 18–25) captures the developer media cycle.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta</span> — Muse Spark 1.2 enters OpenRouter at $0.10/$0.20 contributor tier (near-free for data-sharing developers). <span class="company-name">Alibaba</span> — Qwen3.8-Max open weights released (2.4T MoE, globally self-hostable). <span class="company-name">Data correction</span>: Claude Sonnet 5 has 1M context at $2/$10 promo — BD comparison table requires immediate re-brief.</div>
+        <div class="implication">The contributor tier data-sharing flywheel is Meta's moat-building move — $0.10 input at scale = free training data + developer lock-in. Enterprise buyers with data governance can't use it — that's OpenAI's regulated-industry moat. Re-brief BD on Sonnet 5 context correction before September 1.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Meta</span> — Muse Code (launched Aug 5–6, first covered today): Terminal-Bench 82.9% above Codex (81.8%). Contributor-tier pricing $0.10/$0.20/MTok — 20x cheaper than GPT-5.6 Luna, 60x cheaper than Terra. macOS + Linux CLI beta. OpenRouter day-1. Persistent sub-agents with crash-safe event log. Meta enters the terminal coding market for real.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">xAI</span> — Grok 4.6 confirmed launched August 7 on schedule: 1.5T params, improved SFT/RL, live in SpaceXAI Cursor (the $60B acquisition closed June 2026). No official 4.6 benchmarks yet. Grok 4.5 SWE Marathon baseline: 29% (ahead of Claude Opus 4.8 max: 26%). EU blocked. Grok 4.7 (2.1T new scale) the real flywheel event: ~Aug 18–25.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Google</span> — Gemini 3.5 Pro missed the August 7 Polymarket window (9th delay). "Deployment issues" push to "next week." 68+ days late. GOOGL stock pressure continues. Jules capability upgrade still bottlenecked. If Google launches next week, the three-way comparison cycle begins immediately — have positioning ready.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', event)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', event)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', event)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon', event)">Horizon Watch</button>
+  </div>
+
+  <!-- CHATGPT TAB -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Messaging &amp; positioning shifts</h3>
+      <div class="section-desc">How competitors are framing their consumer products — August 7, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Gemini)</span> — 9th consecutive delay: Gemini 3.5 Pro missed August 7, deployment issues, "next week" now the target</h4>
+        <p>Polymarket gave August 7 a 73% probability as of August 6. Google encountered "unexpected deployment issues" preventing the launch. A Geeky Gadgets report confirmed the slip; NokiaPowerUser reported on the deployment glitches specifically. Industry consensus now points to "next week" as the realistic window. Bloomberg's July 16 report established the root cause: the model "fell short of internal quality goals on hallucination rates and real-world reliability," leading Google to scrap and rebuild the base model. This is the 9th delay since the original June 2026 Google I/O promise.</p>
+        <p>For ChatGPT PMMs: Each delay day extends the two-horse ChatGPT/Claude comparison media cycle. Consumer buyers who would have moved to Gemini 3.5 Pro remain in evaluation mode. Prepare three-way messaging for a possible next-week launch — the cycle begins within hours of a Google release. Monitor for a partner-only soft launch (API access for enterprise partners before consumer rollout), which has been Google's pre-release pattern.</p>
+        <div class="source">Source: <a href="https://www.geeky-gadgets.com/gemini-3-5-pro-delayed-again/" target="_blank">Geeky Gadgets</a> · <a href="https://nokiapoweruser.com/gemini-3-5-pro-delayed-again-deployment-issues/" target="_blank">NokiaPowerUser</a> · <a href="https://9to5google.com/2026/07/16/gemini-3-5-pro-delays/" target="_blank">9to5Google</a> · <a href="https://coursiv.io/blog/gemini-3-5-pro" target="_blank">Coursiv</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — No new consumer signals August 7; IPO roadshow active; $47B ARR confirmed</h4>
+        <p>Claude fully operational (restored August 6, 12:03 PM UTC). IPO investor education meetings underway. Annualized revenue run rate: $47 billion as of May 2026, per MLQ News and CBS News — up from $30B in April and $19B in March. Implied secondary market valuation: $1.05–1.15T. Series H closed at $965B. October Nasdaq listing target; ~74% Polymarket odds of IPO by December 2026. Anthropic's S-1 confidentially filed June 1, 2026; public S-1 expected August–September.</p>
+        <p>For ChatGPT PMMs: The $47B ARR figure is new context for this cycle (prior reports cited $30B). At this revenue pace, Anthropic is the fastest-growing enterprise software company in history. Enterprise buyers increasingly frame Claude as a parity option — not a challenger — to ChatGPT. The reliability narrative (164 outages, StatusGator) remains the sharpest PMM differentiation available, but it must be backed by published SLA data to land.</p>
+        <div class="source">Source: <a href="https://mlq.ai/news/anthropics-annualized-revenue-hits-47b-as-daniela-amodei-defends-ai-economics-ahead-of-ipo/" target="_blank">MLQ News</a> · <a href="https://www.cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings.html" target="_blank">CNBC</a> · <a href="https://www.cbsnews.com/news/anthropic-ipo-confidential-filing-claude-ai/" target="_blank">CBS News</a> · <a href="https://forgeglobal.com/insights/anthropic-upcoming-ipo-news/" target="_blank">Forge Global</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Meta</span> — Muse Code enters developer market; no consumer ChatGPT positioning overlap</h4>
+        <p>Meta's Muse Code launch (August 5–6) is a terminal coding agent — not a consumer chat product. No direct ChatGPT consumer positioning overlap. However, Mark Zuckerberg's personal X announcement framing it as "taking on Anthropic and OpenAI" (CNBC headline) is a brand-level competitive signal. Meta's first named commercial AI coding product positions Meta Superintelligence Labs as a direct OpenAI competitor in the developer segment.</p>
+        <p>For ChatGPT PMMs: No immediate consumer impact. Watch for r/programming, r/LocalLLaMA developer reception over 48–72 hours — developer trust in Meta's AI products will be the leading indicator of Muse Code's durability.</p>
+        <div class="source">Source: <a href="https://www.cnbc.com/2026/08/05/meta-debuts-muse-code-to-take-on-anthropic-and-openai-." target="_blank">CNBC</a> · <a href="https://techcrunch.com/2026/08/05/meta-launches-muse-code-an-ai-agent-for-large-code-bases/" target="_blank">TechCrunch</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI (Grok)</span> — Grok 4.6 launched in Cursor today; consumer UI unchanged; EU blocking continues</h4>
+        <p>Grok 4.6 launched August 7 as scheduled. Available in SpaceXAI Cursor and the Grok API. No new consumer-facing Grok UI changes. EU access remains blocked. Consumer positioning unchanged — no campaign or messaging pivot detected.</p>
+        <div class="source">Source: <a href="https://kie.ai/blog/what-is-grok-4-6" target="_blank">kie.ai</a> · <a href="https://crypto.news/grok-4-6-gets-aug-7-launch-date-grok-4-7-follows/" target="_blank">crypto.news</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">User reactions across Twitter/X, Reddit, and Hacker News</div>
+      <div class="signal-card">
+        <h4>No new cross-platform consumer sentiment signals August 7</h4>
+        <p>Developer community attention focused on Grok 4.6 launch and Meta Muse Code — neither has generated measurable consumer migration signals yet. Organic Reddit/HN coverage of both launches expected over 24–72 hours. Claude outage recovery (August 6) appears complete; no confirmed residual user migration to ChatGPT detected. Developer feedback on Claude Code continues as "expensive, reckless, and weirdly fun" (DEV Community August 2026) — acknowledging quality but citing cost barrier.</p>
+        <div class="source">Confidence: MEDIUM — Synthesis from August search patterns and developer community monitoring</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">397 open roles (startup.jobs, early August). No new consumer/marketing-specific surge. IPO roadshow focus through October.</div>
+          <div class="trend trend-neutral">→ stable (IPO-period focus)</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google (Gemini)</div>
+          <div class="detail">No new marketing/growth signals August 7. Gemini 3.5 Pro delay morale concern (Axios July 23 "We're behind") unresolved.</div>
+          <div class="trend trend-neutral">→ no new signals</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Meta (AI)</div>
+          <div class="detail">Muse Code launch implies standing Meta Superintelligence Labs team. No specific role count. Product launch is the strongest hiring-intent signal.</div>
+          <div class="trend trend-up">↑ new product team signal</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">xAI / SpaceXAI</div>
+          <div class="detail">No new hiring signals August 7. Grok 4.6 launch day. Grok 4.7 (2.1T) team implied.</div>
+          <div class="trend trend-neutral">→ no new signals</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODEX TAB -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches</h3>
+      <div class="section-desc">New capabilities from terminal coding agents and enterprise coding tools — August 7, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="new-badge">First Covered Today</span><span class="company-name">Meta</span> — Muse Code beta launched August 5–6: Terminal-Bench 82.9%, $0.10/$0.20 contributor-tier pricing, 1M context, macOS/Linux CLI</h4>
+        <p>Meta Superintelligence Labs released Muse Code in public beta August 5 (Zuckerberg announced on X that evening; Meta AI blog posted August 6). Powered by Muse Spark 1.2. Full profile: 1M context window; Terminal-Bench 2.1 score of 82.9% (above Codex GPT-5.6 Terra: 81.8%; below Claude Code Opus 5: 86.7%); persistent sub-agents with crash-safe event log (resumes exactly where execution stopped after any failure); parallel worktree isolation for concurrent tasks without branch conflicts; CLI only — macOS and Linux (no Windows, no web UI, no IDE plugin).</p>
+        <p>Pricing: Standard tier $0.15 cached input / $1.25 input / $4.25 output per MTok. Contributor tier: $0.10 input / $0.20 output per MTok (12.5x cheaper input, 21.25x cheaper output vs. standard) — in exchange for Meta training future models on prompts and completions. Meta commits standard-tier prompts are NOT used for training. Available on OpenRouter day one. Rate limits: 3,000 req/min, 4M tokens/min per team.</p>
+        <p>For Codex PMs: The contributor-tier pricing ($0.10/$0.20) is the sharpest new pricing point in the terminal coding market. At $0.10 input, it undercuts GPT-5.6 Luna ($0.20), Gemini 3.6 Flash ($1.50), DeepSeek V4-Flash ($0.14 off-peak), and every major closed-source API — the only cheaper options are open-weight self-hosted models. For individual developers and startups willing to share data, Muse Code offers near-free frontier-adjacent coding. Codex's moat against Muse Code: the data-sharing opt-in is a non-starter for enterprise compliance requirements. Publish this as an explicit enterprise data-governance differentiation. Async-cloud-sandbox architecture (Codex's niche) is also fundamentally different — Muse Code is synchronous terminal like Claude Code.</p>
+        <div class="source">Source: <a href="https://techcrunch.com/2026/08/05/meta-launches-muse-code-an-ai-agent-for-large-code-bases/" target="_blank">TechCrunch</a> · <a href="https://www.cnbc.com/2026/08/05/meta-debuts-muse-code-to-take-on-anthropic-and-openai-." target="_blank">CNBC</a> · <a href="https://venturebeat.com/orchestration/meta-enters-the-ai-coding-wars-with-muse-spark-1-2-and-muse-code-with-persistent-async-background-agents" target="_blank">VentureBeat</a> · <a href="https://www.marktechpost.com/2026/08/05/meta-superintelligence-labs-releases-muse-code/" target="_blank">MarkTechPost</a> · <a href="https://benchlm.ai/models/muse-spark-1-2" target="_blank">BenchLM</a> · <a href="https://aicybr.com/blog/meta-muse-code-muse-spark-1-2-complete-guide" target="_blank">AiCybr</a> · <a href="https://developer.meta.com/ai/resources/blog/build-with-muse-code/" target="_blank">Meta Developer Blog</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI / SpaceXAI</span> — Grok 4.6 LAUNCHED (August 7): 1.5T params, improved SFT/RL, live in SpaceXAI Cursor, EU blocked</h4>
+        <p>Grok 4.6 went live today as scheduled per Elon Musk's July 28 X post. Architecture: 1.5T total parameters, same V9 foundation as Grok 4.5 — gains from improved supervised fine-tuning (SFT) and reinforcement learning (RL), not scale. No official Grok 4.6 benchmark card published as of August 7. Grok 4.5 baseline (inherited context): SWE Marathon 29% pass@1 (ahead of Claude Opus 4.8 max: 26%); SWE-bench Pro 64.7% (behind Fable 5: 80.4%). Deployed immediately into SpaceXAI Cursor ($60B acquisition closed June 2026). EU access remains blocked across all Grok channels.</p>
+        <p>For Codex PMs: Grok 4.6 is live in Cursor today. Developer media coverage ("What's new in Grok 4.6 for coding") will run over the next 48 hours. Prepare the Codex async-cloud-sandbox differentiation narrative: Codex's architecture is decoupled from single-provider model changes (Grok 4.6, 4.7, etc.) — it runs parallel sandboxed containers that generate PRs asynchronously. EU blocking limits Grok 4.6 reach in European enterprise. Grok 4.7 (~Aug 18–25, 2.1T new scale) is the real flywheel event — the first model trained at new Colossus capacity with the full Cursor developer data corpus.</p>
+        <div class="source">Source: <a href="https://kie.ai/blog/what-is-grok-4-6" target="_blank">kie.ai</a> · <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/" target="_blank">TBreak</a> · <a href="https://crypto.news/grok-4-6-gets-aug-7-launch-date-grok-4-7-follows/" target="_blank">crypto.news</a> · <a href="https://www.buildfastwithai.com/blogs/grok-4-6-preview" target="_blank">buildfastwithai</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic (Claude Code)</span> — No new launches August 7; #1 terminal/agentic coding standing maintained</h4>
+        <p>Standing: v2.1.221 (August 3 stable) — self-hosted environments, archive plugin source, improved cancel-and-confirm paste, Claude Opus 5 as default Opus model, expanded dynamic workflows and nested subagents. Rated #1 for terminal/agentic coding in August 2026 comparisons (third consecutive month, per morphllm.com, thenewstack.io). Terminal-Bench 2.1 score: 86.7% on Claude Code Opus 5.</p>
+        <div class="source">Source: <a href="https://www.gradually.ai/en/changelogs/claude-code/" target="_blank">gradually.ai</a> · <a href="https://www.morphllm.com/best-ai-coding-agents-2026" target="_blank">morphllm.com</a> · <a href="https://thenewstack.io/claude-code-vs-cursor-vs-codex-vs-antigravity-2026/" target="_blank">The New Stack</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Jules / Gemini Code Assist / Antigravity)</span> — No new signals August 7; Jules still bottlenecked by Gemini 3.5 Pro absence</h4>
+        <p>Jules remains powered by Gemini 3 Pro — the Gemini 3.5 Pro upgrade path is blocked by today's launch delay. Google Antigravity (free agent-first IDE, public preview since May 2026) is a standing competitor: free with a Gmail account, multi-agent "Mission Control" interface, Gemini 3 Flash-powered, supports Claude Sonnet/Opus 4.6 and GPT-OSS-120B as secondary models. No new August 7 signals for any Google coding product.</p>
+        <div class="source">Confidence: HIGH on continued absence. Source: <a href="https://antigravity.google/" target="_blank">antigravity.google</a> · <a href="https://www.geeky-gadgets.com/gemini-3-5-pro-delayed-again/" target="_blank">Geeky Gadgets</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Terminal-Bench leaderboard context — August 7, 2026</h3>
+      <div class="section-desc">Current standing across AI coding tools on key benchmarks</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Terminal-Bench 2.1</th>
+            <th>SWE-bench Pro</th>
+            <th>Market Position</th>
+            <th>Key Development Aug 7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="provider">Claude Code (Anthropic)</td>
+            <td>86.7%</td>
+            <td>80.0% (Fable 5)</td>
+            <td>~18% share</td>
+            <td>#1 standing; Opus 5 default; v2.1.221 stable</td>
+          </tr>
+          <tr class="highlight">
+            <td class="provider">Meta Muse Code ⬆ NEW</td>
+            <td>82.9%</td>
+            <td>N/A (new)</td>
+            <td>NEW ENTRY</td>
+            <td>First covered today; $0.10/$0.20 contributor tier; OpenRouter day-1</td>
+          </tr>
+          <tr>
+            <td class="provider">Codex (OpenAI)</td>
+            <td>81.8%</td>
+            <td>Terminal-Bench record</td>
+            <td>Undisclosed</td>
+            <td>Async-cloud niche; Atlas T-2 days (Aug 9)</td>
+          </tr>
+          <tr class="highlight">
+            <td class="provider">Grok 4.6 (SpaceXAI Cursor) ⬆ LIVE</td>
+            <td>TBD (no official card yet)</td>
+            <td>4.5 base: 64.7%</td>
+            <td>~26% (Cursor)</td>
+            <td>LAUNCHED TODAY; 1.5T, improved SFT/RL; EU blocked</td>
+          </tr>
+          <tr>
+            <td class="provider">GitHub Copilot (Microsoft)</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>~51%</td>
+            <td>No new signals; usage-based billing stable</td>
+          </tr>
+          <tr>
+            <td class="provider">Devin Desktop (Cognition)</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>$492M+ ARR</td>
+            <td>No new signals</td>
+          </tr>
+          <tr>
+            <td class="provider">Jules (Google)</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>Growing</td>
+            <td>Still on Gemini 3 Pro; bottlenecked by 3.5 Pro delay</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">Community reactions on Reddit, HN, and dev forums</div>
+      <div class="signal-card">
+        <h4>Meta Muse Code generating broad developer media coverage; community sentiment still forming (2 days post-launch)</h4>
+        <p>TechCrunch, CNBC, VentureBeat, MarkTechPost, The Register, Forbes all covered the Muse Code launch August 5–6. No quantitative Reddit/HN community sentiment data yet — launch is 2 days old and community response is forming. Developer feedback on Claude Code (standing): described as "expensive, reckless, and weirdly fun" (DEV Community August 2026) — high quality acknowledged, cost barrier cited. Three-tool niche segmentation pattern continues: Cursor for daily IDE, Claude Code for hard multi-file agentic tasks, Codex for async cloud sandboxes. Grok 4.6 launch generating "what's new for coding" articles — expect HN thread within 24 hours.</p>
+        <div class="source">Source: Multiple dev outlets; <a href="https://www.morphllm.com/comparisons/codex-vs-claude-code" target="_blank">morphllm.com</a> · <a href="https://thenewstack.io/claude-code-vs-cursor-vs-codex-vs-antigravity-2026/" target="_blank">The New Stack</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & MODELS TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; API pricing</h3>
+      <div class="section-desc">New models, capability updates, and pricing developments — August 7, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="new-badge">First Covered Today</span><span class="company-name">Meta</span> — Muse Spark 1.2: new frontier-tier API at $1.25/$4.25 standard, $0.10/$0.20 contributor tier, OpenRouter day-1</h4>
+        <p>Full API profile for Muse Spark 1.2: 1M context; text + image inputs; $0.15 cached input / $1.25 input / $4.25 output per MTok (standard); $0.10 input / $0.20 output per MTok (contributor — data-sharing opt-in); 3,000 req/min, 4M tokens/min per team; globally available (no EU blocking). Terminal-Bench 2.1: 82.9%. Meta explicitly commits standard-tier prompts are NOT used for model training.</p>
+        <p>For BD: Muse Spark 1.2's contributor tier is the sharpest new pricing point in the closed-source API market. At $0.10 input vs. GPT-5.6 Luna ($0.20 input), it undercuts OpenAI's most affordable tier by 50%. Standard tier ($1.25/$4.25) slots between Gemini 3.6 Flash ($1.50/$7.50) and GPT-5.6 Luna in price. Enterprise use cases where data-sharing is prohibited (regulated industries, financial services, defense): GPT-5.6 Terra's non-data-sharing guarantee is the moat. Standard-tier enterprise at $1.25/$4.25 with no data-sharing is the competitor frame — differentiate with GPT-5.6 Sol's quality leadership at $5/$30.</p>
+        <div class="source">Source: <a href="https://developer.meta.com/ai/resources/blog/build-with-muse-code/" target="_blank">Meta Developer Blog</a> · <a href="https://openrouter.ai/meta/muse-spark-1.2" target="_blank">OpenRouter</a> · <a href="https://www.layer3labs.io/guides/muse-code-pricing" target="_blank">Layer3Labs</a> · <a href="https://benchlm.ai/models/muse-spark-1-2" target="_blank">BenchLM</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Alibaba (Qwen3.8-Max)</span> — Open weights confirmed released: 2.4T MoE globally self-hostable</h4>
+        <p>The open weights for Qwen3.8-Max (2.4T total, 95B active per token, 1M context, multimodal) have been released this week per we.inc and YottaLabs. API pricing unchanged: $2/$6 per MTok on Alibaba Cloud. Terminal-Bench 2.1: 86.6% (above Fable 5: 84.6%); SWE-bench Pro: 67.7% (below Fable 5: 80.0). License terms not yet widely published — expected to be permissive based on prior Qwen releases.</p>
+        <p>For BD: With open weights available, enterprise teams with self-hosting capability can run Qwen3.8-Max without Alibaba Cloud access. Terminal-Bench 86.6 as self-hostable is the highest benchmark available on any open-weight model. Differentiate: SWE-bench Pro gap (67.7 vs. 80.0) means Qwen3.8-Max loses to Fable 5/GPT-5.6 Sol on real-world software engineering. Chinese model procurement risk (post-Kimi K3 OFAC threat) remains a live compliance argument in regulated industries.</p>
+        <div class="source">Source: <a href="https://we.inc/blog/qwen3-8-max-open-weights-build-apps" target="_blank">we.inc</a> · <a href="https://www.yottalabs.ai/post/qwen-3-8-max-release-date-specs-how-to-access-2026" target="_blank">YottaLabs</a> · <a href="https://benchlm.ai/models/qwen3-8-max" target="_blank">BenchLM</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="correction-badge">Data Correction</span><span class="company-name">Anthropic</span> — Claude Sonnet 5 has 1M context (not 200K as listed in Aug 5–6 reports); re-brief BD comparison table</h4>
+        <p>Live search confirms: Claude Sonnet 5 (launched June 30, 2026) ships with a 1M token context window and 128K max output tokens, with no long-context surcharge. API pricing: $2/$10 per MTok promo through August 31; $3/$15 per MTok starting September 1. The August 5–6 reports listed Sonnet 5 at "200K (→1M in dev)" — this conflated the Sonnet 4 development project with Sonnet 5 specs. The August 5 outage post-mortem ("some Sonnet 4 requests were misrouted to servers configured for the upcoming 1M token context window") referred to Sonnet 4 getting 1M context, not Sonnet 5.</p>
+        <p>For BD: Immediate re-brief required. Enterprise accounts that chose GPT-5.6 Sol ($5/$30, 1M context) partly for context-window reasons vs. Sonnet 5 should be re-contacted: Claude Sonnet 5 has identical 1M context at $2/$10 promo (through August 31). The September 1 cost increase ($3/$15 + tokenizer +35%) remains the migration trigger. GPT-5.6 Terra ($2/$12, 1M context) is the post-September comparison point — same context, better SWE-bench Pro at slightly higher output cost.</p>
+        <div class="source">Source: <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Anthropic.com</a> · <a href="https://coursiv.io/blog/claude-sonnet-5" target="_blank">Coursiv</a> · <a href="https://www.claudedirectory.org/blog/claude-sonnet-5-guide" target="_blank">Claude Directory</a> · <a href="https://www.edtechinnovationhub.com/news/anthropic-makes-claude-sonnet-5-the-default-for-free-and-pro-users" target="_blank">EdTech Innovation Hub</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>API pricing snapshot — August 7, 2026</h3>
+      <div class="section-desc">Current pricing across major closed-source and open-weight APIs</div>
+      <div style="overflow-x: auto;">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Model</th>
+              <th>Input / Output ($/1M tok)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="provider">OpenAI</td>
+              <td>GPT-5.6 Sol</td>
+              <td>$5 / $30</td>
+              <td>1M</td>
+              <td>Fast Mode active; stable</td>
+            </tr>
+            <tr>
+              <td class="provider">OpenAI</td>
+              <td>GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td>20% price cut Jul 30; stable</td>
+            </tr>
+            <tr>
+              <td class="provider">OpenAI</td>
+              <td>GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td>80% price cut Jul 30; Free/Go default rolling out</td>
+            </tr>
+            <tr>
+              <td class="provider">OpenAI</td>
+              <td>Astra</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td>Math proofs published; EO 14409 review; NOT released</td>
+            </tr>
+            <tr>
+              <td class="provider">SpaceXAI</td>
+              <td>Grok 4.5</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td>Stable; EU blocked</td>
+            </tr>
+            <tr class="highlight">
+              <td class="provider">SpaceXAI</td>
+              <td>Grok 4.6 (1.5T) ⬆ LIVE</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td>LAUNCHED TODAY (Aug 7); in Cursor; improved SFT/RL; EU blocked</td>
+            </tr>
+            <tr>
+              <td class="provider">SpaceXAI</td>
+              <td>Grok 4.7 (2.1T)</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td>~Aug 18–25; new-scale Colossus; full Cursor data flywheel</td>
+            </tr>
+            <tr>
+              <td class="provider">Anthropic</td>
+              <td>Claude Opus 5</td>
+              <td>$5 / $25</td>
+              <td>1M</td>
+              <td>Stable; restored Aug 6</td>
+            </tr>
+            <tr>
+              <td class="provider">Anthropic</td>
+              <td>Claude Fable 5</td>
+              <td>$10 / $50</td>
+              <td>1M</td>
+              <td>Stable; SWE-bench #2 (95%); Pro 80.0</td>
+            </tr>
+            <tr class="correction">
+              <td class="provider">Anthropic</td>
+              <td>Claude Sonnet 5 ✎ CORRECTED</td>
+              <td>$2 / $10 (promo)</td>
+              <td>1M (not 200K)</td>
+              <td>1M context confirmed; promo ENDS Aug 31 → $3/$15 + tokenizer +35%</td>
+            </tr>
+            <tr>
+              <td class="provider">Anthropic</td>
+              <td>Claude Mythos 5</td>
+              <td>Restricted</td>
+              <td>1M</td>
+              <td>Project Glasswing only (~150 orgs)</td>
+            </tr>
+            <tr>
+              <td class="provider">Google</td>
+              <td>Gemini 3.6 Flash</td>
+              <td>$1.50 / $7.50</td>
+              <td>1M</td>
+              <td>Stable (Jul 21)</td>
+            </tr>
+            <tr>
+              <td class="provider">Google</td>
+              <td>Gemini 3.5 Pro</td>
+              <td>TBD</td>
+              <td>2M (rumored)</td>
+              <td>STILL NOT LAUNCHED — 9th delay; "next week" target</td>
+            </tr>
+            <tr class="highlight">
+              <td class="provider">Meta</td>
+              <td>Muse Spark 1.2 ⬆ NEW</td>
+              <td>$1.25 / $4.25 (std); $0.10 / $0.20 (contributor)</td>
+              <td>1M</td>
+              <td>Launched Aug 5; Terminal-Bench 82.9%; OpenRouter day-1</td>
+            </tr>
+            <tr>
+              <td class="provider">Alibaba</td>
+              <td>Qwen3.8-Max</td>
+              <td>$2 / $6</td>
+              <td>1M</td>
+              <td>Open weights released this week; 2.4T MoE; Terminal-Bench 86.6</td>
+            </tr>
+            <tr>
+              <td class="provider">Moonshot</td>
+              <td>Kimi K3</td>
+              <td>$3 / $15</td>
+              <td>1M</td>
+              <td>MIT open-sourced (2.8T); OFAC threat; no formal action; Arena Frontend #1</td>
+            </tr>
+            <tr>
+              <td class="provider">Zhipu (Z.ai)</td>
+              <td>GLM-5.2</td>
+              <td>$1.40 / $4.40</td>
+              <td>1M</td>
+              <td>Stable; GLM-5.5 no official launch</td>
+            </tr>
+            <tr>
+              <td class="provider">Xiaomi</td>
+              <td>MiMo-V2.5</td>
+              <td>$0.112 / $0.224</td>
+              <td>1M</td>
+              <td>OpenRouter daily top-4; stable</td>
+            </tr>
+            <tr>
+              <td class="provider">MiniMax</td>
+              <td>M3</td>
+              <td>$0.24 / $0.96</td>
+              <td>1M</td>
+              <td>50% OpenRouter discount; stable</td>
+            </tr>
+            <tr>
+              <td class="provider">DeepSeek</td>
+              <td>V4-Flash-0731</td>
+              <td>$0.14 / $0.38 (off-peak)</td>
+              <td>1M+</td>
+              <td>Incremental update Jul 31; stable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Open-source ecosystem</h3>
+      <div class="section-desc">Self-hostable models and GitHub activity</div>
+      <div class="signal-card">
+        <h4><span class="company-name">Alibaba (Qwen3.8-Max)</span> — Open weights released: highest Terminal-Bench score available in open-weight tier</h4>
+        <p>With open weights live, Qwen3.8-Max (Terminal-Bench 86.6, SWE-bench Pro 67.7) is now the highest-benchmark open-weight model available for self-hosting. Prior open-weight frontier leaders were Kimi K3 (MIT, 2.8T — OFAC risk for US enterprise) and Qwen3.5 family. License terms for Qwen3.8-Max not yet confirmed — expected permissive based on prior Qwen releases.</p>
+        <div class="source">Source: <a href="https://we.inc/blog/qwen3-8-max-open-weights-build-apps" target="_blank">we.inc</a> · <a href="https://www.yottalabs.ai/post/qwen-3-8-max-release-date-specs-how-to-access-2026" target="_blank">YottaLabs</a></div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">Zhipu AI</span> — GLM-5.5: August 2026 signal unconfirmed as of August 7</h4>
+        <p>JPMorgan projection (June 25) + community leaks (July 14–20): &gt;1T params, MIT license, 1M context, coding-agent focus. No official Zhipu announcement, model card, benchmark, or endpoint. Tang Jie's July 20 "epic plus upgrade" comment stands as the latest signal. If launched, GLM-5.5 would be the third frontier-tier open-weight release this month alongside Qwen3.8-Max weights and Muse Spark 1.2.</p>
+        <div class="source">Source: <a href="https://kie.ai/blog/what-is-glm-5-5" target="_blank">kie.ai</a> · <a href="https://wan27.org/blog/glm-5-5" target="_blank">wan27.org</a> · Confidence: LOW-MEDIUM on August launch</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORIZON TAB -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Rising challengers — Tier 2</h3>
+      <div class="section-desc">Competitors showing notable activity this week</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2-new">
+          <div class="tier-label">NEW ENTRY · Tier 2 · Meta</div>
+          <h4><span class="company-name">Meta (Muse Code)</span> — Terminal coding market entry; contributor-tier data flywheel</h4>
+          <p>Meta's first terminal coding agent (Muse Code on Muse Spark 1.2) enters Tier 2 watch as of August 7. Terminal-Bench 82.9%; $0.10/$0.20 contributor tier; 1M context; OpenRouter day-1; macOS + Linux only; no EU blocking. The contributor-tier data-sharing model is Meta's moat-building play — each opt-in developer improves future Muse models. The structural risk for OpenAI: if Muse Code achieves developer adoption at scale, Meta builds a permanent training data advantage in real-world coding tasks at near-zero marginal cost. Compare structure to SpaceXAI-Cursor flywheel — similar data-loop logic through a different mechanism.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · SpaceXAI</div>
+          <h4><span class="company-name">xAI / SpaceXAI</span> — Grok 4.6 live; Grok 4.7 (~Aug 18–25) is the real flywheel inflection</h4>
+          <p>Three frontier models in 41 days: Grok 4.5 (July 8) → Grok 4.6 (Aug 7, 1.5T SFT/RL) → Grok 4.7 (~Aug 18–25, 2.1T new scale). Grok 4.7 is the first genuinely larger Colossus-trained model with full Cursor developer data corpus — the SpaceXAI data flywheel's first real-scale output. No official 4.6 benchmarks yet. EU blocking limits European enterprise reach for all Grok models.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Google</div>
+          <h4><span class="company-name">Google DeepMind</span> — Gemini 3.5 Pro: 9th delay; "next week" target; Jules bottlenecked</h4>
+          <p>Missed the August 7 Polymarket window (73% odds). "Deployment issues" delay. The Medium analysis that Google may have begun Gemini 4 training during the 3.5 Pro delays is gaining media pickup. If 3.5 Pro launches next week, the three-way ChatGPT/Claude/Gemini comparison cycle begins immediately — Jules' capability upgrade unlocks, and Google Antigravity gets its intended model tier.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · China</div>
+          <h4><span class="company-name">Alibaba (Qwen3.8-Max)</span> — Open weights released; self-hosting tier elevated</h4>
+          <p>With open weights live, Qwen3.8-Max (2.4T MoE, Terminal-Bench 86.6) is the highest-benchmark self-hostable model available. Removes Alibaba Cloud dependency. Terminal-Bench advantage (86.6) over Claude Code Fable 5 (84.6) on agentic task execution is the migration-risk signal for enterprise agentic pipeline teams. Counter: SWE-bench Pro gap (67.7 vs. 80.0) and Chinese procurement risk.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · China (OFAC Watch)</div>
+          <h4><span class="company-name">Moonshot AI (Kimi K3)</span> — OFAC no formal action as of August 7; US enterprise deployments in production</h4>
+          <p>OFAC recent actions page (ofac.treasury.gov) confirms no Moonshot/Kimi designation as of August 7. K3 open-sourced (MIT, 2.8T) — globally available regardless of future US restrictions. DoorDash and Coinbase confirmed K3 in production. Arena Frontend Code #1 (1,679 Elo). Treasury threat standing; China MofCOM retaliation standing; 15-day evidence gap noted by Memeburn.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · China</div>
+          <h4><span class="company-name">Zhipu AI (GLM-5.5)</span> — August 2026 signal, no official launch August 7</h4>
+          <p>JPMorgan projection + community leaks: &gt;1T params, MIT, 1M context, coding-agent focus. No official announcement. If launched, it would be the third frontier-tier open-weight release this month. Trained on Huawei Ascend 910B — no US semiconductor exposure, no Entity List risk. Confidence: LOW-MEDIUM on August launch.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Future tech &amp; governance</h3>
+      <div class="section-desc">Tier 3 signals — regulatory, infrastructure, and product deprecations</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Deadline: 2 days</div>
+          <h4>Atlas deprecation — August 9 (T-2 days)</h4>
+          <p>Export Atlas bookmarks NOW as an HTML file — bookmarks will NOT transfer automatically. Cookies and passwords can be migrated to the ChatGPT desktop app. OpenAI is building improved native browser capabilities (multiple tabs, downloads, improved navigation, login support) into ChatGPT. Capabilities moving to ChatGPT Work and Codex desktop. Claude Cowork is the primary competitor for the cross-platform browser-agent use case.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4>OpenAI Astra — EO 14409 review ongoing; no release date</h4>
+          <p>Named via ten open math problem solutions (August 1–2). Voluntarily submitted for EO 14409 federal pre-release review by Altman in July 29–30 DC briefings. 30-day review window implies earliest possible government-cleared release: early September. No new August 7 developments. "Government-vetted frontier model" credential is a unique positioning advantage vs. Kimi K3 (OFAC risk), Qwen3.8-Max (China exposure), and Claude Mythos 5 (previously suspended under EO).</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Deadline: 19 days</div>
+          <h4>o3 retiring from ChatGPT — August 26</h4>
+          <p>Model list consolidation: o3 + GPT-4.5 deprecated from ChatGPT (API unaffected). GPT-5.6 Luna is the cost-tier replacement. GPT-5.4 and GPT-5.4 Mini also retiring from Codex August 31. Enterprise communication deadline — affected users must migrate. Not a competitive signal, but an enterprise operations deadline.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Deadline: 24 days</div>
+          <h4>Anthropic Sonnet 5 price increase — September 1</h4>
+          <p>Sonnet 5 promo ($2/$10/MTok) expires August 31. September 1: $3/$15 per MTok + tokenizer adding up to 35% more billable tokens = effective double cost increase for token-heavy workloads. Data correction: Sonnet 5 has 1M context (not 200K). BD migration opportunity window: reach high-volume Sonnet 5 customers before September 1 with GPT-5.6 Terra ($2/$12, 1M context, no tokenizer change) as the comparison frame.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>Generated by the OpenAI Competitive Intelligence Agent | August 7, 2026 | Internal use only. All signals sourced from publicly available information. Confidence scores reflect source corroboration. Legend: <strong>Purple border</strong> = first-covered signal or data correction today.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      techcrunch.com/2026/08/05/meta-launches-muse-code<br>
+      cnbc.com/2026/08/05/meta-debuts-muse-code<br>
+      venturebeat.com/orchestration/meta-enters-the-ai-coding-wars<br>
+      marktechpost.com/2026/08/05/meta-superintelligence-labs-releases-muse-code<br>
+      forbes.com — Meta Launches Muse Code (Aug 6)<br>
+      theregister.com/ai-and-ml/2026/08/06/meta-wants-to-get-inside-your-terminal<br>
+      developer.meta.com/ai/resources/blog/build-with-muse-code<br>
+      aicybr.com/blog/meta-muse-code-muse-spark-1-2-complete-guide<br>
+      orcarouter.ai/blog/meta-muse-code-terminal-coding-agent<br>
+      benchlm.ai/models/muse-spark-1-2<br>
+      openrouter.ai/meta/muse-spark-1.2<br>
+      layer3labs.io/guides/muse-code-pricing<br>
+      morphllm.com/best-ai-coding-agents-2026<br>
+      kie.ai/blog/what-is-grok-4-6<br>
+      tbreak.com/grok-4-6-4-7-xai-release-date-specs<br>
+      crypto.news/grok-4-6-gets-aug-7-launch-date-grok-4-7-follows<br>
+      buildfastwithai.com/blogs/grok-4-6-preview<br>
+      blog.4sapi.com/blog/grok-4-6-2t-ai-model-analysis<br>
+      geeky-gadgets.com/gemini-3-5-pro-delayed-again<br>
+      nokiapoweruser.com/gemini-3-5-pro-delayed-again-deployment-issues<br>
+      9to5google.com/2026/07/16/gemini-3-5-pro-delays<br>
+      coursiv.io/blog/gemini-3-5-pro<br>
+      tech-insider.org/au/gemini-3-5-pro-67-days-delay-2026<br>
+      we.inc/blog/qwen3-8-max-open-weights-build-apps<br>
+      yottalabs.ai/post/qwen-3-8-max-release-date-specs-how-to-access-2026<br>
+      benchlm.ai/models/qwen3-8-max<br>
+      anthropic.com/news/claude-sonnet-5<br>
+      anthropic.com/claude/sonnet<br>
+      coursiv.io/blog/claude-sonnet-5<br>
+      claudedirectory.org/blog/claude-sonnet-5-guide<br>
+      mlq.ai/news/anthropics-annualized-revenue-hits-47b<br>
+      cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings<br>
+      cbsnews.com/news/anthropic-ipo-confidential-filing-claude-ai<br>
+      forgeglobal.com/insights/anthropic-upcoming-ipo-news<br>
+      aibusinessweekly.net/p/anthropic-ipo-2026<br>
+      ofac.treasury.gov/recent-actions (no Moonshot designation Aug 7)<br>
+      memeburn.com/kimi-k3-distillation-2026-faces-a-15-day-evidence-gap<br>
+      9to5mac.com/2026/08/04/openai-explains-what-will-happen-when-chatgpt-atlas-shuts-down<br>
+      help.openai.com/en/articles/20001371-evolving-atlas<br>
+      notebookcheck.net/ChatGPT-Atlas-ends-on-August-9<br>
+      gradually.ai/en/changelogs/claude-code<br>
+      morphllm.com/comparisons/codex-vs-claude-code<br>
+      thenewstack.io/claude-code-vs-cursor-vs-codex-vs-antigravity-2026<br>
+      kie.ai/blog/what-is-glm-5-5<br>
+      wan27.org/blog/glm-5-5
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, e) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (e && e.target) e.target.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
