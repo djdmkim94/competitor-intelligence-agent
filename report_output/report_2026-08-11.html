@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — August 11, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F5F4F0; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; margin-bottom: 40px; font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-all { background: #E8F5EE; color: #2D6A4F; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.alert { border-left: 3px solid #DC2626; }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .source a:hover { text-decoration: underline; }
+.signal-card .confidence-badge { display: inline-block; font-size: 11px; font-weight: 600; font-family: var(--font-mono); padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; }
+.conf-high { background: #DCFCE7; color: #166534; }
+.conf-medium { background: #FEF9C3; color: #854D0E; }
+.conf-low { background: #FEE2E2; color: #991B1B; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; overflow-x: auto; display: block; }
+.pricing-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.pricing-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table .highlight td { background: #F8F5FF; }
+.pricing-table .alert-row td { background: #FFF8F8; }
+.pricing-table .status-badge { display: inline-block; font-size: 11px; font-weight: 600; font-family: var(--font-mono); padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.status-paused { background: rgba(220,38,38,0.1); color: #991B1B; }
+.status-live { background: rgba(22,163,74,0.1); color: #166534; }
+.status-promo { background: rgba(217,119,6,0.1); color: #92400E; }
+.status-leaked { background: rgba(147,51,234,0.1); color: #6B21A8; }
+.status-pending { background: rgba(107,114,128,0.1); color: #374151; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; color: #166534; }
+.trend-flat { color: var(--text-tertiary); }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.countdown { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(220,38,38,0.1); color: #991B1B; margin-left: 8px; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>August 11, 2026</span>
+      <span class="dot"></span>
+      <span>Generated August 11, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v2.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend note vs. August 10 report.</strong> Three new signals today: (1) <strong>Anthropic — Theseus Infrastructure JV announced (Aug 10–11)</strong>: Anthropic, Macquarie Asset Management, and Singapore's GIC formed "Theseus Infrastructure," a dedicated US AI data center JV. Macquarie/GIC fund the majority of equity; Anthropic is anchor tenant committing to 100% of grid-upgrade costs. Anthropic's largest infrastructure move since the Amazon/Google cloud deals. (2) <strong>Anthropic — EU AI Act watermarks deployed globally (Aug 10–11)</strong>: All Claude models released on or after August 2 now carry invisible text watermarks and C2PA image metadata — deployed worldwide, not just EU. First major frontier API provider to publicly confirm global Article 50 compliance. (3) <strong>Gemini 3.5 Pro — Arena blind testing confirmed, still not publicly launched</strong>: Google's official language is now "currently testing with partners"; model has surfaced in Arena's secret preview pool. August 12 technically still possible. Standing: Grok 4.6 live (T+5 days, no official benchmarks); Grok 4.7 ~Aug 18–25; Sonnet 5 promo ends Aug 31; o3 retiring Aug 26; Anthropic ARR ~$70B; IPO S-1 expected Aug–Sep.
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge medium">Medium</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Google</span> — Gemini 3.5 Pro is confirmed in LM Arena's blind testing pool as of August 11 but not publicly launched (T+80 days since I/O promise). The three-way ChatGPT / Claude / Gemini comparison cycle could begin as soon as August 12.
+        </div>
+        <div class="implication">Anthropic's EU watermarks (now global) are a trust differentiator in enterprise. OpenAI should evaluate whether equivalent public C2PA documentation is needed before the Anthropic S-1 window (Aug–Sep).</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Meta</span> — Muse Code data privacy default confirmed (Aug 11): source code routed to Meta training pipeline by default; engineers must manually opt out. Strongest enterprise adoption blocker yet. Meanwhile, <span class="company-name">Grok 4.6</span> still no official benchmarks at T+5 days.
+        </div>
+        <div class="implication">Meta's data-sharing default creates a Codex enterprise positioning window. Publish Codex data governance policy now for any sales cycle where Muse Code is being evaluated.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Anthropic</span> — Theseus Infrastructure JV (Macquarie + GIC, majority equity funded externally) gives Anthropic capital-efficient access to hyperscale compute. Combined with ~$70B ARR and October IPO, Anthropic is structuring for multi-year infrastructure independence.
+        </div>
+        <div class="implication">Anthropic is no longer purely hyperscaler-dependent. Enterprise API buyers evaluating Anthropic long-term stability should now factor in Theseus as risk mitigation alongside the IPO. Counter with OpenAI's Microsoft Azure depth and longevity.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span>
+          <span class="company-name">Anthropic</span> — Theseus Infrastructure JV (Macquarie Asset Management + GIC sovereign wealth fund) launched August 10–11. Dedicated US AI data centers. Macquarie/GIC fund majority equity; Anthropic is anchor tenant covering 100% of grid-upgrade costs and consumer electricity price hikes from its facilities. Anthropic's most significant infrastructure move since the Amazon/Google cloud deals. This is the structural signal that Anthropic is building compute independence for the post-IPO era.
+        </span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span>
+          <span class="company-name">Anthropic</span> — EU AI Act watermarks deployed globally (August 10–11). Invisible text watermarks + C2PA provenance metadata on images across all Claude models (August 2, 2026 onward), worldwide. First major frontier API provider to publicly confirm global Article 50(2) compliance. Non-compliance: €15M or 3% of global turnover. OpenAI has not made an equivalent public announcement for text outputs.
+        </span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span>
+          <span class="company-name">Google</span> — Gemini 3.5 Pro confirmed in LM Arena blind testing pool as of August 11. Official Google language: "currently testing with partners." No public launch. T+80 days since I/O promise. August 12 window still technically alive. If it ships: 2M context, Deep Think reasoning, agentic improvements — resets the API context-window comparison table and starts the three-way consumer comparison cycle immediately.
+        </span>
+        <span class="tag tag-all">All Products</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', this)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', this)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', this)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('hiring', this)">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon', this)">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products this week</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic</span> — EU AI Act watermarks deployed globally: transparency-as-trust narrative building ahead of IPO</h4>
+        <p>Announced August 10 (effective August 11), Anthropic is embedding invisible watermarks in all text generated by Claude and C2PA metadata in all images — deployed worldwide, not just in EU. Coverage from Euronews, The Decoder, AI Weekly, Shacknews, and Cryptobriefing. This is the opening move of Anthropic's pre-IPO trust-building campaign: (1) EU AI Act compliance signals responsible leadership; (2) C2PA adoption positions Claude as enterprise-verifiable AI; (3) global application (not EU-only) signals Anthropic's view of where the regulatory tide is going. For PMMs: Anthropic is running a multi-track trust campaign — safety (Glasswing, responsible scaling), transparency (watermarks), compliance (FedRAMP High). The combined narrative heading into a public S-1 will be "the AI company you can trust at scale."</p>
+        <div class="source">Sources: <a href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide">Euronews</a> · <a href="https://the-decoder.com/anthropic-watermarks-all-claude-outputs-globally-with-marks-that-may-persist-through-some-editing/">The Decoder</a> · <a href="https://aiweekly.co/alerts/anthropic-adopts-eu-ai-act-code-watermarks-claude-output">AI Weekly</a> · <a href="https://cryptobriefing.com/anthropic-watermarks-claude-models-eu-ai-act/">Cryptobriefing</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-medium">MEDIUM confidence</span>
+        <h4><span class="company-name">Google (Gemini)</span> — Gemini 3.5 Pro still absent (T+80 days since I/O); LM Arena blind testing confirms model is close</h4>
+        <p>Google's official language as of August 11: "currently testing with partners." No launch date, no benchmarks, no pricing. The LM Arena sighting (models appear in blind pool 24–48h before public launch) is the strongest technical indicator yet that the model is imminent. Multiple X/Twitter leaks still point to August 12–14 as the window. Pattern: 10+ consecutive missed public dates since Sundar Pichai's "next month" (June) statement at I/O 2026. When Gemini 3.5 Pro ships, the media framing will be "comeback" — the comparative review articles will begin the same day. ChatGPT and Claude will both be in the headline.</p>
+        <div class="source">Sources: <a href="https://nokiapoweruser.com/gemini-3-5-pro-spotted-lm-arena-leak-release/">NPowerUser — Arena Leak</a> · <a href="https://www.eesel.ai/blog/gemini-3-5-pro">eesel AI</a> · <a href="https://coursiv.io/blog/gemini-3-5-pro">Coursiv</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">xAI (Grok)</span> — Grok 4.6 launched August 7, no consumer-facing updates August 11; EU blocking continues</h4>
+        <p>Grok 4.6 (1.5T, improved SFT/RL) is live in SpaceXAI Cursor. No new consumer UI changes or messaging August 11. EU channels remain blocked. Consumer positioning unchanged. The next significant xAI consumer signal: Grok 4.7 (~August 18–25, 2.1T, full Cursor developer corpus). Grok 5 confirmed for year-end (SpaceX August 4 earnings), incorporating proprietary SpaceX mission data.</p>
+        <div class="source">Sources: <a href="https://kie.ai/blog/what-is-grok-4-6">kie.ai</a> · <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/">TBreak</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">Community reactions across Reddit, Hacker News, and Twitter/X</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-medium">MEDIUM confidence</span>
+        <h4><span class="company-name">Sentiment — August 11</span> — No major migration signals; Gemini 3.5 Pro anticipation building; Sonnet 5 pricing deadline surfacing</h4>
+        <p>No confirmed consumer migration signals from competitors to ChatGPT today. Developer community threads in r/ClaudeAI beginning to surface discussion of the Sonnet 5 price increase (September 1 deadline, now 20 days away). Anthropic Theseus announcement generating enterprise developer buzz but no consumer-facing migration signal. Gemini 3.5 Pro anticipation building across tech media channels — the "is it out yet?" narrative will escalate if it doesn't ship by August 13–14. Developer sentiment on Claude Code remains high ("expensive, reckless, and weirdly fun" per DEV Community) with the "expensive" tag the primary friction point.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">309 open positions (Glassdoor, August 2026). Roles include Developer Relations, Finance &amp; Strategy, International Tax, Data Center Strategic Sourcing Lead. IPO roadshow investor meetings ongoing. Theseus JV implies near-term data center operations hiring.</div>
+          <div class="trend trend-up">↑ Active hiring across all departments</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google DeepMind</div>
+          <div class="detail">No new marketing/growth signals August 11. Gemini 3.5 Pro marketing team in launch preparation mode. Net talent flow still negative — John Jumper → Anthropic, Noam Shazeer → OpenAI, Jonas Adler + Alexander Pritzel → Anthropic.</div>
+          <div class="trend trend-flat">→ No new positive signals</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature launches &amp; competitive moves</h3>
+      <div class="section-desc">New capabilities from coding tools this week</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Meta</span> — Muse Code data privacy default confirmed (August 11): source code routed to Meta training by default</h4>
+        <p>New DevX reporting (August 11) provides the clearest characterization yet: "Muse Code by default routes developers' source code and prompts into Meta's training pipeline." The contributor tier ($0.10/$0.20/MTok) — the cheapest price point — requires explicit opt-in to Meta's training program, but is the default presented as the lowest-cost option. Switching to the standard tier ($1.25/$4.25/MTok) is required to keep data out of training. Layer3Labs enterprise guide confirms: organizations with proprietary code "must switch pricing tiers to keep data out of training." The New Stack framing: "cheap, but it'll cost you your data." This is the dominant enterprise developer community reaction (day 6 post-launch).</p>
+        <p><strong>For Codex PMs:</strong> This is a direct differentiation opportunity. Regulated industries (healthcare, finance, government, legal) cannot accept the data-sharing default. Prepare a concise Codex data governance one-pager for enterprise sales: (1) Codex does not use customer code for model training; (2) async-cloud-sandbox isolation; (3) enterprise data handling commitments. The data privacy story will intensify over the next 2–3 weeks as enterprise security teams complete their reviews of Muse Code's terms.</p>
+        <div class="source">Sources: <a href="https://www.devx.com/daily-news/muse-code-default-sends-data-to-meta/">DevX</a> · <a href="https://thenewstack.io/meta-muse-code/">The New Stack</a> · <a href="https://www.layer3labs.io/guides/meta-muse-code-beta-for-business">Layer3Labs</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic (Claude Code)</span> — Minor bug fixes shipped August 11; maintaining #1 terminal/agentic position (third consecutive month)</h4>
+        <p>Latest patches (per changelog, August 11): feature-flag handling fixes, improved Bash command execution in claude-code-action, /tui rewind behavior improvements, cleaner slash-command menu, and event-loop performance optimizations. These follow the v2.1.226 stable release (August 8): gateway spend-limit support, workspace trust prompts for Claude agents, Vertex AI tool search improvements, 401 token rotation fix. Claude Code maintains #1 rating for terminal/agentic coding in independent comparisons (morphllm.com, The New Stack) for the third consecutive month.</p>
+        <p><strong>For Codex PMs:</strong> Claude Code's sub-weekly maintenance release cadence is itself a competitive signal — Anthropic ships multiple patches per week. The gateway spend-limit enterprise budget-control feature and FedRAMP High environment (Claude for Government) are the features most directly threatening Codex's enterprise differentiation.</p>
+        <div class="source">Sources: <a href="https://www.gradually.ai/en/changelogs/claude-code/">gradually.ai changelog</a> · <a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot</a> · <a href="https://www.havoptic.com/tools/claude-code">Havoptic</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">xAI / SpaceXAI (Grok 4.6)</span> — T+5 days post-launch, no official benchmark card; Arena window opens August 12–14</h4>
+        <p>Grok 4.6 (1.5T, V9 foundation, improved SFT/RL) has been live in SpaceXAI Cursor since August 7. No official benchmark card published as of August 11. Arena typically lists models within 5–7 days of launch, putting the publication window at August 12–14 — the same cycle as the potential Gemini 3.5 Pro launch. Developer community is waiting. Grok 4.5 baseline context: SWE Marathon 29% pass@1 (ahead of Claude Opus 4.8 max at 26%); SWE-bench Pro 64.7% (behind Fable 5 at 80.4%).</p>
+        <p><strong>For Codex PMs:</strong> The Grok 4.6 benchmark vacuum (days 4–7 post-launch) is a narrative window. Publish any Codex throughput or customer benchmark data this week before Grok 4.6 + Gemini 3.5 Pro create a competitive media storm that dominates developer channels August 12–14.</p>
+        <div class="source">Sources: <a href="https://kie.ai/blog/what-is-grok-4-6">kie.ai</a> · <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/">TBreak</a> · <a href="https://benchlm.ai/models/grok-4-5">BenchLM (Grok 4.5 baseline)</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Google (Jules / Gemini Code Assist / Antigravity)</span> — Gemini 3.5 Pro Arena presence means Jules upgrade path is now days away</h4>
+        <p>Jules (Google's autonomous coding agent) remains on Gemini 3 Pro as of August 11. Gemini 3.5 Pro's presence in Arena's blind testing pool means the model is close to deployment — and Jules capability upgrade follows immediately. Jules with Gemini 3.5 Pro is the most significant Google coding competitive event of the next 72 hours. Google Antigravity (free agent-first IDE, public preview since May 2026) also benefits from the upgrade.</p>
+        <div class="source">Sources: <a href="https://nokiapoweruser.com/gemini-3-5-pro-spotted-lm-arena-leak-release/">NPowerUser — Arena Leak</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Benchmark context — August 11, 2026</h3>
+      <div class="section-desc">Current market position and key developments for each major coding tool</div>
+
+      <div class="signal-card">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Market Position</th>
+              <th>Key Development Aug 11</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GitHub Copilot (Microsoft)</td>
+              <td>~51%</td>
+              <td>No new signals. Standing: usage-based billing ($0.01/AI Credit).</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI Cursor</td>
+              <td>~26%</td>
+              <td>Grok 4.6 live (T+5 days, no benchmarks); Grok 4.7 ~Aug 18–25</td>
+            </tr>
+            <tr class="highlight">
+              <td>Claude Code (Anthropic)</td>
+              <td>~18%</td>
+              <td>Bug fixes Aug 11 (/tui rewind, event-loop perf); <strong>#1 terminal/agentic 3 months</strong>; FedRAMP High (Gov beta)</td>
+            </tr>
+            <tr>
+              <td>Codex (OpenAI)</td>
+              <td>Undisclosed</td>
+              <td>Async-cloud niche; Atlas deprecated Aug 9; Astra paused</td>
+            </tr>
+            <tr class="alert-row">
+              <td>Meta Muse Code</td>
+              <td>New entry</td>
+              <td><strong>Data privacy default confirmed (DevX, Aug 11):</strong> source code routed to Meta training by default; enterprise adoption blocked in regulated industries</td>
+            </tr>
+            <tr>
+              <td>Devin Desktop (Cognition)</td>
+              <td>$492M+ ARR</td>
+              <td>No new signals; Windsurf fully rebranded as Devin Desktop</td>
+            </tr>
+            <tr class="highlight">
+              <td>Google (Code Assist + Jules + Antigravity)</td>
+              <td>Growing</td>
+              <td><strong>Gemini 3.5 Pro in Arena blind testing pool; Jules upgrade imminent; launch could be Aug 12</strong></td>
+            </tr>
+            <tr>
+              <td>AWS Kiro</td>
+              <td>Emerging</td>
+              <td>GA stable; no new signals</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; capabilities</h3>
+      <div class="section-desc">New model launches, capability updates, and API signals</div>
+
+      <div class="signal-card alert">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic</span> — Theseus Infrastructure JV (Macquarie + GIC): dedicated US AI data centers, institutional capital, compute independence</h4>
+        <p>Anthropic, Macquarie Asset Management (~$900B AUM), and Singapore's GIC (~$770B AUM) announced "Theseus Infrastructure" — a dedicated US AI data center JV (announced August 10-11). Structure: Macquarie and GIC own the platform and fund the majority of equity for each project; Anthropic is the anchor tenant. Financial commitment: Anthropic will cover 100% of grid-upgrade costs and any consumer electricity price increases from its facilities — a significant operational commitment indicating the scale of compute planned.</p>
+        <p><strong>For BD:</strong> This changes the API supply-side story for enterprise accounts evaluating Anthropic's vendor stability. Prior concern: Anthropic's compute dependency on AWS/GCP hyperscalers creates pricing and availability risk. Theseus answer: institutional capital (Macquarie + GIC combined manage ~$1.67T in assets) funds dedicated infrastructure outside the hyperscaler billing relationship. Counter with: OpenAI's Microsoft Azure partnership depth, longer-dated commitment history, and Azure global availability vs. Theseus' US-initial-focus. For multi-year API contracts, both stories are now credible — the differentiator is execution track record and SLA depth.</p>
+        <div class="source">Sources: <a href="https://www.bloomberg.com/news/articles/2026-08-10/anthropic-macquarie-and-gic-form-venture-for-ai-data-centers">Bloomberg</a> · <a href="https://www.macquarie.com/au/en/about/news/2026/anthropic-mam-gic-data-centre-infrastructure-partnership.html">Macquarie Group</a> · <a href="https://www.hpcwire.com/off-the-wire/anthropic-macquarie-and-gic-launch-theseus-infrastructure-for-ai-data-centers/">HPCwire</a> · <a href="https://aiweekly.co/alerts/anthropic-macquarie-and-gic-launch-theseus-for-ai-data-centers">AI Weekly</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic</span> — EU AI Act watermarks: first major frontier API to confirm global C2PA compliance at scale</h4>
+        <p>All Claude API responses (text: invisible watermarks; images: C2PA-signed metadata) now carry machine-readable provenance globally. Models released August 2, 2026 onward ship with marking at launch; older models being retrofitted. Claude API, claude.ai, Claude Code, and all associated tools are in scope. EU Article 50(2) Code of Practice deadline was August 2 — Anthropic is publicly ahead of the curve. Non-compliance: fines up to €15M or 3% of global annual turnover.</p>
+        <p><strong>For BD:</strong> Anthropic is the first frontier API provider to publicly confirm C2PA watermarking at global API scale. This is becoming a procurement criterion in regulated industries (media, legal, government, finance). OpenAI's current public position: DALL-E 3 implements C2PA for images; text watermarking status for GPT models has not been publicly confirmed in equivalent scope. Evaluate whether OpenAI's current documentation can be surfaced proactively in enterprise sales cycles before this gap becomes a media story (likely ahead of the Anthropic S-1 filing, August–September).</p>
+        <div class="source">Sources: <a href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide">Euronews</a> · <a href="https://the-decoder.com/anthropic-watermarks-all-claude-outputs-globally-with-marks-that-may-persist-through-some-editing/">The Decoder</a> · <a href="https://cryptobriefing.com/anthropic-watermarks-claude-models-eu-ai-act/">Cryptobriefing</a> · <a href="https://explainx.ai/blog/anthropic-claude-invisible-watermarks-c2pa-august-2026">explainx.ai</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-medium">MEDIUM confidence on launch timing</span>
+        <h4><span class="company-name">Google</span> — Gemini 3.5 Pro: Arena blind testing confirmed; 2M context + Deep Think imminent; no public launch August 11</h4>
+        <p>Google's official language: "currently testing with partners." No pricing, no benchmarks, no public release as of August 11 close. Leaked specs (unconfirmed): 2M context window (2x current closed-source leaders), Deep Think reasoning mode, improved agentic performance, frontend/SVG generation improvements. August 12 remains technically possible based on Arena model lifecycle patterns (24–48h from blind testing to public release).</p>
+        <p><strong>For BD:</strong> If Gemini 3.5 Pro ships with 2M context at Gemini pricing (expected sub-$2.50/MTok input, consistent with Gemini's historical price-performance positioning), the API context comparison table requires immediate update. Prepare: (1) SWE-bench Pro gap — Fable 5 at 80.4% vs. Gemini 3 Pro at ~49% (3.5 Pro unknown but expected to improve substantially); (2) Astra safety positioning — "OpenAI holds models to the highest cybersecurity safety standard before release"; (3) Enterprise SLA depth and support commitments. Monitor for staged API partner access before public consumer launch.</p>
+        <div class="source">Sources: <a href="https://nokiapoweruser.com/gemini-3-5-pro-spotted-lm-arena-leak-release/">NPowerUser — Arena Leak</a> · <a href="https://nokiapoweruser.com/google-gemini-arena-leak-gemini-3-5-pro-vs-claude-fable-5/">NPowerUser — vs. Fable 5</a> · <a href="https://www.eesel.ai/blog/gemini-3-5-pro">eesel AI</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic (Claude Sonnet 5)</span> — T-20 days: promo pricing ends August 31 → $3/$15 + tokenizer (+35% effective cost)</h4>
+        <p>Promo pricing ($2/$10/MTok) ends August 31. Starting September 1: standard pricing $3/$15 + new tokenizer architecture adding ~35% to effective costs for typical workloads. This is the largest Anthropic API price change since Sonnet's introduction. High-volume enterprise Sonnet 5 accounts will see significant cost increases in September.</p>
+        <p><strong>For BD:</strong> 20-day re-engagement window. Enterprise accounts running high-volume Sonnet 5 should be proactively contacted with: (1) GPT-5.6 Terra ($2/$12) — competitive on input cost vs. Sonnet 5's new $3/$15 rate; (2) GPT-5.6 Luna ($0.20/$1.20) for cost-sensitive non-data-sensitive workloads; (3) GPT-5.6 Sol ($5/$30, 1M context) for quality-critical workloads where September 1 Sonnet 5 effective cost approaches Sol. Counter-narrative from Anthropic: Theseus infrastructure investment (stability, capacity) justifies the pricing normalization — expect Anthropic to surface this messaging in September.</p>
+        <div class="source">Sources: Anthropic.com pricing page · <a href="https://coursiv.io/blog/gemini-3-5-pro">Coursiv</a> · Claude Directory. Established in prior reports.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing snapshot — August 11, 2026</h3>
+      <div class="section-desc">Current API pricing across major providers (verify before citing; changes frequently)</div>
+      <div class="signal-card" style="padding: 0; overflow: hidden;">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Provider / Model</th>
+              <th>Input / Output ($/1M tok)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI — GPT-5.6 Sol</td>
+              <td>$5 / $30</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — current ceiling</span></td>
+            </tr>
+            <tr>
+              <td>OpenAI — GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — 20% cut Jul 30</span></td>
+            </tr>
+            <tr>
+              <td>OpenAI — GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — Free/Go default rolling out</span></td>
+            </tr>
+            <tr class="alert-row">
+              <td>OpenAI — <strong>Astra</strong></td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td><span class="status-badge status-paused">PAUSED — cybersecurity safety review</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI — Grok 4.5</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td><span class="status-badge status-live">LIVE — EU blocked</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI — <strong>Grok 4.6</strong> (1.5T)</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td><span class="status-badge status-pending">LIVE Aug 7 — T+5, no benchmarks; EU blocked</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI — Grok 4.7 (2.1T)</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td><span class="status-badge status-pending">~AUG 18–25 — new Colossus scale</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic — Claude Opus 5</td>
+              <td>$5 / $25</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — Claude Code default</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic — Claude Fable 5</td>
+              <td>$10 / $50</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — #1 Arena (~1525 ELO); SWE-bench Pro 80.4%</span></td>
+            </tr>
+            <tr class="highlight">
+              <td>Anthropic — <strong>Claude Sonnet 5</strong></td>
+              <td>$2 / $10 (promo)</td>
+              <td>1M</td>
+              <td><span class="status-badge status-promo">PROMO ENDS AUG 31 — T-20 days → $3/$15 +35%</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic — Claude Mythos 5</td>
+              <td>Restricted</td>
+              <td>1M</td>
+              <td><span class="status-badge status-pending">Project Glasswing only (~150 orgs)</span></td>
+            </tr>
+            <tr>
+              <td>Google — Gemini 3.6 Flash</td>
+              <td>$1.50 / $7.50</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — Jul 21</span></td>
+            </tr>
+            <tr class="highlight">
+              <td>Google — <strong>Gemini 3.5 Pro</strong></td>
+              <td>TBD</td>
+              <td>2M (leaked)</td>
+              <td><span class="status-badge status-leaked">IN ARENA BLIND TESTING — "partner testing" (official Google); Aug 12 possible</span></td>
+            </tr>
+            <tr>
+              <td>Meta — Muse Spark 1.2</td>
+              <td>$1.25/$4.25 (std) · $0.10/$0.20 (contrib)</td>
+              <td>1M</td>
+              <td><span class="status-badge status-paused">DATA PRIVACY DEFAULT — enterprise adoption blocked regulated industries</span></td>
+            </tr>
+            <tr>
+              <td>Alibaba — Qwen3.8-Max</td>
+              <td>$2 / $6</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — open weights released Aug 7; 2.4T MoE; Terminal-Bench 86.6</span></td>
+            </tr>
+            <tr>
+              <td>Moonshot — Kimi K3</td>
+              <td>$3 / $15</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — MIT (2.8T); OFAC no formal action; Arena Frontend #1</span></td>
+            </tr>
+            <tr>
+              <td>Zhipu (Z.ai) — GLM-5.2</td>
+              <td>$1.40 / $4.40</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — GLM-5.5 (>1T, MIT) still no official launch</span></td>
+            </tr>
+            <tr>
+              <td>MiniMax — M3</td>
+              <td>$0.24 / $0.96</td>
+              <td>1M</td>
+              <td><span class="status-badge status-live">LIVE — 50% OpenRouter discount; stable</span></td>
+            </tr>
+            <tr>
+              <td>DeepSeek — V4-Flash-0731</td>
+              <td>$0.14 / $0.38 (off-peak)</td>
+              <td>1M+</td>
+              <td><span class="status-badge status-live">LIVE — stable</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hiring Tab -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring &amp; resource signals — August 11, 2026</h3>
+      <div class="section-desc">Cross-cutting job board and headcount signals from all competitors</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Anthropic</span> — 309 open roles (Glassdoor, August 2026); Theseus JV implies data center operations hiring; IPO roadshow active</h4>
+        <p>Anthropic is actively hiring across all departments in August 2026. Active listings on Glassdoor (309 open positions), ZipRecruiter (NY and California), and startup.jobs include: Developer Relations, Finance &amp; Strategy, International Tax/VAT, Data Center OFE Strategic Sourcing Lead. The Theseus Infrastructure JV (announced August 10–11) signals near-term headcount growth in data center operations, power infrastructure, facilities management, and hardware procurement. The Claude for Government beta ($1/agency unlimited seats) implies a government-focused customer success and solutions engineering team is already in place or being built.</p>
+        <div class="hiring-grid" style="margin-top: 12px;">
+          <div class="hiring-card">
+            <div class="company">Anthropic — Infrastructure</div>
+            <div class="detail">Theseus JV implies: data center operations, power infrastructure, facilities management. Data Center OFE Strategic Sourcing Lead posting confirms.</div>
+            <div class="trend trend-up">↑ New signal (Theseus JV, Aug 10–11)</div>
+          </div>
+          <div class="hiring-card">
+            <div class="company">Anthropic — Government</div>
+            <div class="detail">Claude for Government beta ($1/agency) requires government sales and CS team. FedRAMP High designation requires standing compliance and security function.</div>
+            <div class="trend trend-up">↑ Implied by product launch</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-high">HIGH confidence</span>
+        <h4><span class="company-name">Google DeepMind</span> — No new positive hiring signals August 11; net talent flow still negative</h4>
+        <p>Gemini 3.5 Pro launch preparation is the only implied signal. Prior departures standing and not reversed: John Jumper → Anthropic, Noam Shazeer → OpenAI, Jonas Adler + Alexander Pritzel → Anthropic. Axios "We're behind" employee quote (July 23) unretracted. The Gemini 3.5 Pro launch (if it ships August 12) would be the first positive signal in weeks.</p>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-medium">MEDIUM confidence</span>
+        <h4><span class="company-name">xAI / SpaceXAI</span> — No new hiring signals; SpaceX earnings (August 4) confirmed sustained AI infrastructure investment</h4>
+        <p>SpaceX August 4 earnings confirmed accelerated AI investment and Grok 5 year-end timeline — implies sustained hiring in AI model development and Colossus data center operations. No specific role counts or new postings surfaced August 11.</p>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge conf-medium">MEDIUM confidence</span>
+        <h4><span class="company-name">Meta (Muse Code)</span> — Muse Code launch implies dedicated terminal coding agent team at Meta Superintelligence Labs</h4>
+        <p>Muse Code is Meta Superintelligence Labs' first dedicated terminal coding agent product. The launch implies a standing engineering and product team focused on commercial AI coding tools (beyond the LLaMA open-source team). Muse Spark 1.2 required model training benchmarked against Opus 5 and Fable 5 — a resource commitment comparable to Anthropic's coding-model investment. No specific new August 11 postings.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizon Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Rising challengers</h3>
+      <div class="section-desc">Notable signals from Tier 2 competitors this week</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Infrastructure · HIGH confidence</div>
+          <h4><span class="company-name">Anthropic</span> — Theseus Infrastructure: compute independence for the post-IPO era</h4>
+          <p>The Theseus JV (Macquarie + GIC, dedicated US AI data centers) changes Anthropic's infrastructure trajectory for the multi-year period following its IPO. By 2027–2028, Theseus-funded data centers could allow Anthropic to train models at a scale currently available only to hyperscalers. OpenAI's moat on training compute access — backed by the Microsoft Azure partnership — is the structural advantage Theseus is designed to address.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Model · MEDIUM confidence on timing</div>
+          <h4><span class="company-name">Google DeepMind</span> — Gemini 3.5 Pro: Arena blind testing = days from launch</h4>
+          <p>Models appear in Arena's blind pool 24–48h before public release. The Arena sighting is the most credible technical indicator yet. If Gemini 3.5 Pro launches August 12: (1) Jules gets its capability upgrade path immediately; (2) Antigravity gets its intended model; (3) 2M context resets the API context-window table; (4) The three-way consumer comparison cycle begins. Monitor for staged API partner access before public launch.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Model · HIGH confidence</div>
+          <h4><span class="company-name">xAI / SpaceXAI</span> — Grok 4.7 (~August 18–25): first new-scale Colossus model with full Cursor data corpus</h4>
+          <p>Grok 4.7 will be the first model built at 2.1T parameters at increased Colossus capacity with the full SpaceXAI-Cursor developer data corpus integrated. Grok 4.6 (1.5T, same V9) was a post-training improvement only. Grok 4.7 is the actual flywheel output — the first model where the acquisition-driven data partnership shapes the underlying weights. Developer community anticipation is high. The Grok 4.6 benchmark card (overdue at T+5) will likely be published alongside or just before the Grok 4.7 announcement.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Data/Privacy · HIGH confidence</div>
+          <h4><span class="company-name">Meta (Muse Code)</span> — Data privacy default confirmed; enterprise adoption bifurcating</h4>
+          <p>The DevX confirmation that Muse Code defaults to routing source code to Meta's training pipeline creates a two-track adoption pattern: rapid individual developer uptake (price-driven, $0.10 input) and constrained enterprise adoption (compliance-driven, $1.25 standard). If Meta addresses the data transparency issue in an upcoming update, adoption could accelerate significantly. Monitor for a Muse Code update that makes the data-sharing terms more prominent at onboarding.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Regulatory · HIGH confidence</div>
+          <h4><span class="company-name">Anthropic</span> — IPO: public S-1 expected August–September</h4>
+          <p>ARR ~$70B (late July), Theseus in place, IPO roadshow active. The public S-1 (expected August–September) will be the first disclosure of Anthropic's full financial picture: revenue mix, customer concentration, compute costs, burn rate, headcount. Any disclosure in these dimensions could generate significant market perception shifts. Enterprise API buyers evaluating Anthropic for multi-year commitments should use the S-1 as the first verifiable basis for vendor stability assessment. Watch the S-1 date as a near-term inflection point for enterprise messaging.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Source · LOW-MEDIUM confidence</div>
+          <h4><span class="company-name">Zhipu AI</span> — GLM-5.5: no official launch August 11; August window closing</h4>
+          <p>Two-month GLM cadence (Feb GLM-5, Apr 5.1, Jun 5.2) plus JPMorgan analyst projection pointed to August. No model card, benchmark, or endpoint published. Community leaks: >1T params, MIT license, 1M context, coding-agent focus. Tang Jie's July 20 "epic plus upgrade" comment remains the most recent official signal. If GLM-5.5 launches this month: third frontier open-weight model of August alongside Qwen3.8-Max and the anticipated Grok 4.7.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Monthly horizon scan — regulatory, hardware, and paradigm shifts</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Regulatory · HIGH confidence</div>
+          <h4>EU AI Act Article 50 — Anthropic first mover; enforcement window opens October–February</h4>
+          <p>The August 2 Article 50 transparency obligation is live. Anthropic (August 10–11 announcement) is publicly the first major closed-source API provider to confirm global C2PA compliance. Google, OpenAI, and xAI have not made equivalent text watermarking announcements. EU enforcement actions typically follow 3–6 months after deadline — the October–February window is when non-compliant providers could face formal inquiry. This is a regulatory risk signal for enterprise API buyers evaluating EU-facing deployments on non-Anthropic models.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Safety · HIGH confidence</div>
+          <h4>OpenAI Astra — cybersecurity threshold pause sets industry safety precedent</h4>
+          <p>OpenAI's decision to pause Astra and notify the White House is the first instance of a major AI lab publicly invoking its preparedness framework to halt a model release. This sets a precedent Anthropic (RSP / Responsible Scaling Policy) and Google (Frontier Safety Framework) will face scrutiny against. GPT-5.6 Sol remains the current API ceiling with no Astra release date. No new developments August 11.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Calendar · HIGH confidence</div>
+          <h4>o3 retiring August 26 <span class="countdown">T-15</span> · GPT-5.4 retiring from Codex August 31 <span class="countdown">T-20</span></h4>
+          <p>o3 retiring from ChatGPT August 26 (T-15 days). GPT-5.4 and GPT-5.4 Mini retiring from Codex August 31. Enterprise communication deadline: affected users should migrate now. Luna ($0.20/$1.20) is the cost-tier replacement for Free/Go users (rolling out week of August 6).</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Horizon · MEDIUM confidence</div>
+          <h4><span class="company-name">xAI</span> — Grok 5 year-end 2026 (SpaceX data, proprietary training corpus)</h4>
+          <p>Grok 5 confirmed for year-end per SpaceX August 4 earnings. First model to incorporate proprietary SpaceX mission and engineering data as training material — a unique technical moat if it improves scientific and physics reasoning. Grok 5 would be the first model to benefit from 2.1T+ Colossus scale + full Cursor data + SpaceX mission data as a combined training signal. No specifications or date beyond "year-end 2026."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent v2.0. All signals are sourced from publicly available information dated August 11, 2026. Confidence scores reflect source corroboration, not strategic certainty. For internal use only. Classification: Internal Use Only.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <a href="https://www.bloomberg.com/news/articles/2026-08-10/anthropic-macquarie-and-gic-form-venture-for-ai-data-centers">Bloomberg — Anthropic, Macquarie and GIC Form Venture for AI Data Centers</a><br>
+      <a href="https://www.macquarie.com/au/en/about/news/2026/anthropic-mam-gic-data-centre-infrastructure-partnership.html">Macquarie Group — Anthropic, Macquarie, GIC strategic partnership announcement</a><br>
+      <a href="https://www.hpcwire.com/off-the-wire/anthropic-macquarie-and-gic-launch-theseus-infrastructure-for-ai-data-centers/">HPCwire — Theseus Infrastructure launch</a><br>
+      <a href="https://aiweekly.co/alerts/anthropic-macquarie-and-gic-launch-theseus-for-ai-data-centers">AI Weekly — Theseus JV</a><br>
+      <a href="https://thenextweb.com/news/anthropic-macquarie-gic-theseus-infrastructure-data-centre-partnership">The Next Web — Anthropic data centres</a><br>
+      <a href="https://datacentremagazine.com/news/macquarie-anthropic-gic-announce-theseus-infrastructure">Data Centre Magazine — Theseus Infrastructure</a><br>
+      <a href="https://aitoolsrecap.com/Blog/ai-news-august-11-2026">AIToolsRecap — AI News August 11 2026</a><br>
+      <a href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide">Euronews — Anthropic watermarks globally</a><br>
+      <a href="https://the-decoder.com/anthropic-watermarks-all-claude-outputs-globally-with-marks-that-may-persist-through-some-editing/">The Decoder — Anthropic watermarks all Claude outputs</a><br>
+      <a href="https://aiweekly.co/alerts/anthropic-adopts-eu-ai-act-code-watermarks-claude-output">AI Weekly — Anthropic EU AI Act watermarks</a><br>
+      <a href="https://www.shacknews.com/article/150326/claude-watermark-ai-generated-content">Shacknews — Claude watermarks</a><br>
+      <a href="https://cryptobriefing.com/anthropic-watermarks-claude-models-eu-ai-act/">Cryptobriefing — Anthropic C2PA watermarks</a><br>
+      <a href="https://explainx.ai/blog/anthropic-claude-invisible-watermarks-c2pa-august-2026">explainx.ai — Claude watermarks guide</a><br>
+      <a href="https://nokiapoweruser.com/gemini-3-5-pro-spotted-lm-arena-leak-release/">NPowerUser — Gemini 3.5 Pro in LM Arena</a><br>
+      <a href="https://nokiapoweruser.com/gemini-3-5-pro-spotted-lm-arena-leak/">NPowerUser — Gemini 3.5 Pro Arena leak</a><br>
+      <a href="https://nokiapoweruser.com/google-gemini-arena-leak-gemini-3-5-pro-vs-claude-fable-5/">NPowerUser — Gemini 3.5 Pro vs Fable 5</a><br>
+      <a href="https://www.eesel.ai/blog/gemini-3-5-pro">eesel AI — Gemini 3.5 Pro status</a><br>
+      <a href="https://coursiv.io/blog/gemini-3-5-pro">Coursiv — Gemini 3.5 Pro release tracker</a><br>
+      <a href="https://www.devx.com/daily-news/muse-code-default-sends-data-to-meta/">DevX — Muse Code data privacy default</a><br>
+      <a href="https://www.layer3labs.io/guides/meta-muse-code-beta-for-business">Layer3Labs — Muse Code enterprise guide</a><br>
+      <a href="https://thenewstack.io/meta-muse-code/">The New Stack — Muse Code data cost</a><br>
+      <a href="https://thenextweb.com/news/meta-muse-code-ai-coding-agent-launch">The Next Web — Muse Code launch</a><br>
+      <a href="https://www.gradually.ai/en/changelogs/claude-code/">gradually.ai — Claude Code changelog August 2026</a><br>
+      <a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot — Claude Code updates August 2026</a><br>
+      <a href="https://www.havoptic.com/tools/claude-code">Havoptic — Claude Code release tracker</a><br>
+      <a href="https://support.claude.com/en/articles/14503590-get-started-with-claude-for-government">Claude Help Center — Claude for Government</a><br>
+      <a href="https://chatforest.com/builders-log/claude-for-government-desktop-fedramp-high-claude-code-cowork-public-beta/">ChatForest — Claude for Government Desktop beta</a><br>
+      <a href="https://kie.ai/blog/what-is-grok-4-6">kie.ai — What Is Grok 4.6</a><br>
+      <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/">TBreak — Grok 4.6 &amp; 4.7 roadmap</a><br>
+      <a href="https://benchlm.ai/models/grok-4-5">BenchLM — Grok 4.5 benchmarks (baseline)</a><br>
+      <a href="https://www.anthropic.com/news/confidential-draft-s1-sec">Anthropic — Confidential S-1 SEC filing</a><br>
+      <a href="https://futuresearch.ai/anthropic-financial-forecast/">FutureSearch — Anthropic Revenue Forecast</a><br>
+      <a href="https://axis-intelligence.com/anthropic-statistics/">Axis Intelligence — Anthropic Statistics 2026</a><br>
+      <a href="https://www.cnbc.com/2026/07/15/anthropic-ipo-banks-investor-meetings.html">CNBC — Anthropic IPO investor meetings</a><br>
+      <a href="https://kie.ai/blog/what-is-glm-5-5">kie.ai — GLM-5.5 overview</a><br>
+      <a href="https://wan27.org/blog/glm-5-5">wan27.org — GLM-5.5 August 2026</a><br>
+      <a href="https://openrouter.ai/moonshotai/kimi-k3">OpenRouter — Kimi K3</a><br>
+      <a href="https://www.axios.com/2026/08/07/openai-astra-model-delay-cybersecurity-risks">Axios — OpenAI Astra delay</a><br>
+      <a href="https://openai.com/index/ten-advances-in-mathematics/">OpenAI — Astra math proofs</a><br>
+      <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-rolls-out-a-major-chatgpt-upgrade-even-if-you-dont-pay-for-it/">Bleepingcomputer — GPT-5.6 Luna rollout</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
