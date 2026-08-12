@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — August 12, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .confidence-tag { display: inline-block; font-size: 11px; font-family: var(--font-mono); font-weight: 500; padding: 2px 8px; border-radius: 4px; background: var(--surface-alt); color: var(--text-secondary); margin-top: 8px; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.pricing-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); font-family: var(--font-mono); }
+.pricing-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.pricing-table td:first-child { font-weight: 600; color: var(--text); }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table .highlight { background: rgba(220,38,38,0.04); }
+.pricing-table .highlight td { color: var(--text); }
+.pricing-table .alert { font-weight: 600; color: #DC2626; font-family: var(--font-mono); font-size: 11px; }
+.pricing-table .paused { font-weight: 600; color: #D97706; font-family: var(--font-mono); font-size: 11px; }
+.pricing-table .new { font-weight: 600; color: #16A34A; font-family: var(--font-mono); font-size: 11px; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .pricing-table { display: block; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>August 12, 2026</span>
+      <span class="dot"></span>
+      <span>Generated August 12, 2026</span>
+      <span class="dot"></span>
+      <span>OpenAI Strategy &amp; Operations</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend note vs. August 11:</strong> Three new signals today: (1) <strong>Anthropic — Claude Code Auto Mode Default (August 14)</strong>: safety classifier replaces human approval as default; 89% harmful-action detection vs. 13.6% for humans; +25% PR output; Enterprise remains opt-in. (2) <strong>Gemini 3.5 Pro missed August 12 window</strong> — Google confirmed "partner testing continues" (11th consecutive delay signal). (3) <strong>Grok 4.6 Arena benchmarks still pending</strong> (T+5 days; publication window August 12–14). Standing: Anthropic Theseus JV + EU watermarks; Sonnet 5 promo ends August 31 (T-19 days); o3 retiring August 26 (T-14 days); Grok 4.7 ~August 18–25; Anthropic IPO S-1 expected August–September; Kimi K3 OFAC no formal action; GLM-5.5 no official launch; Meta Muse Code enterprise data privacy blocker standing.
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge medium">Medium</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic (Cowork)</span> — VentureBeat reports internal data showing "most users aren't coding" — Anthropic is explicitly reframing Cowork as a general-purpose productivity agent, competing directly with ChatGPT's core consumer use case ahead of IPO. Claude for Government $1/agency promo expires end of August.</div>
+        <div class="implication">Gemini 3.5 Pro missed August 12 — three-way comparison cycle deferred. No new consumer product launches from xAI or Meta today. Cowork consumer positioning is the slow-burn risk.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Claude Code Auto Mode Default (August 14): safety classifier replaces human approval; 89% harmful-action detection vs. 13.6% for humans; +25% PR output. Self-hosted beta (August 6–7) eliminates the last enterprise data-sovereignty objection. Two simultaneous moat-building moves.</div>
+        <div class="implication">The "89% vs. 13.6%" comparison will appear in enterprise procurement evaluations by next week. Codex must have a safety narrative response before August 14.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Self-hosted runner (hybrid on-prem, public beta) + EU C2PA watermarks deployed + FedRAMP High authorized. Anthropic is building a regulated-industry API moat feature-by-feature. Sonnet 5 BD window: T-19 days (promo ends August 31 → +35% effective cost September 1).</div>
+        <div class="implication">Gemini 3.5 Pro 11th delay keeps API comparison table stable — but the Anthropic compliance stack is moving fast. Counter with Codex DPA, SOC 2, and Azure private endpoints.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Anthropic</span> — Claude Code Auto Mode Default (August 14): safety classifier replaces human approval as the default for Pro, Max, and Team plans. AI classifier catches 89% of harmful actions vs. 13.6% for human reviewers (97% rubber-stamp rate). Teams in auto mode generated ~25% more pull requests. Enterprise remains opt-in "for now" — rollout to Enterprise, API, Bedrock, GCP, and Foundry within the coming month. The "89% vs. 13.6%" stat will dominate every enterprise coding tool evaluation in the next 30–60 days. Prepare a Codex response before it appears in procurement RFPs.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Google</span> — Gemini 3.5 Pro missed the August 12 rumored window. NokiaPowerUser headline: "Google Confirms Gemini 3.5 Pro Isn't Ready Yet — Partner Testing Continues." This is the 11th consecutive delay signal since Sundar Pichai's June I/O promise. Jules, Antigravity, and Code Assist capability upgrades all remain bottlenecked on Gemini 3 Pro. When it finally launches, the "finally here" media cycle will be massive — prepare a Day-1 ChatGPT rapid-response framework now.</span>
+        <span class="tag tag-api">API &amp; Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Anthropic</span> — Claude Code Self-Hosted Environments (public beta, August 6–7): Team and Enterprise customers can run Claude Code sessions on their own infrastructure via <code>claude self-hosted-runner</code>. Important caveat (WindowsForum): prompts and completions still route to Anthropic's servers — only execution artifacts stay on-prem. This is a hybrid architecture, not full on-premises. Counter: Codex's ephemeral async-cloud-sandbox + enterprise DPA provides a different, auditable compliance posture for prompt/completion data.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', event)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', event)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', event)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon', event)">Horizon Watch</button>
+  </div>
+
+  <!-- CHATGPT TAB -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products today — August 12, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic (Cowork)</span> — "Most users aren't coding" — Cowork repositioned as ChatGPT's direct consumer productivity competitor</h4>
+        <p>VentureBeat's coverage of Cowork's mobile/web expansion reveals an internal data signal: the majority of Cowork's actual user base is not engaged in coding tasks. Anthropic is explicitly framing Cowork as a general-purpose persistent AI agent — for research, writing, project management, and task execution — not a developer tool. This is a strategic reframing ahead of IPO: Anthropic is positioning Claude/Cowork as ChatGPT's direct competitor in consumer productivity, not just coding or developer tooling.</p>
+        <p>For ChatGPT PMMs: The "most users aren't coding" claim, if accurate, means Cowork's general-purpose productivity growth is outpacing its coding use. This is Anthropic's evidence for direct head-to-head competition with ChatGPT in the consumer segment — the same market where ChatGPT's moat is stickiness and workflow integration. Watch for this data point to appear in pre-IPO media coverage as Anthropic's consumer parity claim.</p>
+        <span class="confidence-tag">Confidence: MEDIUM — VentureBeat (Anthropic usage data)</span>
+        <div class="source">Source: <a href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding">VentureBeat</a> · <a href="https://claude.com/blog/cowork-web-mobile">Anthropic Blog</a> · <a href="https://9to5mac.com/2026/07/13/anthropic-expanding-claude-cowork-to-mobile-and-web-details-here/">9to5Mac</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude for Government $1/agency promotional pricing expires end of August</h4>
+        <p>The $1/agency promotional pricing for Claude for Government (unlimited seats, FedRAMP High, Claude Code + Cowork) expires end of August 2026. Public beta has been live since July 7 with FedRAMP High authorization covering classified workloads. This is Anthropic's land-and-expand federal strategy: acquire the agency account at near-zero entry cost, then migrate to standard government pricing in September as agencies embed Claude into workflows.</p>
+        <p>For ChatGPT PMMs: If OpenAI does not have an equivalent federal pricing response ready by end of August, Anthropic will have established first-mover federal accounts during the beta window. The FedRAMP High authorization covering classified environments is the key technical differentiator — OpenAI's federal positioning should be audited for equivalent certification.</p>
+        <span class="confidence-tag">Confidence: HIGH — Claude Help Center, ChatForest, Anthropic Blog, Enterprise DNA</span>
+        <div class="source">Source: <a href="https://support.claude.com/en/articles/14503590-get-started-with-claude-guide">Claude Help Center</a> · <a href="https://chatforest.com/builders-log/claude-for-government-desktop-fedramp-high-claude-code-cowork-public-beta/">ChatForest</a> · <a href="https://enterprisedna.co/resources/news/anthropic-claude-code-cowork-government-fedramp-july-2026/">Enterprise DNA</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Gemini)</span> — Gemini 3.5 Pro missed August 12; marketing team in launch-prep mode with no product</h4>
+        <p>Google confirmed via NokiaPowerUser that "Gemini 3.5 Pro Isn't Ready Yet — Partner Testing Continues." The August 12 date, widely circulated since LM Arena blind-testing sightings, has passed without a public launch. Google's marketing team is visibly in launch-preparation mode but the product remains unavailable.</p>
+        <p>For ChatGPT PMMs: The pattern of delay has conditioned consumer tech media to treat each "imminent" Gemini 3.5 Pro report with increasing skepticism. When it finally launches, coverage will lead with "it's finally here" — generating a burst of comparative traffic. Have a Day-1 rapid-response messaging framework ready emphasizing ChatGPT's proven reliability record and GPT-5.6 Sol's 1M context + SWE-bench Pro performance.</p>
+        <span class="confidence-tag">Confidence: HIGH — NPowerUser, Google official statement</span>
+        <div class="source">Source: <a href="https://nokiapoweruser.com/gemini-3-5-pro-release-partner-testing-delay/">NokiaPowerUser</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI (Grok)</span> — No new consumer signals; Grok 4.6 live (T+5 days in SpaceXAI Cursor); EU access blocked</h4>
+        <p>No new consumer-facing product changes or messaging updates from xAI on August 12. Grok 4.6 launched August 7 (1.5T parameters, V9 architecture, improved SFT/RL) and is integrated into SpaceXAI Cursor. EU access continues to be blocked. Arena benchmark card still pending (T+5 days).</p>
+        <span class="confidence-tag">Confidence: HIGH on standing</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>OpenAI product updates (August 12)</h3>
+      <div class="section-desc">Internal signals relevant to competitive context</div>
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI (ChatGPT)</span> — Incremental UX improvements shipped August 12; o3 retiring August 26 (T-14 days)</h4>
+        <p>ChatGPT app updates shipped August 12: improved document/file formatting, Library access improvements, faster search, smoother mobile conversations. Voice now supports file uploads and Projects across web/iOS/Android. These are incremental UX improvements, not feature launches. GPT-5.6 Luna is the Free/Go default (rolling out week of August 6). o3 retiring August 26 (T-14 days). Astra paused (critical cybersecurity safety review — autonomous zero-day exploit development threshold hit; White House notified; no release date).</p>
+        <span class="confidence-tag">Confidence: HIGH — Releasebot, promptailearning.com, Kraviona</span>
+        <div class="source">Source: <a href="https://releasebot.io/updates/openai/chatgpt">Releasebot</a> · <a href="https://promptailearning.com/ai-news/daily/ai-news-august-11-2026">PromptAILearning</a> · <a href="https://kraviona.com/blog/latest-ai-news-august-2026">Kraviona</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment</h3>
+      <div class="section-desc">Community signals from Reddit, HN, and developer channels</div>
+      <div class="signal-card">
+        <h4><span class="company-name">Developer community</span> — August 12 attention concentrated on Claude Code Auto Mode Default (August 14)</h4>
+        <p>Developer community attention is focused on Anthropic's Auto Mode Default announcement (effective August 14). Consumer attention in r/ChatGPT and r/ClaudeAI continues to build around the Sonnet 5 pricing deadline (August 31). GitHub Copilot backlash threads (individual plan $10 → $19 price increase) remain active in r/programming and r/ChatGPTCoding, with users citing Claude Code and Muse Code as alternatives. No consumer migration signals confirmed from ChatGPT.</p>
+        <span class="confidence-tag">Confidence: MEDIUM — synthesis from search results and community signals</span>
+        <div class="source">Source: <a href="https://beginnersinai.org/best-ai-coding-tools-reddit-2026/">BeginnersinAI</a> · <a href="https://www.developersdigest.tech/blog/what-hacker-news-gets-right-about-ai-coding-agents-2026">DevelopersDigest</a> · <a href="https://www.faros.ai/blog/best-ai-coding-agents-2026">Faros.ai</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">309 open positions (standing, Glassdoor). Claude for Government beta expiration implies near-term government sales and customer success headcount growth. No new August 12 marketing-specific roles confirmed.</div>
+          <div class="trend trend-up">↑ government CS roles expected Aug–Sep</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google (Gemini)</div>
+          <div class="detail">No new marketing hiring signals August 12. Launch-prep mode implied — team is readying Gemini 3.5 Pro go-to-market for imminent launch.</div>
+          <div class="trend">→ stable — launch-prep mode</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODEX TAB -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches</h3>
+      <div class="section-desc">New capabilities in enterprise and developer coding tools — August 12, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Code Auto Mode Default (August 14): autonomous-by-default coding agent, 89% harmful-action detection, +25% PR output</h4>
+        <p>Auto mode becomes the default for all new Claude Code sessions on Pro, Max, and Team plans starting August 14. In auto mode, a safety classifier checks each tool call against three criteria: irreversible, destructive, or aimed outside the user's environment. Any action not triggering these criteria proceeds autonomously. From Anthropic's 1,053-tester study: AI classifier identified 89% of harmful actions; human reviewers identified only 13.6% — and approved 97% of all prompts (rubber-stamp fatigue). Teams using auto mode generated approximately 25% more pull requests. Enterprise and API plans remain opt-in, with rollout to Enterprise, Bedrock, GCP Agent Platform, and Microsoft Foundry "within the coming month."</p>
+        <p>For Codex PMs: This is the single most important competitive move in the coding tool market this week. Key defensive positioning: (1) Codex's async-cloud-sandbox architecture fundamentally isolates task execution in ephemeral environments — a structural safety approach different from a real-time classifier; (2) Codex's enterprise DPA and SOC 2 Type II provide audit-grade compliance that a classifier system does not; (3) Simon Willison (respected security researcher) publicly called for independent confirmation of the "89%" claim — watch for critical coverage. If Anthropic's data holds, Codex must articulate an equivalent or superior safety narrative. If the data is contested, maintain "human in the loop" as the responsible default.</p>
+        <span class="confidence-tag">Confidence: HIGH — TechCrunch, The Decoder, The Register, Anthropic Blog (all Aug 9–10) · MEDIUM on procurement impact timeline</span>
+        <div class="source">Source: <a href="https://techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default/">TechCrunch</a> · <a href="https://the-decoder.com/anthropic-sets-claude-code-to-auto-mode-by-default-to-protect-developers-from-bad-approvals/">The Decoder</a> · <a href="https://www.theregister.com/ai-and-ml/2026/08/10/claude-code-puts-auto-mode-in-the-drivers-seat/5285326">The Register</a> · <a href="https://thenewstack.io/claude-code-auto-mode/">The New Stack</a> · <a href="https://claude.com/blog/auto-mode-default-in-claude-code">Anthropic Blog</a> · <a href="https://simonwillison.net/2026/Aug/8/auto-mode/">Simon Willison</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Code Self-Hosted Environments (public beta, August 6–7): hybrid on-prem execution; prompts still route to Anthropic</h4>
+        <p>Team and Enterprise customers can now run Claude Code sessions on customer-owned infrastructure via <code>claude self-hosted-runner</code>. Compliance architecture: execution artifacts (code, files, secrets, build outputs) stay on-prem; model prompts and completions still route to Anthropic's model API. This is a hybrid architecture, not a fully on-premises deployment. Supported configurations: fixed runners, on-demand runners. Works with internal build systems, package registries, and databases without public internet exposure.</p>
+        <p>For Codex PMs: The hybrid architecture caveat is critical for competitive positioning. Claude Code self-hosted does not eliminate Anthropic's access to prompts and completions — only execution artifacts stay on-prem. For enterprises requiring full data isolation (model inputs and outputs), this is a limitation. Prepare a one-page data flow comparison: Codex async-cloud-sandbox vs. Claude Code self-hosted vs. Claude Code standard, mapped to SOC 2, HIPAA, and FedRAMP frameworks.</p>
+        <span class="confidence-tag">Confidence: HIGH — Anthropic Blog, WindowsForum, Unite.AI</span>
+        <div class="source">Source: <a href="https://claude.com/blog/run-claude-code-sessions-on-your-own-compute">Anthropic Blog</a> · <a href="https://windowsforum.com/windows-news.4/claude-code-self-hosted-beta-still-sends-prompts-to-anthropic.442000/">WindowsForum</a> · <a href="https://www.unite.ai/claude-code-sessions-can-now-run-on-infrastructure-your-team-controls/">Unite.AI</a> · <a href="https://enterprisedna.co/resources/news/anthropic-claude-code-self-hosted-runner-enterprise-2026/">Enterprise DNA</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI (Grok 4.6)</span> — T+5 days; Arena benchmarks still pending; publication window August 12–14</h4>
+        <p>Arena.ai's X account announced "get ready to see it in @arena next week" after the August 7 Grok 4.6 launch — placing publication in the August 12–14 window. As of August 12, no official benchmark card, model card, or Arena score for Grok 4.6 has been published. Reference: Grok 4.5 agentic index standing was 54 (vs. Claude Opus 5: 61, Claude Fable 5: 60, GPT-5.6 Sol: 59). Grok 4.6: 1.5T parameters, V9 architecture, improved SFT/RL post-training.</p>
+        <p>For Codex PMs: The 24–48 hours around Grok 4.6's Arena publication will create a media news cycle. If Grok 4.6 benchmarks outperform Claude Code or Codex on SWE Marathon (Grok 4.5 baseline: 29% pass@1), xAI will push a "Cursor + Grok 4.6 is the best coding stack" narrative. Monitor Arena and publish any Codex benchmark updates before the Grok 4.6 card drops. Grok 4.7 (~August 18–25) cycle follows immediately after.</p>
+        <span class="confidence-tag">Confidence: HIGH on benchmark absence · HIGH on Aug 12–14 publication window (Arena.ai timing pattern, 5–7 days post-launch)</span>
+        <div class="source">Source: <a href="https://x.com/arena/status/2082157608379756838">Arena.ai (X)</a> · <a href="https://kie.ai/blog/what-is-grok-4-6">kie.ai</a> · <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/">TBreak</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Jules / Code Assist / Antigravity)</span> — No new signals; entire coding stack bottlenecked on Gemini 3 Pro pending Gemini 3.5 Pro</h4>
+        <p>Jules, Gemini Code Assist, and Antigravity remain capability-bottlenecked on Gemini 3 Pro while waiting for the Gemini 3.5 Pro upgrade path. No new features, benchmark updates, or product announcements from Google's coding tools today. The entire Google coding stack capability unlock remains deferred.</p>
+        <span class="confidence-tag">Confidence: HIGH on continued absence</span>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Meta (Muse Code)</span> — Enterprise data privacy standing; contributor tier routes source code to Meta training by default</h4>
+        <p>Standing from August 11. Enterprise data privacy characterization confirmed: Muse Code's contributor tier routes source code and prompts to Meta training by default — enterprises must opt out explicitly. This is an enterprise adoption blocker in regulated industries (financial services, healthcare, legal, government). No new August 12 developments. Meta Muse Spark 1.2 API: $1.25/$4.25 standard; $0.10/$0.20 contributor tier.</p>
+        <span class="confidence-tag">Confidence: HIGH on standing</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Benchmark snapshot — August 12, 2026</h3>
+      <div class="section-desc">Coding tool market position and current competitive events</div>
+      <div class="signal-card" style="padding: 16px 20px;">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Market Position</th>
+              <th>Key Development (Aug 12)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GitHub Copilot (Microsoft)</td>
+              <td>~51%</td>
+              <td>No new signals. Individual plan $10→$19 price increase driving r/programming backlash.</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI Cursor</td>
+              <td>~26%</td>
+              <td><span class="paused">Grok 4.6 live T+5 days; Arena benchmarks still pending; Grok 4.7 ~Aug 18–25</span></td>
+            </tr>
+            <tr class="highlight">
+              <td><strong>Claude Code (Anthropic)</strong></td>
+              <td>~18%</td>
+              <td><span class="alert">AUTO MODE DEFAULT Aug 14 (Pro/Max/Team); self-hosted beta live; +25% PR output; 89% safety catch; #1 terminal/agentic 3 months</span></td>
+            </tr>
+            <tr>
+              <td>Codex (OpenAI)</td>
+              <td>Undisclosed</td>
+              <td>Async-cloud-sandbox; Atlas deprecated; Astra paused (cybersecurity review)</td>
+            </tr>
+            <tr>
+              <td>Meta Muse Code</td>
+              <td>New entry</td>
+              <td><span class="paused">Data privacy default confirmed; enterprise adoption blocked in regulated industries</span></td>
+            </tr>
+            <tr>
+              <td>Devin Desktop / Cognition</td>
+              <td>$492M+ ARR</td>
+              <td>No new signals. SWE-1.6 free model, Devin Local standing.</td>
+            </tr>
+            <tr>
+              <td>Google (Code Assist + Jules + Antigravity)</td>
+              <td>Growing</td>
+              <td><span class="paused">Gemini 3.5 Pro missed Aug 12 window; Jules capability upgrade deferred</span></td>
+            </tr>
+            <tr>
+              <td>AWS Kiro</td>
+              <td>Emerging</td>
+              <td>GA stable; no new signals</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">August 12 community signals</div>
+      <div class="signal-card">
+        <h4><span class="company-name">Developer community</span> — Claude Code Auto Mode Default dominates developer discourse; Copilot pricing backlash ongoing</h4>
+        <p>Multiple tier-1 developer publications (TechCrunch, The Decoder, The Register, The New Stack, 9to5Mac) covered the Auto Mode Default announcement on August 9–10 ahead of the August 14 effective date. Simon Willison's reaction is the representative expert voice: "I would love to believe... would dearly like to be proved wrong by the end of this year" — acknowledging the data while calling for independent confirmation. GitHub Copilot individual plan price increase ($10→$19) continues to generate backlash on r/programming, with users citing Claude Code and Muse Code as alternatives. Broader developer sentiment: questioning whether AI tools actually improve productivity vs. shift the nature of work.</p>
+        <span class="confidence-tag">Confidence: MEDIUM — synthesis from news coverage and community signals</span>
+        <div class="source">Source: <a href="https://beginnersinai.org/best-ai-coding-tools-reddit-2026/">BeginnersinAI</a> · <a href="https://www.developersdigest.tech/blog/what-hacker-news-gets-right-about-ai-coding-agents-2026">DevelopersDigest</a> · <a href="https://www.faros.ai/blog/best-ai-coding-agents-2026">Faros.ai</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — engineering &amp; product</h3>
+      <div class="section-desc">Product and engineering headcount signals from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Auto mode default (Aug 14) and self-hosted runner beta imply growing QA, reliability, and security engineering headcount for the safety classifier (a new production ML system requiring ongoing monitoring, retraining, and red-teaming). No specific new August 12 roles confirmed.</div>
+          <div class="trend trend-up">↑ inferred from product launches</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">xAI / SpaceXAI</div>
+          <div class="detail">No new hiring signals August 12. Grok 4.7 preparation (~Aug 18–25) implies active model training and evaluation work at Colossus (2.1T param scale).</div>
+          <div class="trend">→ inferred from Grok 4.7 roadmap</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google DeepMind</div>
+          <div class="detail">No new signals August 12. Gemini 3.5 Pro marketing team in launch-prep mode. Prior talent departures standing: Noam Shazeer → OpenAI, Jonas Adler + Alexander Pritzel → Anthropic, John Jumper → Anthropic.</div>
+          <div class="trend">→ stable; talent outflows standing</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic (Government)</div>
+          <div class="detail">Claude for Government $1/agency promo expires end of August. Land-and-expand federal strategy requires government-focused customer success team to onboard agencies and support September pricing transition. Watch for government CS job postings August–September.</div>
+          <div class="trend trend-up">↑ government CS roles expected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & MODELS TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; competitive moves</h3>
+      <div class="section-desc">New capabilities, pricing changes, and platform signals — August 12, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Code Self-Hosted Runner (public beta): hybrid on-prem execution for regulated-industry enterprise accounts</h4>
+        <p>Team and Enterprise Claude Code plans can now run session execution on customer-owned infrastructure. Compliance architecture: execution artifacts (code, files, secrets, build outputs) stay on-prem; model prompts and completions still route to Anthropic's model API. Supported configurations: fixed runners, on-demand runners (for scheduled and cloud-triggered sessions). Works with internal build systems, package registries, and databases without public internet exposure.</p>
+        <p>For BD: The "prompts still go to Anthropic" caveat is the compliance limitation to know. For customers requiring full prompt isolation (certain HIPAA, ITAR, and classified workloads), Codex's enterprise agreements and Microsoft Azure partnership provide a more complete data-residency story. Counter positioning: (1) Codex uses ephemeral cloud sandboxes — destroyed after each task, no persistent storage; (2) OpenAI's enterprise DPA provides contractual guarantees on model input/output data handling; (3) Azure private endpoints provide network-level isolation that Claude's hybrid model does not match for prompt traffic. Prepare a compliance comparison one-pager for enterprise sales cycles where Claude Code self-hosted is cited.</p>
+        <span class="confidence-tag">Confidence: HIGH — Anthropic Blog, WindowsForum, Unite.AI, Enterprise DNA</span>
+        <div class="source">Source: <a href="https://claude.com/blog/run-claude-code-sessions-on-your-own-compute">Anthropic Blog</a> · <a href="https://windowsforum.com/windows-news.4/claude-code-self-hosted-beta-still-sends-prompts-to-anthropic.442000/">WindowsForum</a> · <a href="https://www.unite.ai/claude-code-sessions-can-now-run-on-infrastructure-your-team-controls/">Unite.AI</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Sonnet 5 pricing window: T-19 days (promo ends August 31; +35% effective cost September 1)</h4>
+        <p>Promo pricing ($2/$10) ends August 31. Starting September 1: $3/$15 standard pricing plus tokenizer architecture change (~+35% effective cost increase). No new developments August 12 — this is the standing 19-day BD opportunity window.</p>
+        <p>For BD: Re-engage enterprise accounts running Sonnet 5 workloads with: (1) GPT-5.6 Terra at $2/$12 — competitive on input cost vs. Sonnet 5's new $3/$15 rate; (2) GPT-5.6 Luna at $0.20/$1.20 for cost-sensitive, non-data-sensitive workloads; (3) GPT-5.6 Sol at $5/$30 for quality-critical, 1M-context workloads. The Anthropic Theseus JV (announced August 10–11) may generate a "Anthropic is investing in infrastructure, trust the platform" counter-narrative — address proactively in BD calls.</p>
+        <span class="confidence-tag">Confidence: HIGH — Anthropic pricing page, Coursiv, Claude Directory</span>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google</span> — Gemini 3.5 Pro: 11th delay confirmed August 12; 2M context window still unreleased</h4>
+        <p>No API launch today. Google confirmed "partner testing continues" (NokiaPowerUser). The 2M context window and Deep Think reasoning capabilities remain the anticipated additions that would reset the API comparison table. Gemini 3.6 Flash ($1.50/$7.50, 1M context, stable July 21) remains Google's current API frontier.</p>
+        <p>For BD: The Gemini 3.5 Pro launch is the event that changes the API pricing table most materially. When it launches: (1) A 2M context at sub-$2 input will put immediate pressure on GPT-5.6 Sol (1M, $5/$30); (2) Prepare a post-launch comparison document framing SWE-bench Pro gap (Fable 5: 80.4% vs. expected Gemini position), Astra safety positioning, and enterprise SLA commitments as the differentiators.</p>
+        <span class="confidence-tag">Confidence: HIGH on continued absence · HIGH on competitive impact of eventual launch</span>
+        <div class="source">Source: <a href="https://nokiapoweruser.com/gemini-3-5-pro-release-partner-testing-delay/">NokiaPowerUser</a> · <a href="https://www.eesel.ai/blog/gemini-3-5-pro">eesel AI</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing snapshot — August 12, 2026</h3>
+      <div class="section-desc">Current API pricing across major providers; alert items flagged</div>
+      <div class="signal-card" style="padding: 16px 20px;">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Model</th>
+              <th>Input / Output ($/1M tokens)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Sol</td>
+              <td>$5 / $30</td>
+              <td>1M</td>
+              <td>Fast Mode active; stable; current API ceiling</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td>20% price cut (July 30); stable</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td>Free/Go default rolling out; stable</td>
+            </tr>
+            <tr class="highlight">
+              <td>OpenAI</td>
+              <td><strong>Astra</strong></td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td><span class="paused">PAUSED — critical cybersecurity safety review; no release date</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td>Grok 4.5</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td>Stable; EU blocked</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td><strong>Grok 4.6</strong> (1.5T)</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td><span class="new">Live Aug 7 (T+5 days); no official benchmarks; EU blocked</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td>Grok 4.7 (2.1T)</td>
+              <td>TBD</td>
+              <td>TBD</td>
+              <td>~Aug 18–25; new Colossus scale + full Cursor data corpus</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Opus 5</td>
+              <td>$5 / $25</td>
+              <td>1M</td>
+              <td>Stable; Claude Code default</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Fable 5</td>
+              <td>$10 / $50</td>
+              <td>1M</td>
+              <td>Stable; SWE-bench Pro 80.4%; #1 LM Arena (~1525 ELO)</td>
+            </tr>
+            <tr class="highlight">
+              <td>Anthropic</td>
+              <td><strong>Claude Sonnet 5</strong></td>
+              <td><strong>$2 / $10 (promo)</strong></td>
+              <td>1M</td>
+              <td><span class="alert">T-19 DAYS: PROMO ENDS Aug 31 → $3/$15 + tokenizer (+35% Sep 1)</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Mythos 5</td>
+              <td>Restricted</td>
+              <td>1M</td>
+              <td>Project Glasswing only (~150 orgs)</td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.6 Flash</td>
+              <td>$1.50 / $7.50</td>
+              <td>1M</td>
+              <td>Stable (July 21)</td>
+            </tr>
+            <tr class="highlight">
+              <td>Google</td>
+              <td><strong>Gemini 3.5 Pro</strong></td>
+              <td>TBD</td>
+              <td>2M (leaked)</td>
+              <td><span class="paused">11TH DELAY CONFIRMED: "partner testing continues"; August 12 date passed</span></td>
+            </tr>
+            <tr>
+              <td>Meta</td>
+              <td>Muse Spark 1.2</td>
+              <td>$1.25/$4.25 (std); $0.10/$0.20 (contrib)</td>
+              <td>1M</td>
+              <td>Data privacy default confirmed; enterprise adoption blocked</td>
+            </tr>
+            <tr>
+              <td>Alibaba</td>
+              <td>Qwen3.8-Max</td>
+              <td>$2 / $6</td>
+              <td>1M</td>
+              <td>Open weights released (Aug 7); 2.4T MoE; Terminal-Bench 86.6</td>
+            </tr>
+            <tr>
+              <td>Moonshot</td>
+              <td>Kimi K3</td>
+              <td>$3 / $15</td>
+              <td>1M</td>
+              <td>Open-sourced (MIT, 2.8T); OFAC no formal action; Arena Frontend #1 (1,679 Elo)</td>
+            </tr>
+            <tr>
+              <td>Zhipu (Z.ai)</td>
+              <td>GLM-5.2</td>
+              <td>$1.40 / $4.40</td>
+              <td>1M</td>
+              <td>Stable; GLM-5.5 (&gt;1T, MIT) still no official launch</td>
+            </tr>
+            <tr>
+              <td>Xiaomi</td>
+              <td>MiMo-V2.5</td>
+              <td>$0.112 / $0.224</td>
+              <td>1M</td>
+              <td>OpenRouter daily top-4; stable</td>
+            </tr>
+            <tr>
+              <td>MiniMax</td>
+              <td>M3</td>
+              <td>$0.24 / $0.96</td>
+              <td>1M</td>
+              <td>50% OpenRouter discount; stable</td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td>
+              <td>V4-Flash-0731</td>
+              <td>$0.14 / $0.38 (off-peak)</td>
+              <td>1M+</td>
+              <td>Stable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORIZON WATCH TAB -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Rising challengers</h3>
+      <div class="section-desc">Notable competitive signals with multi-quarter implications</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Coding · HIGH</div>
+          <h4><span class="company-name">Anthropic</span> — Claude Code Auto Mode Default: paradigm shift in agentic coding tool market</h4>
+          <p>Starting August 14, Anthropic's coding agent operates autonomously by default for ~86% of tool calls. Anthropic's safety data (89% classifier vs. 13.6% human) is the lever — if confirmed by independent evaluations, every competitor's human-approval-by-default architecture becomes a productivity liability, not a safety feature. Multi-quarter reframing risk: the "human in the loop" category argument that positions Codex, Copilot, and IDE-based tools as "safer" dissolves if Anthropic's autonomous-by-default approach becomes industry standard.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · API · MEDIUM</div>
+          <h4><span class="company-name">Google DeepMind</span> — Gemini 3.5 Pro: 11th delay; next credible window August 13–15</h4>
+          <p>The August 12 public launch date passed. The next credible launch window: August 13–15 (next 72 hours). After that, August 18 (coinciding with Grok 4.7 cycle) becomes the focal date. Each additional day tightens the "three-way comparison week" risk — when Gemini 3.5 Pro launches alongside Grok 4.7 benchmarks, developer media is double-compressed. Jules and Antigravity capability unlocks follow immediately upon launch.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Codex · MEDIUM</div>
+          <h4><span class="company-name">xAI / SpaceXAI</span> — Grok 4.7 (~August 18–25): first genuinely new-scale Colossus model with full Cursor developer data corpus</h4>
+          <p>Grok 4.7 (2.1T parameters, new Colossus scale) is the first model where the SpaceXAI-Cursor acquisition data flywheel meaningfully shapes underlying weights. Grok 4.6 (1.5T, same V9 architecture as Grok 4.5) was a post-training SFT/RL improvement — Grok 4.7 is genuinely larger. If Grok 4.7 and Gemini 3.5 Pro launch in the same week (~August 18–21), it creates the most competitive single week in AI model releases since the Claude 3 family.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Platform · HIGH</div>
+          <h4><span class="company-name">Anthropic</span> — IPO roadshow; public S-1 expected August–September; October Nasdaq target</h4>
+          <p>Confidential S-1 filed June 1, 2026. Public S-1 not yet on EDGAR as of mid-August. October Nasdaq listing target (Polymarket ~74% by December 2026). Valuation: $965B Series H; analysts project $1.1–1.4T first-day market cap; $60B+ IPO raise. The Auto Mode Default and self-hosted beta are IPO-window positioning moves: Anthropic is shipping enterprise-grade features at high velocity ahead of the public S-1. Claude Code's ARR trajectory (~$70B late July) will be the headline metric.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Monthly horizon scan — regulatory, geopolitical, and emerging technology signals</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance · Watch</div>
+          <h4><span class="company-name">Anthropic</span> — EU AI Act Article 50: first-mover C2PA compliance; OpenAI, Google, xAI have not made equivalent announcements</h4>
+          <p>No new August 12 developments. Anthropic remains the only major closed-source API provider to have publicly confirmed global C2PA watermark deployment (text: invisible watermarks; images: C2PA metadata) for all models released on or after August 2, 2026. OpenAI, Google, and xAI have not made equivalent public announcements for text-based outputs. EU enforcement actions typically follow 3–6 months after compliance deadlines — October–February is the formal inquiry window for non-compliant providers.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Geopolitical · Watch</div>
+          <h4><span class="company-name">Moonshot AI (Kimi K3)</span> — OFAC: no formal action as of August 12; Arena Frontend #1 (1,679 Elo); DoorDash and Coinbase in production</h4>
+          <p>No new OFAC Federal Register entries designating Moonshot AI or Kimi K3. Sanctions threat (Treasury Secretary Bessent warning) standing from prior reports. K3 open-sourced (MIT, 2.8T) remains globally available. DoorDash and Coinbase confirmed K3 in production. The OFAC risk creates enterprise procurement uncertainty — but no formal action means enterprise adoption continues unconstrained today.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · China AI · Watch</div>
+          <h4><span class="company-name">Zhipu AI (GLM-5.5)</span> — No official launch as of August 12; community leaks describe &gt;1T params, MIT, 1M context</h4>
+          <p>No model card, benchmark, or endpoint published. The two-month GLM cadence (Feb GLM-5, Apr 5.1, Jun 5.2) points to August as the expected window. Community leaks describe &gt;1T parameters, MIT license, 1M context, coding-agent focus. Tang Jie's July 20 "epic plus upgrade" comment is the most recent official signal. Low-Medium confidence on August launch timing.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Platform · Standing</div>
+          <h4><span class="company-name">OpenAI (internal)</span> — Astra paused; o3 retiring August 26 (T-14); GPT-5.4 and 5.4 Mini retiring from Codex August 31</h4>
+          <p>Astra (autonomous coding agent) paused after internal evaluations showed approach to "critical cybersecurity threshold" (autonomous zero-day exploit development). White House notified; no release date. o3 retiring from ChatGPT August 26 (T-14 days). GPT-5.4 and GPT-5.4 Mini retiring from Codex August 31. Enterprise communication deadline: affected users should migrate now. Grok 5: year-end 2026, proprietary SpaceX mission data. First model to incorporate proprietary SpaceX engineering data — no specifications or release date beyond "year-end 2026."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent. All signals are sourced from publicly available information. Confidence scores reflect source corroboration, not strategic certainty. Classification: Internal Use Only. Prepared for OpenAI Strategy &amp; Operations — August 12, 2026.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <strong>Claude Code Auto Mode Default (August 9–14)</strong><br>
+      <a href="https://techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default/">TechCrunch — Anthropic is turning Claude Code's auto mode on by default</a><br>
+      <a href="https://the-decoder.com/anthropic-sets-claude-code-to-auto-mode-by-default-to-protect-developers-from-bad-approvals/">The Decoder — Anthropic sets Claude Code to Auto Mode by default</a><br>
+      <a href="https://www.theregister.com/ai-and-ml/2026/08/10/claude-code-puts-auto-mode-in-the-drivers-seat/5285326">The Register — Claude Code puts auto mode in the driver's seat</a><br>
+      <a href="https://thenewstack.io/claude-code-auto-mode/">The New Stack — Auto Mode will soon be the default in Claude Code</a><br>
+      <a href="https://claude.com/blog/auto-mode-default-in-claude-code">Anthropic Blog — Auto mode is now the default in Claude Code</a><br>
+      <a href="https://dataconomy.com/2026/08/10/claude-code-auto-mode-default-august-14/">Dataconomy — Anthropic Makes Auto Mode The Default For Claude Code</a><br>
+      <a href="https://9to5mac.com/2026/08/07/psa-claude-code-enabling-auto-mode-as-default-next-week-anthropic-says/">9to5Mac — PSA: Claude Code enabling auto mode as default next week</a><br>
+      <a href="https://www.digitalapplied.com/blog/claude-code-auto-mode-default-permission-model-shift">DigitalApplied — Claude Code Makes Auto Mode the Default on August 14</a><br>
+      <a href="https://simonwillison.net/2026/Aug/8/auto-mode/">Simon Willison — Auto mode is now the default in Claude Code</a><br>
+      <br>
+      <strong>Claude Code Self-Hosted Environments (August 6–7)</strong><br>
+      <a href="https://claude.com/blog/run-claude-code-sessions-on-your-own-compute">Anthropic Blog — Self-hosted environments for Claude Code</a><br>
+      <a href="https://www.unite.ai/claude-code-sessions-can-now-run-on-infrastructure-your-team-controls/">Unite.AI — Claude Code Sessions Can Now Run on Infrastructure Your Team Controls</a><br>
+      <a href="https://enterprisedna.co/resources/news/anthropic-claude-code-self-hosted-runner-enterprise-2026/">Enterprise DNA — Claude Code Can Now Run on Your Own Infrastructure</a><br>
+      <a href="https://www.edtechinnovationhub.com/news/anthropic-opens-self-hosted-claude-code-sessions-to-team-and-enterprise-customers">EdTechInnovationHub — Anthropic opens self-hosted Claude Code beta</a><br>
+      <a href="https://windowsforum.com/windows-news.4/claude-code-self-hosted-beta-still-sends-prompts-to-anthropic.442000/">WindowsForum — Claude Code Self-Hosted Beta Still Sends Prompts to Anthropic</a><br>
+      <br>
+      <strong>Gemini 3.5 Pro — August 12 Status</strong><br>
+      <a href="https://nokiapoweruser.com/gemini-3-5-pro-release-partner-testing-delay/">NokiaPowerUser — Google Confirms Gemini 3.5 Pro Isn't Ready Yet</a><br>
+      <a href="https://www.eesel.ai/blog/gemini-3-5-pro">eesel AI — Gemini 3.5 Pro: is it out yet?</a><br>
+      <a href="https://qcode.cc/en/gemini-3-5-pro-guide">QCode — Gemini 3.5 Pro Release Date & Status</a><br>
+      <a href="https://findskill.ai/blog/gemini-3-5-pro-release-date/">FindSkill.ai — Gemini 3.5 Pro: Release Date & What It Means</a><br>
+      <br>
+      <strong>Grok 4.6 Benchmarks — Still Pending</strong><br>
+      <a href="https://x.com/arena/status/2082157608379756838">Arena.ai (X) — Grok 4.6 coming to Arena next week</a><br>
+      <a href="https://kie.ai/blog/what-is-grok-4-6">kie.ai — What Is Grok 4.6?</a><br>
+      <a href="https://tbreak.com/grok-4-6-4-7-xai-release-date-specs/">TBreak — Grok 4.6 & 4.7: Release Dates, Specs, and What xAI Is Planning</a><br>
+      <a href="https://www.orcarouter.ai/blog/grok-4-6-release-date">OrcaRouter — Grok 4.6 Release Date: The Date Passed, No Model</a><br>
+      <br>
+      <strong>Anthropic Cowork &amp; Claude for Government</strong><br>
+      <a href="https://venturebeat.com/technology/anthropic-brings-claude-cowork-to-mobile-and-web-as-usage-data-shows-most-users-arent-coding">VentureBeat — Anthropic brings Claude Cowork to mobile and web</a><br>
+      <a href="https://claude.com/blog/cowork-web-mobile">Anthropic Blog — Claude Cowork on web and mobile</a><br>
+      <a href="https://support.claude.com/en/articles/14503590-get-started-with-claude-guide">Claude Help Center — Claude for Government</a><br>
+      <a href="https://chatforest.com/builders-log/claude-for-government-desktop-fedramp-high-claude-code-cowork-public-beta/">ChatForest — Claude for Government Desktop Public Beta</a><br>
+      <a href="https://enterprisedna.co/resources/news/anthropic-claude-code-cowork-government-fedramp-july-2026/">Enterprise DNA — Anthropic Clears FedRAMP High for Claude Code and Cowork</a><br>
+      <br>
+      <strong>OpenAI ChatGPT App Updates</strong><br>
+      <a href="https://promptailearning.com/ai-news/daily/ai-news-august-11-2026">PromptAILearning — AI News August 11 2026</a><br>
+      <a href="https://releasebot.io/updates/openai/chatgpt">Releasebot — ChatGPT Updates by OpenAI August 2026</a><br>
+      <a href="https://kraviona.com/blog/latest-ai-news-august-2026">Kraviona — Latest AI News August 2026</a><br>
+      <br>
+      <strong>Grok 4.7 Roadmap &amp; Anthropic IPO</strong><br>
+      <a href="https://www.roic.ai/news/musk-signals-rapid-grok-rollout-46-in-two-weeks-47-a-month-later-07-28-2026">Roic.ai — Musk Signals Rapid Grok Rollout</a><br>
+      <a href="https://www.anthropic.com/news/confidential-draft-s1-sec">Anthropic — Confidential S-1 filed with SEC</a><br>
+      <a href="https://aibusinessweekly.net/p/anthropic-ipo-2026">AI Business Weekly — Anthropic IPO 2026: $965B Valuation</a><br>
+      <a href="https://futuresearch.ai/anthropic-openai-ipo-dates-valuations/">FutureSearch — Anthropic and OpenAI IPO Dates and Valuations</a><br>
+      <br>
+      <strong>Developer Sentiment</strong><br>
+      <a href="https://beginnersinai.org/best-ai-coding-tools-reddit-2026/">BeginnersinAI — Best AI for Coding in 2026: Reddit Developers</a><br>
+      <a href="https://www.developersdigest.tech/blog/what-hacker-news-gets-right-about-ai-coding-agents-2026">DevelopersDigest — What Hacker News Gets Right About AI Coding Agents</a><br>
+      <a href="https://www.faros.ai/blog/best-ai-coding-agents-2026">Faros.ai — Best AI Coding Agents for 2026: Real-World Reviews</a><br>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, evt) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+  if (evt && evt.target) { evt.target.classList.add('active'); }
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
