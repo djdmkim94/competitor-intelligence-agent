@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — August 18, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #2e2e2e;
+    --accent: #1D1D1B;
+    --text-primary: #f0f0ef;
+    --text-secondary: #a0a09e;
+    --text-muted: #666662;
+    --high: #ef4444;
+    --high-bg: rgba(239,68,68,0.12);
+    --medium: #f59e0b;
+    --medium-bg: rgba(245,158,11,0.12);
+    --low: #22c55e;
+    --low-bg: rgba(34,197,94,0.12);
+    --blue: #3b82f6;
+    --blue-bg: rgba(59,130,246,0.10);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── HEADER ─────────────────────────────── */
+  .report-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 40px 28px;
+  }
+  .report-header .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .report-header h1 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .report-header .meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .report-header .meta span::before { content: "· "; color: var(--text-muted); }
+  .report-header .meta span:first-child::before { content: ""; }
+
+  /* ── TREND NOTE ──────────────────────────── */
+  .trend-note {
+    background: var(--blue-bg);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 20px;
+    margin: 24px 40px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .trend-note strong { color: var(--text-primary); }
+
+  /* ── MAIN LAYOUT ─────────────────────────── */
+  .main { padding: 0 40px 60px; }
+
+  /* ── SECTION HEADERS ─────────────────────── */
+  .section-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 40px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-right: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── DASHBOARD GRID ──────────────────────── */
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .threat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    animation: fadeIn 0.4s ease both;
+  }
+  .threat-card:nth-child(1) { animation-delay: 0.05s; }
+  .threat-card:nth-child(2) { animation-delay: 0.10s; }
+  .threat-card:nth-child(3) { animation-delay: 0.15s; }
+  .threat-card .product-name {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .threat-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .threat-level-badge.high { background: var(--high-bg); color: var(--high); border: 1px solid rgba(239,68,68,0.3); }
+  .threat-level-badge.medium { background: var(--medium-bg); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
+  .threat-level-badge.low { background: var(--low-bg); color: var(--low); border: 1px solid rgba(34,197,94,0.3); }
+  .threat-level-badge::before {
+    content: "";
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .confidence-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .confidence-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-right: 4px;
+  }
+  .confidence-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .confidence-dot.filled { background: var(--text-secondary); border-color: var(--text-secondary); }
+  .so-what {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+  .so-what strong { color: var(--text-primary); font-weight: 500; }
+
+  /* ── MUST KNOW ────────────────────────────── */
+  .must-know {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 8px;
+  }
+  .must-know-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .must-know-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .must-know-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .must-know-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--text-muted);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 30px;
+    padding-top: 2px;
+  }
+  .must-know-body { flex: 1; min-width: 0; }
+  .must-know-body .mk-title {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .must-know-body .mk-detail {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+  .mk-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-bottom: 6px;
+  }
+  .mk-tag.chatgpt { background: rgba(16,163,127,0.15); color: #10a37f; border: 1px solid rgba(16,163,127,0.3); }
+  .mk-tag.codex { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+  .mk-tag.api { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+  .mk-tag.horizon { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+  .mk-conf {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+
+  /* ── TABS ─────────────────────────────────── */
+  .tabs-container { margin-top: 8px; }
+  .tab-nav {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── SIGNAL CARDS ────────────────────────── */
+  .signal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .signal-card .sig-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .signal-card .sig-title {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .signal-card .sig-bullets {
+    list-style: none;
+    padding: 0;
+  }
+  .signal-card .sig-bullets li {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .signal-card .sig-bullets li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  .signal-card .sig-bullets li strong { color: var(--text-primary); font-weight: 500; }
+  .signal-card .sig-conf {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .signal-card .sig-pmm-note {
+    background: var(--surface-2);
+    border-left: 2px solid var(--blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .signal-card .sig-pmm-note .pmm-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+
+  /* ── SUBSECTION HEADERS ───────────────────── */
+  .subsec {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── BENCHMARK TABLE ─────────────────────── */
+  .table-wrap { overflow-x: auto; margin-bottom: 12px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td:first-child { color: var(--text-primary); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface-2); }
+  .highlight-row td { background: rgba(59,130,246,0.06); }
+  .warn-row td { background: rgba(245,158,11,0.05); }
+
+  /* ── HIRING GRID ─────────────────────────── */
+  .hiring-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .hiring-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .hiring-card .hc-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .hiring-card .hc-detail {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .hiring-card .hc-conf {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+
+  /* ── HORIZON GRID ────────────────────────── */
+  .horizon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .horizon-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .horizon-card .hz-tier {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .horizon-card .hz-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .horizon-card .hz-detail {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .horizon-card .hz-conf {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+
+  /* ── SOURCES ─────────────────────────────── */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .sources-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .sources-group .sg-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .sources-group ul { list-style: none; padding: 0; }
+  .sources-group li {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .sources-group li:last-child { border-bottom: none; }
+
+  /* ── COUNTDOWN ───────────────────────────── */
+  .countdown-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .cd-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .cd-pill.red { background: var(--high-bg); color: var(--high); border: 1px solid rgba(239,68,68,0.3); }
+  .cd-pill.amber { background: var(--medium-bg); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
+  .cd-pill.blue { background: var(--blue-bg); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+
+  /* ── FOOTER ──────────────────────────────── */
+  .report-footer {
+    border-top: 1px solid var(--border);
+    margin: 40px 40px 0;
+    padding: 18px 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── ANIMATIONS ──────────────────────────── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ──────────────────────────── */
+  @media (max-width: 900px) {
+    .report-header { padding: 24px 20px 20px; }
+    .trend-note { margin: 16px 20px; }
+    .main { padding: 0 20px 40px; }
+    .dashboard { grid-template-columns: 1fr; }
+    .hiring-grid { grid-template-columns: 1fr; }
+    .horizon-grid { grid-template-columns: 1fr; }
+    .sources-grid { grid-template-columns: 1fr; }
+    .report-footer { margin: 40px 20px 0; flex-direction: column; }
+    .tab-btn { padding: 8px 12px; font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="eyebrow">OpenAI Strategy &amp; Operations · Competitive Intelligence</div>
+  <h1>Daily Intelligence Report — August 18, 2026</h1>
+  <div class="meta">
+    <span>Generated August 18, 2026</span>
+    <span>Classification: Internal Use Only</span>
+    <span>Prepared for: CEO, CPO, CMO, Chief Strategy Officer</span>
+  </div>
+</header>
+
+<!-- TREND NOTE -->
+<div class="trend-note">
+  <strong>5 new confirmed signals vs. August 17 report:</strong>
+  (1) <strong>Anthropic ARR tops $65B</strong> — Q2 revenue $11.5B (14× YoY); positive operating income; 2028 projection $190–200B; Anthropic ARR now <strong>1.6× OpenAI's confirmed $40B</strong>.
+  (2) <strong>Anthropic Decart deal at advanced drafts</strong> — valuation revised to ~$7B; Anthropic beat Nvidia; Sequoia and founders prefer Anthropic; close expected near-term.
+  (3) <strong>OpenAI ChatGPT for Teens launches</strong> — August 18 for 13–17 with content restrictions (suicide/self-harm/sexual blocks, homework support).
+  (4) <strong>OpenAI/NVIDIA $105B Ohio data center</strong> — 8 GW capacity; former PORTS-Pike uranium enrichment site; first 800 MW by 2028; 20-year lease; largest planned single AI data center globally.
+  (5) <strong>Bloomberg Chinese AI thematic</strong> — Qwen3.8-Max claims Fable 5 performance on agentic computer use (self-reported); Kimi K3 world's largest open model (2.8T).
+  <strong>Standing:</strong> Grok 4.6 dual IDE penetration confirmed; Claude Code self-hosted runner in production; Gemini 3.5 Pro 15th+ missed window; Gemini 3.6 Flash + 3.5 Flash-Lite now GA; GLM-5.3 weights ~Aug 28 (T-10 days); o3 retiring Aug 26 (T-8); GitHub Copilot promo credits expire Aug 31 (T-13); Claude Sonnet 5 promo ends Aug 31 (T-13).
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- KEY DEADLINES -->
+  <div class="countdown-strip" style="margin-top:20px;">
+    <span class="cd-pill red">T-8: o3 retires Aug 26</span>
+    <span class="cd-pill red">T-13: Copilot promo credits expire Aug 31</span>
+    <span class="cd-pill red">T-13: Sonnet 5 promo ends → +35% Sep 1</span>
+    <span class="cd-pill amber">T-10: GLM-5.3 open weights ~Aug 28</span>
+    <span class="cd-pill amber">T-1: Claude Code 50% boost expires Aug 19</span>
+    <span class="cd-pill blue">Oct 2026: Anthropic Nasdaq IPO target</span>
+  </div>
+
+  <!-- ① C-SUITE DASHBOARD -->
+  <h2 class="section-title"><span class="section-num">01</span>C-Suite Dashboard</h2>
+
+  <div class="dashboard">
+
+    <!-- ChatGPT card -->
+    <div class="threat-card">
+      <div class="product-name">ChatGPT — Consumer</div>
+      <div class="threat-level-badge medium">Medium</div>
+      <div class="confidence-row">
+        <span class="confidence-label">Conf</span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+      </div>
+      <div class="so-what">
+        No new direct consumer product launches from competitors August 17–18.
+        The dominant narrative shift is <strong>Anthropic's $65B ARR — now 1.6× OpenAI's $40B</strong> — which dominates financial media heading into Anthropic's October IPO.
+        OpenAI's teen-tailored ChatGPT launch today is a positive consumer signal, but Anthropic's revenue story will lead tech/financial media for the next 24–48 hours.
+        Gemini 3.5 Pro 15th+ missed window continues to hold Google's premium consumer challenge in limbo.
+      </div>
+    </div>
+
+    <!-- Codex card -->
+    <div class="threat-card">
+      <div class="product-name">Codex — Enterprise Coding</div>
+      <div class="threat-level-badge high">High</div>
+      <div class="confidence-row">
+        <span class="confidence-label">Conf</span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+      </div>
+      <div class="so-what">
+        Two structural developments compound the August 14–17 high-threat standing:
+        (1) <strong>Grok 4.6 now in GitHub Copilot across 8 surfaces</strong> — SpaceXAI has achieved dual IDE dominance (Cursor default + Copilot's model picker), reaching an estimated 70%+ of the professional coding tool market simultaneously.
+        (2) <strong>Claude Code self-hosted environments in production</strong> (Team/Enterprise) — removes the data-residency objection entirely.
+        GitHub Copilot promotional credits expire <strong>August 31 (T-13 days)</strong> — the enterprise re-evaluation window is open and closing fast.
+      </div>
+    </div>
+
+    <!-- API & Models card -->
+    <div class="threat-card">
+      <div class="product-name">API &amp; Models — Platform</div>
+      <div class="threat-level-badge high">High</div>
+      <div class="confidence-row">
+        <span class="confidence-label">Conf</span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+        <span class="confidence-dot filled"></span>
+      </div>
+      <div class="so-what">
+        <strong>Anthropic's $65B ARR at 1.6× OpenAI's $40B is the dominant API narrative today.</strong>
+        Enterprise BD conversations now include a financially credible peer competitor.
+        Counter: OpenAI/NVIDIA's <strong>$105B Ohio data center</strong> signals massive long-term compute independence from Microsoft — the largest planned single AI data center globally.
+        Bloomberg's Chinese AI thematic piece elevates geopolitical risk; Qwen3.8-Max's Fable 5 performance claim will circulate in BD comparisons.
+        DeepSeek price hikes (active Aug 17) continue to validate OpenAI's pricing tier.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MUST KNOW -->
+  <div class="must-know">
+    <div class="must-know-header">Must Know This Week — Top 3</div>
+
+    <div class="must-know-item">
+      <div class="must-know-num">1</div>
+      <div class="must-know-body">
+        <div>
+          <span class="mk-tag api">API &amp; Models</span>
+          <span class="mk-tag chatgpt">ChatGPT</span>
+        </div>
+        <div class="mk-title">Anthropic — Annual revenue run rate tops $65B (August 17–18): Q2 revenue $11.5B (14× YoY); positive operating income; 2028 projection $190–200B; Anthropic ARR now 1.6× OpenAI's confirmed $40B.</div>
+        <div class="mk-detail">
+          Trajectory: $9B ARR (end of 2025) → $47B (May) → $65B (end of July) — approximately 7× increase in 7 months.
+          First-time profitability signal (positive adjusted operating income) reported ahead of October Nasdaq IPO.
+          Growth attributed to Claude API enterprise coding/agent workloads, Cowork enterprise seats, and Claude Code adoption.
+          The Decart acquisition nearing signing ($7B, mostly pre-IPO shares) would add chip-efficiency and world-model video capability to a profitable enterprise.
+          For BD: Anthropic's $65B ARR must now be the primary competitor benchmark in API sales conversations — the "OpenAI has $40B" anchor must be paired with 20%+ MoM growth trajectory messaging.
+        </div>
+        <div class="mk-conf">Confidence: HIGH — TechCrunch, Fortune, Axios, Benzinga, Yahoo Finance, TechBriefly, Crowdfund Insider, CTech (August 17–18, consistent figures across 8 sources)</div>
+      </div>
+    </div>
+
+    <div class="must-know-item">
+      <div class="must-know-num">2</div>
+      <div class="must-know-body">
+        <div>
+          <span class="mk-tag api">API &amp; Models</span>
+        </div>
+        <div class="mk-title">OpenAI/NVIDIA — $105B Ohio data center commitment (August 17–18): 8 GW capacity; former PORTS-Pike uranium enrichment plant; first 800 MW by 2028; 20-year lease; largest planned single AI data center globally.</div>
+        <div class="mk-detail">
+          Bloomberg (August 17) reports Nvidia will back the first phase of OpenAI's PORTS-Pike data center project in Ohio with up to $105B in financing. OpenAI signed a 20-year lease targeting 8 GW total capacity — the largest single-site AI data center project globally.
+          NVIDIA's financial backing (not equity) aligns NVIDIA's interest in OpenAI's success without dilution.
+          The 2028 first-capacity timeline means near-term compute constraints are unchanged — but signals OpenAI's confidence in multi-decade demand growth and begins the path to compute self-determination, reducing Microsoft Azure dependency.
+          For BD: Pair this with 20%+ MoM ARR growth — "OpenAI is building the infrastructure for the next decade of AI."
+        </div>
+        <div class="mk-conf">Confidence: HIGH — Bloomberg, Daily Sabah, CGTN, NVIDIA Newsroom (August 17–18); CNBC July 27 background context</div>
+      </div>
+    </div>
+
+    <div class="must-know-item">
+      <div class="must-know-num">3</div>
+      <div class="must-know-body">
+        <div>
+          <span class="mk-tag codex">Codex</span>
+        </div>
+        <div class="mk-title">SpaceXAI — Grok 4.6 now in GitHub Copilot across 8 surfaces (August 14, standing): Dual IDE dominance achieved; SpaceXAI model reaches both Cursor (default, ~26% market share) and the largest-installed-base coding tool simultaneously.</div>
+        <div class="mk-detail">
+          Grok 4.6 selectable in Copilot across VS Code, Visual Studio, Copilot CLI, cloud agent, Copilot app, JetBrains IDEs, Xcode, and Eclipse — covering Copilot Pro, Pro+, Max, Business, and Enterprise.
+          Copilot has ~51% enterprise developer market share (JetBrains 2026 survey). By being Cursor's default AND in Copilot's picker, SpaceXAI's model now reaches an estimated 70%+ of the professional coding tool market.
+          SpaceXAI has penetrated Copilot's model layer without displacing it — enterprise Codex sales now compete with "Grok 4.6 in Copilot" as an option inside the incumbent.
+          Counter: Grok 4.6 in Copilot is a model choice, not a compliance solution — Codex's SOC 2 Type II, ephemeral sandbox architecture, and AWS Bedrock HIPAA/FedRAMP integration are not replicated.
+        </div>
+        <div class="mk-conf">Confidence: HIGH — GitHub Changelog, xAI news, Unite.AI (August 14); JetBrains Developer Ecosystem Survey 2026</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ② PRODUCT INTELLIGENCE (TABS) -->
+  <h2 class="section-title"><span class="section-num">02</span>Product Intelligence</h2>
+
+  <div class="tabs-container">
+    <nav class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('chatgpt', this)">ChatGPT (PMM)</button>
+      <button class="tab-btn" onclick="showTab('codex', this)">Codex (PM)</button>
+      <button class="tab-btn" onclick="showTab('api', this)">API &amp; Models (BD)</button>
+      <button class="tab-btn" onclick="showTab('horizon', this)">Horizon Watch</button>
+    </nav>
+
+    <!-- CHATGPT TAB -->
+    <div id="tab-chatgpt" class="tab-content active">
+
+      <div class="subsec">Competitor Messaging &amp; Positioning</div>
+
+      <div class="signal-card">
+        <div class="sig-company">Anthropic (Claude / Cowork)</div>
+        <div class="sig-title">$65B ARR announcement dominates consumer brand narrative — Claude.ai now backed by confirmed #2 AI revenue run rate globally</div>
+        <ul class="sig-bullets">
+          <li>Claude.ai's value proposition is now backed by a $65B ARR company with positive operating income — a <strong>"stability and staying power"</strong> argument Anthropic lacked 12 months ago; IPO narrative intensifies over next 6–8 weeks heading into October Nasdaq listing.</li>
+          <li><strong>Anthropic August 16 outage</strong>: 36-minute authentication layer incident across claude.ai, Claude Code, Cowork, Console, and API (21:58–22:34 UTC) — the 6th reliability event of 2026; enterprise reliability counter-narrative is available for OpenAI PMMs.</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">PMM Action</div>
+          Have messaging ready: (1) OpenAI's $40B ARR with 20%+ MoM growth has faster trajectory — lead on velocity, not absolute; (2) Push ChatGPT for Teens as today's consumer media story in education and parenting outlets; (3) Anthropic's 6 reliability events in 2026 is a legitimate enterprise counter-narrative despite brief durations.
+        </div>
+        <div class="sig-conf">Confidence: HIGH on $65B ARR (8 sources, Aug 17–18) · HIGH on outage timeline (BleepingComputer, Unite.AI, explainx.ai, Aug 16) · MEDIUM on counter-narrative effectiveness</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">Google (Gemini)</div>
+        <div class="sig-title">Gemini 3.5 Pro misses 15th+ consecutive window — Gemini 3.6 Flash and 3.5 Flash-Lite now GA (developer-tier, no consumer impact)</div>
+        <ul class="sig-bullets">
+          <li><strong>Gemini 3.5 Pro: 15th+ consecutive missed window</strong> as of August 18 — no launch, no new Google statement; "partner testing" continues; Google's 1B monthly Gemini users milestone (Aug 11–12, standing) remains this week's only consumer narrative from Google.</li>
+          <li>Gemini 3.6 Flash and 3.5 Flash-Lite confirmed GA in August 18 API changelog — these are developer-tier models; consumer-visible impact is negligible but strengthens Google's mid/low API tier.</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">PMM Action</div>
+          Gemini 3.5 Pro's 15th+ missed window extends the period where ChatGPT has uncontested premium consumer AI positioning vs. Google's best. The comparison remains ChatGPT vs. Gemini 3.x Flash (mid-tier), not vs. Gemini 3.5 Pro (flagship). Continue the ChatGPT weekly vs. Gemini monthly user metric reframe in earned media.
+        </div>
+        <div class="sig-conf">Confidence: HIGH on 15th delay (no signal in API changelog or Google communications, Aug 18) · HIGH on Gemini 3.6 Flash / 3.5 Flash-Lite GA (Google API changelog, Aug 18)</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">xAI (Grok)</div>
+        <div class="sig-title">No new consumer signals August 17–18 — Grok 4.7 mid-September; EU access still blocked</div>
+        <ul class="sig-bullets">
+          <li>Standing: Grok 4.6 in Cursor (default) and GitHub Copilot (model picker). No new consumer Grok features or X/Twitter UI changes confirmed August 17–18.</li>
+          <li>Grok 4.7 timeline confirmed mid-September across trackers (OrcaRouter, explainx.ai, felloai); EU access remains blocked for Grok API.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on standing · HIGH on Grok 4.7 mid-September</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">OpenAI (ChatGPT) — New</div>
+        <div class="sig-title">ChatGPT for Teens launches August 18 — purpose-built safe AI for 13–17, no equivalent from Anthropic or Google</div>
+        <ul class="sig-bullets">
+          <li>Key specs: blocks suicide/self-harm/romantic/sexual conversations; homework support designed to help students learn rather than provide answers; parental awareness features. First major AI company with an explicit teen safety mode.</li>
+          <li>Strategic positioning: pre-empts US and EU regulatory pressure on AI and minors; expands ChatGPT's addressable market to the under-18 segment previously served only with friction; creates a differentiated product layer that Claude.ai and Gemini consumer do not yet match.</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">PMM Action</div>
+          Today's narrative opportunity: OpenAI is the only major AI company with a purpose-built, content-safe AI for students aged 13–17. Target education tech outlets, parenting publications, and mainstream media with this lead. If Anthropic or Google responds with teen features, that validates the category — OpenAI owns the first-mover position.
+        </div>
+        <div class="sig-conf">Confidence: HIGH on launch and content restrictions (ClickOnDetroit, OpenAI newsroom, Aug 18) · HIGH on competitive differentiation (no teen-specific mode confirmed at Claude.ai or Gemini consumer)</div>
+      </div>
+
+      <div class="subsec">Customer Sentiment</div>
+
+      <div class="signal-card">
+        <div class="sig-company">Developer &amp; Consumer Community — August 17–18</div>
+        <div class="sig-title">Community focus: Anthropic $65B ARR, Decart deal, OpenAI teen launch, NVIDIA Ohio data center</div>
+        <ul class="sig-bullets">
+          <li>r/ChatGPT: teen ChatGPT launch generating mixed reaction — appreciation from safety-conscious parents/educators vs. skepticism about real-world utility for teens. r/ClaudeAI: $65B ARR announcement generating pride/excitement — reinforcing "serious platform" narrative ahead of IPO.</li>
+          <li>Developer community: Claude Code self-hosted runner production-confirmed generating enterprise interest — "this changes the compliance conversation" in multiple threads; security-focused devs flagging the "prompts still go to Anthropic" nuance.</li>
+        </ul>
+        <div class="sig-conf">Confidence: MEDIUM — synthesis from search results and community signal patterns</div>
+      </div>
+
+      <div class="subsec">Hiring — Marketing &amp; Growth</div>
+
+      <div class="signal-card">
+        <div class="sig-company">Anthropic</div>
+        <div class="sig-title">381 open positions — IPO preparation accelerating across legal, IR, communications, and engineering</div>
+        <ul class="sig-bullets">
+          <li>Convergence of $65B ARR, positive operating income, Decart deal at advanced drafts, and Tino Cuéllar (CGAO, former CA Supreme Court Justice) hire signals Anthropic is running four parallel buildouts simultaneously: engineering/model (Decart GPU efficiency), enterprise/sales, governance/legal (IPO + EU AI Act), and finance/IR (S-1 preparation).</li>
+          <li>The $11.5B Q2 revenue growth (14× YoY) funds all four buildout vectors simultaneously without cash conservation tradeoffs — unlike competitors dependent on next funding rounds.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on Decart deal nearing close (CTech/Calcalis, Aug 17–18) · HIGH on headcount (established Aug 17) · MEDIUM on IPO-driven hiring inference</div>
+      </div>
+
+    </div>
+
+    <!-- CODEX TAB -->
+    <div id="tab-codex" class="tab-content">
+
+      <div class="subsec">Feature Launches &amp; Competitive Moves</div>
+
+      <div class="signal-card">
+        <div class="sig-company">SpaceXAI — New Strategic Significance</div>
+        <div class="sig-title">Grok 4.6 in GitHub Copilot across 8 surfaces (Aug 14, standing): Dual IDE penetration complete — estimated 70%+ of professional coding tool market reached simultaneously</div>
+        <ul class="sig-bullets">
+          <li>Grok 4.6 selectable in Copilot across VS Code, Visual Studio, Copilot CLI, cloud agent, Copilot app, JetBrains IDEs, Xcode, and Eclipse (Copilot Pro, Pro+, Max, Business, Enterprise). Combined with Cursor default (~26% market share), SpaceXAI's model reaches developers across both the fastest-growing and most-installed coding tools.</li>
+          <li>SpaceXAI has penetrated Copilot's model layer without displacing it — enterprise accounts using Copilot Enterprise may begin evaluating Grok 4.6 as a Copilot-compatible model, potentially reducing urgency to evaluate Codex as a Copilot replacement. <strong>Grok 4.7 (2.1T, trained on full Cursor developer corpus) arrives mid-September</strong> — will be the first benchmark reset event in Copilot's picker.</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">PM Action</div>
+          Counter-narrative: (1) Grok 4.6 in Copilot is a model choice, not a compliance solution — no SOC 2 Type II, no ephemeral sandbox, no HIPAA/FedRAMP/GDPR procurement frameworks; (2) EU availability via Copilot unconfirmed — verify before EU accounts assume access; (3) Prepare Grok 4.7 counter-positioning now (CursorBench performance in Copilot's picker will be the reset event in ~4 weeks).
+        </div>
+        <div class="sig-conf">Confidence: HIGH on 8-surface availability and plan coverage (GitHub Changelog, xAI, Unite.AI, Aug 14) · HIGH on market share (JetBrains 2026) · MEDIUM on EU availability via Copilot (unverified)</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">Anthropic — New</div>
+        <div class="sig-title">Claude Code self-hosted environments production-confirmed (Team/Enterprise): Run sessions on own infrastructure with internal network access — closes the data-residency enterprise objection</div>
+        <ul class="sig-bullets">
+          <li>Public beta opened August 6, 2026; now confirmed production-ready for Team and Enterprise plans. Command: <code>claude self-hosted-runner</code>. Supported: EC2, Kubernetes, bare metal. Key capabilities: internal network access to private repos/databases/registries; custom tooling; compliance controls that keep execution within the customer perimeter.</li>
+          <li><strong>Critical nuance for Codex positioning</strong>: prompts and responses still route through Anthropic's API — self-hosted feature applies to execution environment, not model inference layer. This is not true air-gapped deployment ("Claude Code Self-Hosted Beta Still Sends Prompts to Anthropic" — Windows Forum, August 2026).</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">PM Action</div>
+          Codex counter: Daybreak Red/Blue on AWS Bedrock enables enterprises to run OpenAI models entirely within AWS's HIPAA, FedRAMP, and GDPR-compliant infrastructure — a more complete compliance stack than execution-only self-hosting. Target ITAR, air-gapped, or strict data-residency accounts where Anthropic's "prompts over Anthropic API" architecture is inadequate.
+        </div>
+        <div class="sig-conf">Confidence: HIGH on specifications (Unite.AI, Anthropic blog, Enterprise DNA, classmethod.jp) · HIGH on prompt-routing nuance (Windows Forum, Claude Code Docs) · MEDIUM on enterprise buyer implications</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">GitHub Copilot (Microsoft)</div>
+        <div class="sig-title">Promotional credits expire August 31 (T-13 days) — enterprise cost shock imminent; convergent September 1 billing reset</div>
+        <ul class="sig-bullets">
+          <li>GitHub Business ($30/user/mo credit) and Enterprise ($70/user/mo credit) temporary credits expire September 1, 2026 — same day Claude Sonnet 5 promotional pricing resets ($2/$10 → $3/$15, +35% effective). No new signals August 17–18 beyond standing confirmed.</li>
+          <li>The convergent September 1 cost shock from both directions — Copilot token billing subsidy removed + Sonnet 5 price reset — creates the most acute enterprise re-evaluation window in Q3 2026. Target Copilot Business and Enterprise accounts with active agentic workflows (highest-impact for billing shock).</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on expiration dates and credit amounts (established Aug 17) · HIGH on Sonnet 5 price reset date</div>
+      </div>
+
+      <div class="subsec">Benchmark Snapshot — August 18, 2026</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Market Position</th>
+              <th>Key Development Aug 17–18</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GitHub Copilot (Microsoft)</td>
+              <td>~51%</td>
+              <td>Promo credits expire Aug 31 (T-13) — full token billing shock + Sonnet 5 reset converge Sep 1</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>SpaceXAI Cursor</td>
+              <td>~26%</td>
+              <td><strong>Grok 4.6 now in Copilot's model picker across 8 surfaces — dual IDE penetration complete; Grok 4.7 mid-September</strong></td>
+            </tr>
+            <tr class="highlight-row">
+              <td>Claude Code (Anthropic)</td>
+              <td>~18%</td>
+              <td><strong>Self-hosted runner production-confirmed (Team/Enterprise); 50% usage boost expires Aug 19 (T-1); Compliance API expanded</strong></td>
+            </tr>
+            <tr>
+              <td>Codex (OpenAI)</td>
+              <td>Undisclosed</td>
+              <td>Ultrafast preview (750 tok/s, Cerebras, standing); Daybreak Red/Blue on AWS Bedrock (standing); Astra paused</td>
+            </tr>
+            <tr>
+              <td>Meta Muse Code</td>
+              <td>New entry</td>
+              <td>Data privacy default; enterprise adoption blocked in regulated industries; no new signals</td>
+            </tr>
+            <tr>
+              <td>Devin Desktop / Cognition</td>
+              <td>$492M+ ARR</td>
+              <td>No new signals; standing</td>
+            </tr>
+            <tr>
+              <td>Google (Code Assist + Jules + Antigravity)</td>
+              <td>Growing</td>
+              <td>Gemini 3.5 Pro 15th+ delay; Jules ceiling deferred; Gemini 3.7 Flash (+16pp DeepSWE) is current floor</td>
+            </tr>
+            <tr>
+              <td>AWS Kiro</td>
+              <td>Emerging</td>
+              <td>GA stable; no new signals</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsec">Developer Sentiment</div>
+
+      <div class="signal-card">
+        <div class="sig-company">Developer Community — August 17–18</div>
+        <div class="sig-title">Focus: Claude Code self-hosted runner enterprise discussion, Anthropic $65B ARR, NVIDIA Ohio data center</div>
+        <ul class="sig-bullets">
+          <li>r/programming and Hacker News: Claude Code self-hosted runner generating substantive enterprise discussion — "this changes the compliance conversation" appearing in multiple threads; security-focused developers calling out the "prompts still go to Anthropic" nuance (consistent with Windows Forum reporting).</li>
+          <li>Copilot credit expiry generating active cost-projection threads. Anthropic's $65B ARR generating cross-community discussion about whether Anthropic is the "safer long-term API bet" — will circulate in enterprise procurement conversations this week.</li>
+        </ul>
+        <div class="sig-conf">Confidence: MEDIUM — synthesis from search results and community signal patterns</div>
+      </div>
+
+    </div>
+
+    <!-- API & MODELS TAB -->
+    <div id="tab-api" class="tab-content">
+
+      <div class="subsec">Model Releases &amp; API Developments</div>
+
+      <div class="signal-card">
+        <div class="sig-company">Anthropic — Must Know</div>
+        <div class="sig-title">Revenue run rate $65B (August 17–18): Q2 $11.5B, 14× YoY; positive operating income; 2028 projection $190–200B</div>
+        <ul class="sig-bullets">
+          <li>Trajectory: $9B ARR (end of 2025) → $47B (May) → $65B (end of July) — approximately 7× increase in 7 months. Positive adjusted operating income reported — first-time profitability signal ahead of October Nasdaq IPO. Growth attributed to Claude API enterprise coding/agent workloads, Cowork enterprise seats, and Claude Code adoption.</li>
+          <li>BD implications: Anthropic's $65B ARR announcement fundamentally changes the "who will still exist in 5 years?" enterprise API procurement conversation. Counter: (1) OpenAI's $40B ARR with 20%+ MoM growth has faster trajectory in absolute terms; (2) OpenAI's $105B Ohio data center signals 20-year compute self-sufficiency — infrastructure independence Anthropic (primarily AWS-dependent) has not matched; (3) The Anthropic IPO S-1 (when filed) will disclose customer concentration, burn rate, and risk factors — prepare day-1 messaging.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on all financial figures — TechCrunch, Fortune, Axios, Benzinga, Yahoo Finance, TechBriefly (Aug 17–18, 8 consistent sources) · HIGH on 2028 projection (Fortune, TechBriefly, Aug 18)</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">OpenAI / NVIDIA — Must Know</div>
+        <div class="sig-title">$105B Ohio data center commitment: 8 GW capacity; former PORTS-Pike uranium enrichment plant; 20-year lease; first 800 MW by 2028; largest planned single AI data center globally</div>
+        <ul class="sig-bullets">
+          <li>Bloomberg (August 17) reports Nvidia will back the first phase of OpenAI's PORTS-Pike Ohio data center with up to $105B in financing. 20-year lease, 8 GW total capacity. First capacity: 800 MW in phases starting 2028. NVIDIA's financial backing (not equity) aligns incentives without dilution.</li>
+          <li>BD framing: OpenAI is the only AI company building owned compute infrastructure at gigawatt scale. Anthropic is AWS-dependent; xAI has Colossus (500K GPU) but SpaceX-owned, not OpenAI-independent. The Ohio data center represents OpenAI's path to compute self-determination and long-term infrastructure pricing control. Note: 2028 timeline means near-term compute constraints persist.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on deal terms and capacity (Bloomberg, Daily Sabah, CGTN, NVIDIA Newsroom, Aug 17–18)</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">Google</div>
+        <div class="sig-title">Gemini 3.6 Flash and 3.5 Flash-Lite now GA (August 18 API changelog) — incremental mid/low tier additions; Gemini 3.5 Pro at 15th+ consecutive delay</div>
+        <ul class="sig-bullets">
+          <li>Gemini 3.6 Flash: improved token efficiency and code/agentic planning at lower price than Gemini 3.5 Flash. Gemini 3.5 Flash-Lite: low-latency, highly cost-effective subagent option for high-volume automation. Gemini `robotics-er-1.6-preview` deprecating August 31. These are incremental releases — not the Gemini 3.5 Pro that would constitute a frontier API challenge.</li>
+          <li><strong>Gemini 3.5 Pro: 15th consecutive missed window</strong> — "partner testing" continues with no public timeline. Bloomberg's "base model rebuild requiring new pretraining" root cause (July 2026) remains most credible. Gemini 3.7 Flash ($0.75/$3.75 intro through Dec 31) remains the ceiling for Google's API in production.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on GA status (Google AI for Developers API changelog, Aug 18) · HIGH on 15th delay (no launch signal as of Aug 18) · HIGH on deprecation date</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">Bloomberg / Chinese AI — New Thematic</div>
+        <div class="sig-title">"Why China's DeepSeek, Qwen and Moonshot Are a Worry for US AI Rivals" (August 18): Qwen3.8-Max claims Fable 5 performance; Kimi K3 world's largest open model (2.8T)</div>
+        <ul class="sig-bullets">
+          <li>Qwen3.8-Max (2.4T MoE, $2/$6, GA since Aug 3) claims to outperform GPT-5.6 Sol Max and Fable 5 on agentic computer use benchmarks — Alibaba self-published, not independently confirmed on a shared harness vs. Kimi K3 or Fable 5; VentureBeat labeled this a "bold claim." Open weights were promised "next week" from August 2 (now T+16 days overdue, still absent from Hugging Face).</li>
+          <li>Kimi K3 (MIT, 2.8T, weights on Hugging Face July 27) is now the world's largest open model by parameter count. Terminal-Bench: K3 88.3 vs. Fable 5 84.6; SWE Marathon: K3 42.0 vs. Fable 5 35.0; Arena Frontend #1. Chinese models now 61% of total OpenRouter token consumption. Bloomberg thematic will circulate in enterprise analyst and CFO circles as geopolitical risk summary.</li>
+        </ul>
+        <div class="sig-pmm-note">
+          <div class="pmm-label">BD Action</div>
+          Correct BD response to "what about Chinese models?": (1) Qwen3.8-Max's Fable 5 claim is on agentic computer use — one benchmark type, vendor self-published, not on shared harness; (2) Kimi K3 / Moonshot face OFAC risk (no formal designation but active investigation); (3) Enterprise compliance, data residency, and EU AI Act obligations exclude most Chinese models from regulated-industry deployments; (4) Chinese models now raise prices too (DeepSeek V4-Pro: up 4.6× at peak) — "free Chinese AI" narrative is empirically broken.
+        </div>
+        <div class="sig-conf">Confidence: HIGH on Bloomberg article (Aug 18) · HIGH on Kimi K3 benchmarks (Medium/VentureBeat/eesel AI, Jul–Aug 2026) · MEDIUM on Qwen3.8-Max claim (self-published, not shared-harness) · LOW on Moonshot formal OFAC designation (active investigation only, no formal action)</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="sig-company">Zhipu (GLM-5.3)</div>
+        <div class="sig-title">Open weights expected ~August 28 (MIT license) — T-10 days; CyberGym 84.5% #1 surpassing Mythos 5 and GPT-5.6 Sol on cybersecurity benchmark</div>
+        <ul class="sig-bullets">
+          <li>Zhipu shipped GLM-5.3 on August 14 (CyberGym 84.5% #1 — surpassing Mythos 5 and GPT-5.6 Sol on cybersecurity benchmark). 744B MoE, 40B active params. Open-weight release on HuggingFace (zai-org) expected ~August 28, 2026 under MIT license (same as GLM-5.2 precedent, subject to safety review).</li>
+          <li>When weights drop, GLM-5.3 becomes freely self-hostable in air-gapped environments — removing the data-residency objection to its CyberGym #1 performance for on-premises enterprise security teams. GLM-5.3 on Huawei Ascend chips; MIT license enables full commercial use without API dependency.</li>
+        </ul>
+        <div class="sig-conf">Confidence: HIGH on expected release date (MLQ News, explainx.ai, Aug 2026) · MEDIUM on exact date (safety review timeline may vary) · HIGH on MIT license precedent</div>
+      </div>
+
+      <div class="subsec">Pricing Snapshot — August 18, 2026</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Model</th>
+              <th>Input / Output ($/1M tok)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Sol</td>
+              <td>$5 / $30</td>
+              <td>1M</td>
+              <td>Stable; Ultrafast preview (750 tok/s, Cerebras) — limited API customers</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td>Stable (20% cut July 30)</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>Daybreak Red / Blue</td>
+              <td>Vetting required</td>
+              <td>1M</td>
+              <td>Live on AWS Bedrock (Aug 11); HIPAA/FedRAMP/GDPR compliant</td>
+            </tr>
+            <tr class="warn-row">
+              <td>SpaceXAI</td>
+              <td>Grok 4.6</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td><strong>In Copilot (8 surfaces) + Cursor default; EU blocked; Grok 4.7 → mid-Sep</strong></td>
+            </tr>
+            <tr class="warn-row">
+              <td>Anthropic</td>
+              <td>Claude Fable 5</td>
+              <td>$10 / $50</td>
+              <td>1M</td>
+              <td>SWE-bench Pro 80.4%; #1 LM Arena; stable</td>
+            </tr>
+            <tr class="warn-row">
+              <td>Anthropic</td>
+              <td>Claude Opus 5</td>
+              <td>$5 / $25</td>
+              <td>1M</td>
+              <td>Stable; Claude Code default</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>Anthropic</td>
+              <td>Claude Sonnet 5</td>
+              <td>$2 / $10 (promo)</td>
+              <td>1M</td>
+              <td><strong>T-13 DAYS: PROMO ENDS Aug 31 → $3/$15 + tokenizer (+35% Sep 1)</strong></td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.7 Flash</td>
+              <td>$0.75 / $3.75 (intro)</td>
+              <td>1M</td>
+              <td>50% off through Dec 31; AA-AnalystAgent #1 (60%)</td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.6 Flash</td>
+              <td>TBD</td>
+              <td>1M</td>
+              <td><strong>GA: Aug 18 changelog; improved token efficiency + code/agentic planning</strong></td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.5 Flash-Lite</td>
+              <td>TBD</td>
+              <td>1M</td>
+              <td><strong>GA: Aug 18 changelog; ultra-low-latency subagent option</strong></td>
+            </tr>
+            <tr class="highlight-row">
+              <td>Google</td>
+              <td>Gemini 3.5 Pro</td>
+              <td>TBD</td>
+              <td>2M (leaked)</td>
+              <td><strong>15TH+ DELAY: No launch as of Aug 18; "partner testing"</strong></td>
+            </tr>
+            <tr>
+              <td>Alibaba</td>
+              <td>Qwen3.8-Max</td>
+              <td>$2 / $6</td>
+              <td>1M</td>
+              <td>Open weights pending (overdue); 2.4T MoE; claims to beat Fable 5 on agentic computer use (self-reported, unverified)</td>
+            </tr>
+            <tr class="warn-row">
+              <td>Moonshot</td>
+              <td>Kimi K3</td>
+              <td>$3 / $15</td>
+              <td>1M</td>
+              <td>MIT (2.8T); world's largest open model by params; OFAC threat (no formal designation); Arena Frontend #1</td>
+            </tr>
+            <tr>
+              <td>Zhipu (Z.ai)</td>
+              <td>GLM-5.3</td>
+              <td>~$1.40 / $4.40 (est.)</td>
+              <td>1M</td>
+              <td>CyberGym 84.5% #1; <strong>open weights ~Aug 28 (MIT, safety review)</strong></td>
+            </tr>
+            <tr class="highlight-row">
+              <td>DeepSeek</td>
+              <td>V4 Pro</td>
+              <td>$varies / $3.96 peak</td>
+              <td>1M+</td>
+              <td><strong>PRICE HIKE ACTIVE (Aug 17): output up 4.6× at peak; peak/off-peak structure</strong></td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td>
+              <td>V4 Flash</td>
+              <td>$0.14 / $1.32 peak</td>
+              <td>1M+</td>
+              <td>Price hike active (Aug 17); output up 4.7× at peak</td>
+            </tr>
+            <tr>
+              <td>MiniMax</td>
+              <td>M3</td>
+              <td>$0.24 / $0.96</td>
+              <td>1M</td>
+              <td>50% OpenRouter discount; now under Stripe/OpenRouter</td>
+            </tr>
+            <tr>
+              <td>Xiaomi</td>
+              <td>MiMo-V2.5</td>
+              <td>$0.112 / $0.224</td>
+              <td>1M</td>
+              <td>OpenRouter daily top-4; stable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- HORIZON TAB -->
+    <div id="tab-horizon" class="tab-content">
+
+      <div class="subsec">Tier 2 — Notable Challengers</div>
+
+      <div class="horizon-grid">
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 2 · Anthropic / Decart</div>
+          <div class="hz-title">Decart acquisition at advanced drafts — $7B, mostly pre-IPO shares; Anthropic beat Nvidia; close near-term</div>
+          <div class="hz-detail">
+            CTech/Calcalis (August 17–18) reports advanced drafts stage. Anthropic beat Nvidia (which offered higher valuation) because Decart's founders (Dean Leitersdorf, Moshe Shalev) and lead investor Sequoia prefer an Anthropic outcome.
+            Google and SpaceX were also alternative acquirers. The $7B valuation (up from $6B) is mostly in Anthropic pre-IPO shares at implied $2T+ valuation.
+            Strategic context: Decart reduces AI training costs through improved chip utilization efficiency — critical for Anthropic's 77% gross margin target pre-IPO and $190–200B 2028 projection.
+            <em>BD watch</em>: If Decart closes, Anthropic's inference cost structure improves — may enable another round of Claude API price cuts.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on advanced-drafts status (CTech/Calcalis, Aug 17–18) · HIGH on $7B revised valuation · MEDIUM on precise closing timeline</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 2 · Moonshot AI</div>
+          <div class="hz-title">Kimi K3 OFAC investigation: No formal designation as of August 18 — enterprise compliance risk remains open</div>
+          <div class="hz-detail">
+            Federal Register notice 2026-16573 (issued August 7, published August 14) has not resulted in a confirmed SDN list addition for Moonshot AI.
+            Kimi K3 (MIT, 2.8T, weights on HuggingFace July 27) remains globally accessible.
+            Enterprise compliance note: if OFAC formally designates Moonshot AI, enterprise accounts (DoorDash, Coinbase confirmed in production) face immediate compliance requirements (90-day wind-down typical).
+            Treasury's active threat (Bessent statements, July 22) related to Fable 5 model distillation remains unresolved.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on no formal designation (AI Governance Institute, Aug 2026) · MEDIUM on ongoing threat posture · LOW on designation timing</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 2 · Google DeepMind</div>
+          <div class="hz-title">Gemini 3.5 Pro — 15th+ missed window; cancellation speculation intensifying in developer community</div>
+          <div class="hz-detail">
+            Developer community speculation about cancellation circulating since August 15–17; Google continues "partner testing" language with no public timeline.
+            Bloomberg's "base model rebuild requiring new pretraining" (July 2026) remains most credible root cause.
+            The 15-week delay with no interim milestone (no model card, API endpoint, or benchmark preview) is structurally inconsistent with normal pre-launch "partner testing" phase.
+            Google's three-week Flash iteration cycle (3.6 Flash → 3.7 Flash, 23 days) confirms rapid shipping capability — the 15-week Pro delay is model-specific.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on 15th delay · MEDIUM on cancellation risk (developer speculation, not confirmed) · HIGH on root-cause analysis (Bloomberg July 2026)</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 2 · Alibaba / Qwen</div>
+          <div class="hz-title">Qwen3.8-Max — Claims Fable 5 performance on agentic computer use; open weights T+16 days overdue</div>
+          <div class="hz-detail">
+            Qwen3.8-Max (2.4T MoE, GA since August 3) claims to outperform GPT-5.6 Sol Max and Fable 5 on agentic computer use — highlighted in Bloomberg's August 18 thematic piece. No shared-harness independent confirmation.
+            Open weights were promised "next week" from August 2 (now T+16 days, still not on Hugging Face as of August 18) — no license or date confirmed. The delay in weights release is anomalous vs. Alibaba's prior open-weight cadence.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on GA and pricing · MEDIUM on Fable 5 performance claim (self-reported, "bold claim" per VentureBeat) · LOW on open weights timing</div>
+        </div>
+
+      </div>
+
+      <div class="subsec" style="margin-top:24px;">Tier 3 — Future Tech &amp; Governance</div>
+
+      <div class="horizon-grid">
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 3 · Governance</div>
+          <div class="hz-title">EU AI Act Article 50 — Anthropic sole closed-source compliance leader; o3 retires Aug 26 (T-8)</div>
+          <div class="hz-detail">
+            Anthropic remains the only major closed-source API provider to have globally deployed C2PA watermarks (text: invisible; images: C2PA metadata) for all models released on or after August 2, 2026.
+            EU enforcement window: October 2026–February 2027.
+            o3 retires August 26 (T-8); DALL-E GPT retires August 30; GPT-5.4 and 5.4 Mini retire from Codex August 31.
+            Enterprise migration urgency for o3 users: 8 days remaining.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on Anthropic compliance (Euronews, Aug 11) · HIGH on o3 retirement timeline (gHacks, Releasebot)</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 3 · OpenAI</div>
+          <div class="hz-title">Astra — September earliest; additional evaluations ongoing for agentic coding and cybersecurity capabilities</div>
+          <div class="hz-detail">
+            No new August 17–18 developments. The 30-day federal pre-release review (counting from early August) makes September the earliest plausible window.
+            Astra is making progress on agentic coding and cybersecurity capabilities, triggering additional controls.
+            If Astra launches in September, it will arrive as Anthropic's IPO S-1 is in active media coverage — a potentially synchronized narrative moment.
+          </div>
+          <div class="hz-conf">Confidence: MEDIUM on September window (30-day review inference; OpenAI has not confirmed) · HIGH on additional evaluations (Axios Aug 7; Aug 16 context)</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 3 · SpaceXAI</div>
+          <div class="hz-title">Grok 5 — Year-end 2026 target; trained on SpaceX engineering data + full Cursor developer corpus (60M+ users)</div>
+          <div class="hz-detail">
+            SpaceX August 4 earnings confirmed Grok 5 development and year-end 2026 target.
+            First model to incorporate: (1) SpaceX proprietary engineering data; (2) Cursor developer corpus (60M+ developer users, enterprise codebases — via $60B acquisition closed August 14); (3) Colossus training scale at completion.
+            Most differentiated training corpus in frontier AI development heading into 2027.
+          </div>
+          <div class="hz-conf">Confidence: MEDIUM on year-end timeline (SpaceX earnings) · HIGH on Cursor corpus inclusion (acquisition standing Aug 14)</div>
+        </div>
+
+        <div class="horizon-card">
+          <div class="hz-tier">Tier 3 · Infrastructure</div>
+          <div class="hz-title">OpenAI/NVIDIA Ohio data center — 8 GW planned; PORTS-Pike site; 2028 first power; path to compute self-determination</div>
+          <div class="hz-detail">
+            Most consequential long-term infrastructure announcement of the cycle.
+            First capacity (800 MW) arriving 2028 — does not relieve 2026 or 2027 compute constraints but signals commitment to compute infrastructure ownership at a scale enabling independence from third-party cloud.
+            The Anthropic/AWS dependency vs. OpenAI/NVIDIA-backed owned-compute dynamic will become a BD differentiation point by 2027–2028.
+          </div>
+          <div class="hz-conf">Confidence: HIGH on all details (Bloomberg, CGTN, NVIDIA Newsroom, Aug 17–18)</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div><!-- /tabs-container -->
+
+  <!-- ③ HIRING & RESOURCE SIGNALS -->
+  <h2 class="section-title"><span class="section-num">03</span>Hiring &amp; Resource Signals</h2>
+
+  <div class="hiring-grid">
+
+    <div class="hiring-card">
+      <div class="hc-company">Anthropic — Pre-IPO Buildout Accelerating</div>
+      <div class="hc-detail">
+        Convergence of $65B ARR, positive operating income, Decart deal at advanced drafts ($7B, mostly shares), and Tino Cuéllar (CGAO) hire signals four simultaneous buildouts: <strong>engineering/model</strong> (Decart GPU efficiency, inference engineers); <strong>enterprise/sales</strong> (government sales, enterprise compliance); <strong>governance/legal</strong> (IPO S-1, EU AI Act, CGAO regulatory engagement); <strong>finance/IR</strong> (investor relations, IPO preparation). 381 open positions across all functions. $11.5B Q2 revenue growth funds all four vectors without cash conservation tradeoffs.
+      </div>
+      <div class="hc-conf">Confidence: HIGH (CTech/Calcalis Aug 17–18 for Decart; TechCrunch/Fortune for ARR; established Aug 17 for Cuéllar/headcount)</div>
+    </div>
+
+    <div class="hiring-card">
+      <div class="hc-company">Google DeepMind — Leadership Restructure Stable</div>
+      <div class="hc-detail">
+        No new hiring signals August 17–18. Jeff Dean departure and Koray Kavukcuoglu elevation (established August 17) stable. Gemini 3.5 Pro's 15th+ missed window suggests core rebuild team is isolated under pressure — no external hiring signals indicating expansion of the rebuild team publicly. Google DeepMind at 6,000 employees (2.4× from 2,500 two years ago) continuing organic absorption.
+      </div>
+      <div class="hc-conf">Confidence: HIGH on leadership structure (established) · MEDIUM on Gemini 3.5 Pro rebuild team status (inference from 15th delay pattern)</div>
+    </div>
+
+    <div class="hiring-card">
+      <div class="hc-company">SpaceXAI — Cursor Integration Stable; Colossus at Scale</div>
+      <div class="hc-detail">
+        No new SpaceXAI hiring signals August 17–18. Cursor acquisition closed August 14; ~200 Cursor engineers fully integrated into SpaceXAI. Colossus (500K+ GPUs) running Grok 4.7 training (2.1T, Cursor developer corpus + SpaceX engineering data). Memphis Colossus workforce ~3,000. Grok 4.7 mid-September target on track.
+      </div>
+      <div class="hc-conf">Confidence: HIGH on standing (established Aug 14 and 17 sources)</div>
+    </div>
+
+    <div class="hiring-card">
+      <div class="hc-company">OpenAI — Ohio Data Center Implies 2027–28 Infrastructure Hiring</div>
+      <div class="hc-detail">
+        No new August 17–18 hiring signals beyond the Ohio data center announcement. The $105B, 8 GW, 20-year data center commitment implies significant infrastructure engineering hiring in Ohio over 2027–2028. Dali Rajic (CRO, August 13, standing) signals dedicated enterprise revenue leadership ahead of IPO — enterprise sales team expansion ongoing.
+      </div>
+      <div class="hc-conf">Confidence: HIGH on Rajic standing · MEDIUM on Ohio infrastructure hiring inference (not yet announced)</div>
+    </div>
+
+  </div>
+
+  <!-- ④ SOURCES -->
+  <h2 class="section-title"><span class="section-num">04</span>Sources</h2>
+
+  <div class="sources-grid">
+
+    <div class="sources-group">
+      <div class="sg-title">Anthropic Revenue Run Rate ($65B) — Aug 17–18</div>
+      <ul>
+        <li><a href="https://techcrunch.com/2026/08/17/anthropics-annualized-revenue-surges-to-65b/" target="_blank">TechCrunch — Anthropic's annualized revenue surges to $65B</a></li>
+        <li><a href="https://fortune.com/2026/08/18/anthropic-annual-revenue-run-rate-65-billion/" target="_blank">Fortune — Anthropic's annual revenue run rate reportedly hits $65 billion</a></li>
+        <li><a href="https://www.axios.com/2026/08/17/anthropic-revenue-run-rate-ipo-openai" target="_blank">Axios — Anthropic's revenue run rate reportedly surpasses $65 billion pre-IPO</a></li>
+        <li><a href="https://www.benzinga.com/markets/tech/26/08/61265293/anthropic-65-billion-annualized-revenue-claude-ipo" target="_blank">Benzinga — Anthropic Hits $65 Billion Annualized Revenue Run Rate</a></li>
+        <li><a href="https://finance.yahoo.com/technology/ai/articles/anthropic-revenue-run-rate-tops-213602454.html" target="_blank">Yahoo Finance — Anthropic revenue run rate tops $65 billion ahead of expected IPO</a></li>
+        <li><a href="https://techbriefly.com/2026/08/18/anthropic-revenue-run-rate-65-billion-ipo/" target="_blank">TechBriefly — $65B run rate; 2028 projection $190–200B</a></li>
+        <li><a href="https://www.crowdfundinsider.com/2026/08/298221-anthropic-has-a-revenue-run-rate-that-tops-65-billion/" target="_blank">Crowdfund Insider — Anthropic Has A Revenue Run Rate That Tops $65 Billion</a></li>
+        <li><a href="https://www.calcalistech.com/ctechnews/article/7z3902imy" target="_blank">CTech — Anthropic revenue tops $65B as IPO looms and Decart deal advances</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">Anthropic Decart Deal — Aug 17–18</div>
+      <ul>
+        <li><a href="https://www.calcalistech.com/ctechnews/article/b1evv3aufg" target="_blank">CTech — Anthropic closes in on $7 billion Decart deal after beating Nvidia</a></li>
+        <li><a href="https://en.cryptonomist.ch/2026/08/17/anthropic-acquisition-decart/" target="_blank">Cryptonomist — Anthropic Acquisition Decart Nears $7 Billion Deal</a></li>
+        <li><a href="https://www.calcalistech.com/ctechnews/article/hkbg4d1wgl" target="_blank">CTech — Anthropic's $7 billion Decart deal: spotlight on 23-year-old co-founder</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-13/anthropic-said-in-talks-to-buy-ai-startup-decart-for-6-billion" target="_blank">Bloomberg — Anthropic Said in Talks to Buy Startup Decart for $6 Billion (Aug 13 origin)</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">OpenAI / NVIDIA Ohio Data Center — Aug 17–18</div>
+      <ul>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-17/nvidia-to-invest-up-to-105-billion-for-openai-data-center-in-ohio" target="_blank">Bloomberg — Nvidia Will Back First Phase of OpenAI Ohio Project With $105B</a></li>
+        <li><a href="https://www.dailysabah.com/business/tech/openai-to-lease-data-center-in-ohio-backed-by-105b-from-nvidia/amp" target="_blank">Daily Sabah — OpenAI to lease data center in Ohio, backed by $105B from Nvidia</a></li>
+        <li><a href="https://news.cgtn.com/news/2026-08-18/OpenAI-to-lease-massive-new-AI-data-center-in-US-backed-by-Nvidia-1PHDxQmkHra/p.html" target="_blank">CGTN — OpenAI to lease massive new AI data center in US, backed by Nvidia</a></li>
+        <li><a href="https://nvidianews.nvidia.com/news/openai-and-nvidia-announce-strategic-partnership-to-deploy-10gw-of-nvidia-systems" target="_blank">NVIDIA Newsroom — OpenAI and NVIDIA Strategic Partnership (10 GW systems)</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">OpenAI ChatGPT for Teens; Grok 4.6 in Copilot — Aug 14–18</div>
+      <ul>
+        <li><a href="https://www.clickondetroit.com/business/2026/08/18/openai-launches-chatgpt-for-teens-promising-a-more-age-appropriate-chatbot/" target="_blank">ClickOnDetroit — OpenAI launches ChatGPT for Teens (Aug 18)</a></li>
+        <li><a href="https://github.blog/changelog/2026-08-14-grok-4-6-is-now-available-in-github-copilot/" target="_blank">GitHub Changelog — Grok 4.6 is now available in GitHub Copilot</a></li>
+        <li><a href="https://x.ai/news/grok-4-6-github-copilot" target="_blank">xAI — Grok 4.6 in GitHub Copilot</a></li>
+        <li><a href="https://www.unite.ai/grok-4-6-arrives-in-github-copilot-across-eight-development-surfaces/" target="_blank">Unite.AI — Grok 4.6 Arrives in GitHub Copilot Across Eight Development Surfaces</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">Bloomberg Chinese AI Thematic; Qwen3.8-Max; Kimi K3 — Aug 18</div>
+      <ul>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-18/why-china-s-deepseek-qwen-and-moonshot-are-a-worry-for-us-ai-rivals" target="_blank">Bloomberg — Why China's DeepSeek, Qwen and Moonshot Are a Worry for US AI Rivals</a></li>
+        <li><a href="https://venturebeat.com/technology/qwen3-8-max-arrives-with-a-bold-claim-it-outperforms-gpt-5-6-sol-max-and-fable-5-on-agentic-computer-use" target="_blank">VentureBeat — Qwen3.8-Max arrives with a bold claim (Fable 5 performance)</a></li>
+        <li><a href="https://www.eesel.ai/blog/qwen38-max-vs-kimi-k3" target="_blank">eesel AI — Qwen 3.8 Max vs Kimi K3: the numbers neither lab published</a></li>
+        <li><a href="https://foreignpolicy.com/2026/07/23/china-ai-race-moonshot-kimi-k3-alibaba-qwen-deepseek-openai-anthropic/" target="_blank">Foreign Policy — China Narrows U.S. AI Gap With Kimi K3, Alibaba's Qwen 3.8</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">Claude Code Self-Hosted; Anthropic Outage; Google API — Aug 2026</div>
+      <ul>
+        <li><a href="https://claude.com/blog/run-claude-code-sessions-on-your-own-compute" target="_blank">Anthropic Blog — Run Claude Code sessions on your own compute</a></li>
+        <li><a href="https://windowsforum.com/windows-news.4/claude-code-self-hosted-beta-still-sends-prompts-to-anthropic.442000/" target="_blank">Windows Forum — Claude Code Self-Hosted Beta Still Sends Prompts to Anthropic</a></li>
+        <li><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-confirms-claude-is-down-in-major-outage-affecting-multiple-services/" target="_blank">BleepingComputer — Anthropic confirms Claude is down (August 16 outage)</a></li>
+        <li><a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">Google AI for Developers — Gemini API Changelog (Aug 18 GA entries)</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">GLM-5.3; Moonshot OFAC; Grok 4.7 — Aug 2026</div>
+      <ul>
+        <li><a href="https://mlq.ai/news/zhipu-releases-glm-53-through-its-coding-service-with-weights-still-two-weeks-away/" target="_blank">MLQ News — Zhipu releases GLM-5.3; weights ~2 weeks away</a></li>
+        <li><a href="https://explainx.ai/blog/glm-5-3-launch-cyber-defense-benchmarks-august-2026" target="_blank">explainx.ai — GLM-5.3 Launch: Benchmarks, Pricing &amp; Access (Aug 2026)</a></li>
+        <li><a href="https://aigovernance.com/model-radar/moonshot-kimi-k3" target="_blank">AI Governance Institute — Kimi K3 Compliance Status (OFAC monitoring)</a></li>
+        <li><a href="https://techcrunch.com/2026/07/22/treasury-threatens-sanctions-after-white-house-claims-moonshot-distilled-anthropics-fable/" target="_blank">TechCrunch — Treasury threatens sanctions (Moonshot/Fable distillation, Jul 22 background)</a></li>
+        <li><a href="https://www.orcarouter.ai/blog/grok-4-7-release-date" target="_blank">OrcaRouter — Grok 4.7 Release Date: 3–4 Weeks, and Already Slipping</a></li>
+      </ul>
+    </div>
+
+    <div class="sources-group">
+      <div class="sg-title">Standing Signals — Established Aug 14–17</div>
+      <ul>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion" target="_blank">Bloomberg — Stripe Finalizes Deal to Acquire OpenRouter for Over $7 Billion</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition" target="_blank">Bloomberg — SpaceX Completes $60 Billion Cursor Acquisition</a></li>
+        <li><a href="https://news.ycombinator.com/item?id=49239021" target="_blank">Hacker News — Auto mode is now the default in Claude Code</a></li>
+        <li><a href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide" target="_blank">Euronews — Anthropic to watermark Claude's output worldwide (EU AI Act compliance)</a></li>
+        <li><a href="https://openai.com/index/daybreak-models-are-now-available-on-aws/" target="_blank">OpenAI — Daybreak models are now available on AWS</a></li>
+        <li><a href="https://openai.com/index/previewing-ultrafast/" target="_blank">OpenAI — Previewing Ultrafast mode: GPT-5.6 Sol at up to 14× the speed</a></li>
+        <li><a href="https://venturebeat.com/technology/googles-gemini-3-7-flash-targets-coding-and-agents-with-a-50-introductory-price-cut" target="_blank">VentureBeat — Google's Gemini 3.7 Flash targets coding and agents with 50% price cut</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>Competitive Intelligence Agent · OpenAI Strategy &amp; Operations</span>
+  <span>August 18, 2026 · Classification: Internal Use Only</span>
+  <span>Δ vs. August 17: 5 new confirmed signals</span>
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
