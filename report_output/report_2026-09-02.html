@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — September 2, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+.report-header .trend-note { margin-top: 16px; padding: 14px 18px; background: #F0F4FF; border-left: 3px solid #1E40AF; border-radius: 8px; font-size: 13px; color: #1E40AF; line-height: 1.55; }
+.report-header .trend-note strong { font-weight: 700; }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-new { background: #FFF0F0; color: #C0392B; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new-signal { border-left: 3px solid #C0392B; }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card h4 .new-badge { display: inline-block; font-size: 10px; font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; background: #FFF0F0; color: #C0392B; margin-left: 8px; vertical-align: middle; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .implication-note { font-size: 12px; color: var(--text-secondary); background: var(--surface-alt); border-radius: 6px; padding: 8px 12px; margin-top: 10px; line-height: 1.55; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.data-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); background: var(--surface-alt); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .highlight { color: var(--text); font-weight: 600; }
+.data-table .alert-cell { color: #C0392B; font-weight: 600; }
+.data-table .new-cell { color: #1E40AF; font-weight: 600; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+.trend-watch { color: #C0392B; font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card.tier3-alert { border-left-color: #C0392B; }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list.show { display: block; }
+.sources-section { margin-bottom: 6px; }
+.sources-section strong { color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 2px; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>September 2, 2026</span>
+      <span class="dot"></span>
+      <span>Generated September 2, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+    <div class="trend-note">
+      <strong>5 new signals vs. September 1 report:</strong> (1) Apple iOS 27 Siri AI launches in September powered by Google Gemini — ~$1B Apple-Google deal, dual-platform ambient AI distribution achieved across ~4.5B devices. (2) Grok 4.7 confirmed September 12 — Musk posted today "10 days"; window updated from "Sep 2–9." (3) Cursor brand phasing out → Grok Bot; workforce folded into SpaceXAI. (4) Anthropic Fable 5.1 + Mythos 5.1 launched September 1 — full spec confirmed: 75% cache read cut, 52.6% Terminal-Bench-Science. (5) Anthropic retracted Claude Code limit announcement — replaced with explicit -17% admission after developer backlash.
+    </div>
+  </header>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Google</span> — Gemini-powered Siri launches with iOS 27 in September (confirmed). Android forced migration September 4. Google achieves ambient AI defaults on ~4.5B devices across both major smartphone ecosystems simultaneously — without winning a single head-to-head product competition against ChatGPT.</div>
+        <div class="implication">Google's distribution strategy achieves what its product couldn't — ambient AI default at smartphone scale. ChatGPT's moat is intentional deep-dive use; the ambient layer erodes habit formation over time. EU exclusion is a short-term regulatory window for European ChatGPT share.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">SpaceXAI</span> — Cursor brand phasing out into "Grok Bot"; Grok 4.7 (2.1T params, SpaceX engineering data) confirmed September 12. Three compounding signals: brand dissolution creates a developer capture window that closes at rename; Grok 4.7 is a domain-specific threat for aerospace/defense/manufacturing verticals; Claude Code's -17% limit cut retraction damages competitor trust simultaneously.</div>
+        <div class="implication">Developer community capture window is open now — enterprise developers loyal to Cursor brand face forced identity transition to SpaceXAI. Codex Sol ($4/$20 through November 21, no credit model, no tokenizer change) is the most cost-predictable enterprise coding API in the market. Publish comparative benchmarks vs. Grok 4.7 on or around September 12.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Fable 5.1 launched September 1 with 75% cache read cost reduction ($1.00→$0.25/M), creating 25–45% total savings on agentic workloads. Apple's Siri AI on Gemini represents a potential multi-billion-query-daily API deployment — the largest potential enterprise API customer in AI history. OpenAI Astra (59% Polymarket by Sep 15) is the critical counter-move window.</div>
+        <div class="implication">Anthropic's 75% cache read reduction is the most significant API pricing move this week — GPT-5.6 Sol ($4/$20, no comparable cache discount) must respond or risk losing high-volume agentic API customers. GSA OneGov T-28 days: $1.6B savings is the ROI anchor for federal renewals.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Google</span> — Apple iOS 27 Siri AI launches in September powered by Gemini (~$1B deal). Combined with Android forced migration September 4, Google achieves ambient AI defaults on ~4.5B devices across both major smartphone ecosystems. The largest AI distribution event of 2026 — achieved without product superiority. EU and China excluded at launch.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">SpaceXAI</span> — Grok 4.7 confirmed September 12 (Musk today: "10 days"). 2.1T parameters, training complete with SpaceX engineering corpus (Starlink telemetry, rocket development records). Cursor brand phasing out → "Grok Bot"; workforce integrated into SpaceXAI. Developer community capture window is open now — closes when rename completes.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Anthropic</span> — Claude Fable 5.1 launched September 1 with 75% cache read cost reduction ($0.25/M), 52.6% Terminal-Bench-Science (2.1× over Fable 5), Claude Security enterprise beta, Project Glasswing at 150+ orgs, and $35M OSS security fund. Most comprehensive competitor model launch of the week — direct API pricing pressure and enterprise security positioning play.</span>
+        <span class="tag tag-api">API &amp; Models</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', this)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', this)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', this)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon', this)">Horizon Watch</button>
+  </div>
+
+  <!-- Tab: ChatGPT -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products — September 2, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Google (Gemini)</span> — iOS 27 Siri AI launches in September with Gemini; Android forced migration September 4; dual-platform ambient AI distribution achieved <span class="new-badge">NEW</span></h4>
+        <p>Gemini-powered Siri rolls out with iOS 27, iPadOS 27, macOS 27, watchOS 27, and visionOS 27 in September 2026 — the result of a ~$1B Apple-Google deal announced at WWDC. Siri AI supports 20+ consecutive dialogue turns, personal context (messages, emails, photos), cross-app action execution, and on-screen content understanding. English-first; US, UK, Canada, Australia are day-one markets. EU and China explicitly excluded at launch due to regulatory constraints. "Build with Gemini" developer workshop series begins today in Chicago (New York Sep 22, San Francisco Sep 23, Sunnyvale Sep 25, Seattle Sep 30). Gemini 3.5 Pro is on its 26th consecutive missed window — Google's premium chat product gap persists while its distribution advantage grows.</p>
+        <div class="implication-note"><strong>PMM implication:</strong> Google doesn't need to beat ChatGPT on capability — Gemini becomes the first AI users reach for ambient queries, voice commands, and quick lookups. ChatGPT's moat is intentional deep-dive use; habit formation at the ambient layer erodes that moat over time. The EU carve-out protects OpenAI's European user base — EU is a ChatGPT stronghold relative to Gemini's regulatory constraints.</div>
+        <div class="source">Source: <a href="https://www.cnbc.com/2026/01/12/apple-google-ai-siri-gemini.html">CNBC</a> · <a href="https://www.macrumors.com/2026/04/22/google-gemini-powered-siri-2026/">MacRumors</a> · <a href="https://qz.com/apple-siri-ai-google-gemini-wwdc-2026-060826">QZ.com</a> · <a href="https://tech-insider.org/apple-google-gemini-siri-deal-1-billion-2026/">tech-insider.org</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Anthropic (Claude)</span> — Fable 5.1 + Mythos 5.1 launched September 1; Claudeforce open beta entering September; Claude Code limit retraction after developer backlash <span class="new-badge">NEW</span></h4>
+        <p>Fable 5.1 launches with 75% cache read reduction, making Claude's API significantly more affordable for enterprise power users. Claudeforce open beta begins in September with 37 prebuilt CRM skills in Claude — enterprise consumer expansion. S-1 public filing still not submitted as of September 2; institutional roadshow likely already underway given October Nasdaq target. Claude Code limit cut announcement was pulled after severe developer backlash — Anthropic explicitly admitted the -17% effective reduction it had initially framed as "+25%," with the retraction itself now circulating as a credibility story.</p>
+        <div class="source">Source: <a href="https://venturebeat.com/technology/anthropics-claude-fable-5-1-and-mythos-5-1-arrive-with-a-75-cost-reduction-for-fable-cache-reads">VentureBeat</a> · <a href="https://www.ibtimes.sg/claude-codes-25-usage-increase-actually-17-cut-developers-are-angry-93098">IBTimes SG</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-cutting-claude-codes-current-weekly-limits-by-17-percent/">Bleeping Computer</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">xAI/SpaceXAI (Grok)</span> — Grok 4.7 confirmed September 12 (Musk post today); Cursor brand dissolving toward Grok Bot; security vulnerability day 91 unpatched <span class="new-badge">NEW</span></h4>
+        <p>Musk posted September 2 confirming Grok 4.7 "in 10 days" = September 12 — updating the prior "Sep 2–9" window. The Cursor brand dissolving into SpaceXAI/Grok branding creates short-term developer confusion that may benefit ChatGPT's messaging on stability and brand continuity. Grok's cryptographic context injection vulnerability (day 91, 40% exploit rate) remains unpatched — Grok 4.7 will likely deploy September 12 carrying this risk unless xAI acts in the next 10 days.</p>
+        <div class="source">Source: <a href="https://www.nextbigfuture.com/2026/09/spacexai-grok-4-7-releases-september-12.html">NextBigFuture</a> · <a href="https://www.pymnts.com/news/artificial-intelligence/2026/cursor-brand-name-may-not-survive-spacex-acquisition/">PYMNTS.com</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment</h3>
+      <div class="section-desc">UX reactions and user discussions on Reddit, Twitter/X, and Hacker News — September 2</div>
+      <div class="signal-card">
+        <h4>Community focus September 2: Apple iOS 27 Siri reaction, Claude Code retraction, Grok 4.7 countdown, WebMCP Challenge closing tomorrow</h4>
+        <p><strong>r/ChatGPT:</strong> Apple Siri AI threads trending — mixed reaction between "Gemini everywhere is convenient" and "I'll still use ChatGPT for serious work." Users asking if Apple will offer ChatGPT as an alternative AI in iOS 27 (no confirmed plans). The ambient vs. intentional AI divide is emerging as a user framing that benefits ChatGPT's positioning if properly messaged.</p>
+        <p><strong>r/ClaudeAI:</strong> Positive reception to Fable 5.1 cache cost reduction among developers. Claude Code limit retraction referenced in multiple threads — community tone mostly positive on Anthropic admitting the cut, but trust damage noted.</p>
+        <p><strong>r/LocalLLaMA:</strong> Grok 4.7 September 12 speculation — debate about whether SpaceX engineering data improves general benchmarks or only domain-specific (aerospace) ones. No consensus.</p>
+        <p><strong>HN:</strong> WebMCP Challenge closing tomorrow generating interest; debate about ecosystem adoption barriers ("WebMCP is great if every major website adopts it, but that's the bet").</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board signals from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Pre-IPO phase. Project Glasswing expansion to 150+ orgs requires partner marketing and enablement. Claude Security enterprise beta requires enterprise marketing and customer success. Pre-IPO quiet period imminent when public S-1 lands — consumer messaging may pause.</div>
+          <div class="trend trend-up">↑ Inferred from product expansion signals</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">iOS 27 Siri partnership requires dedicated partner engineering, reliability, and joint GTM support roles. "Build with Gemini" workshops (5 cities this month) require event marketing and DevRel headcount.</div>
+          <div class="trend trend-up">↑ Sustained investment from dual-platform distribution</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Codex -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature launches &amp; competitive moves</h3>
+      <div class="section-desc">New capabilities from enterprise coding tools — September 2, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">SpaceXAI (Cursor → Grok Bot)</span> — Cursor brand phasing out; "Sand" agent renamed Grok Bot; workforce folded into SpaceXAI; Grok 4.7 (September 12) becomes integrated IDE model <span class="new-badge">NEW</span></h4>
+        <p>Post-acquisition integration confirmed: Cursor will not run as an independent entity. The Cursor brand will be phased out in the months ahead. The in-house general-purpose coding agent code-named "Sand" will be renamed Grok Bot — a deliberate shift to unify coding agents under the Grok brand. The "Cursor coding assistant" product name is preserved for now, but the trajectory toward Grok branding is clear. Cursor's 1,500-person workforce is being folded directly into SpaceXAI structures. SpaceXAI's integrated stack: Grok 4.7 (model) → Cursor IDE / Grok Build (interface) → Grok Bot (autonomous agent) — all underpinned by SpaceX engineering domain data.</p>
+        <div class="implication-note"><strong>Codex PM implication:</strong> (a) Brand dissolution creates a developer capture window — enterprise developers loyal to "Cursor" are navigating forced identity transition, which typically creates churn risk; window closes when rename completes. (b) Grok Bot brand consolidation may alienate politically-sensitive developer segments who don't want Elon Musk political association. (c) Publish direct comparisons vs. Grok 4.7 on September 12 — highlight Sol's cost stability ($4/$20 through November 21) vs. SpaceXAI's uncertain post-acquisition pricing trajectory.</div>
+        <div class="source">Source: <a href="https://www.pymnts.com/news/artificial-intelligence/2026/cursor-brand-name-may-not-survive-spacex-acquisition/">PYMNTS.com</a> · <a href="https://www.theinformation.com/articles/cursor-maps-branding-changes-spacex-acquisition-nears">The Information</a> · <a href="https://cursor.com/blog/joining-spacex">Cursor blog</a> · <a href="https://techcrunch.com/2026/08/15/spacex-officially-closes-its-cursor-acquisition/">TechCrunch</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Anthropic (Claude Code)</span> — Limit cut announcement retracted and rewritten; -17% effective reduction September 14 confirmed; developer backlash severe <span class="new-badge">NEW DETAIL</span></h4>
+        <p>Anthropic pulled the initial Claude Code limit announcement (which framed the September 14 change as "+25%") and published a replacement explicitly admitting the -17% effective reduction vs. current elevated levels. Developer reactions: final weekly capacity going from 150 to 125 units. IBTimes SG headline: "Claude Code's 25% Usage Increase Is Actually a 17% Cut; Developers Are Angry." The retraction itself is now circulating as a credibility story separate from the limit change.</p>
+        <div class="implication-note"><strong>Codex PM implication:</strong> Combine with Sonnet 5 repricing ($2/$10→$3/$15 + tokenizer adds 0–35% on identical workloads) to frame Anthropic's total Claude Code cost trajectory as increasing. Codex Sol ($4/$20 through November 21, no tokenizer change, no usage limits) is the most cost-predictable enterprise coding API in the market. The retraction-then-admission pattern damages developer trust at a moment when the Copilot billing shock has developers hyper-sensitive to pricing communications.</div>
+        <div class="source">Source: <a href="https://www.ibtimes.sg/claude-codes-25-usage-increase-actually-17-cut-developers-are-angry-93098">IBTimes SG</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-cutting-claude-codes-current-weekly-limits-by-17-percent/">Bleeping Computer</a> · <a href="https://claudelab.net/en/articles/claude-code/claude-code-weekly-limit-change-september-14-percent-math">claudelab.net</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">GitHub Copilot</span> — Billing shock day 2: Business -37%, Enterprise -44% credit cuts; "September cliff" analysis tools circulating; enterprise teams in 10-day evaluation windows</h4>
+        <p>GitHub Copilot billing shock is now in its second day. The "September cliff" enterprise cost analysis from CloudZero and DevTools Review is circulating in enterprise cost management communities. Enterprise teams are running usage experiments to calibrate their true credit needs before committing to an alternative. Community switching threads continue to name Codex and Claude Code in roughly equal measure, with cost certainty and no-credit model as primary switching factors.</p>
+        <div class="source">Source: <a href="https://www.cloudzero.com/blog/github-copilot-enterprise-pricing/">CloudZero</a> · <a href="https://devtoolsreview.com/pricing/copilot-ai-credits-september-2026/">DevTools Review</a> · <a href="https://www.ghacks.net/2026/06/02/github-copilot-usage-based-billing-takes-effect-drawing-developer-backlash-over-rapid-credit-depletion/">gHacks</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI (Codex/WebMCP)</span> — WebMCP Challenge closes September 3 (tomorrow); judging September 4–21; winners announced September 23; Astra Polymarket 59% by September 15</h4>
+        <p>The WebMCP Challenge submission deadline is September 3 at 1PM PT. Judging runs September 4–21; winners announced approximately September 23. The challenge builds developer ecosystem adoption of the WebMCP standard, positioning Codex as the platform for agent-native web apps. Enterprise workspace exclusion remains a gap in the current rollout. Astra's imminent launch (59% Polymarket by Sep 15) would be the most significant Codex underlying-model upgrade in 2026 — if it lands before Grok 4.7's September 12 release, it preempts the benchmark comparison window.</p>
+        <div class="source">Source: <a href="https://webmcp.devpost.com/">OpenAI WebMCP Challenge — Devpost</a> · <a href="https://polymarket.com/event/openais-astra-released-by-20260801214557729">Polymarket (59% by Sep 15)</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Cognition (Windsurf)</span> — SWE-1.5 remains default for all users; 950 tok/s, free through ~November 2026</h4>
+        <p>Windsurf SWE-1.5 (Wave 13) remains the default coding model at 950 tok/s (13× faster than Sonnet 4.5). Developer speed benchmark tests from late August continue to circulate. No new September 2 announcements from Cognition.</p>
+        <div class="source">Source: Cognition/Windsurf blog, Neowin — established</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>AI coding tool market snapshot — September 2, 2026</h3>
+      <div class="section-desc">Market share and key developments as of today</div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Professional Adoption</th>
+              <th>Key Development Sep 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="highlight">Claude Code (Anthropic)</td>
+              <td class="highlight">39% global / 47% US — #1</td>
+              <td>Fable 5.1 (75% cache cut); <span class="alert-cell">limit cut retraction; -17% Sep 14</span></td>
+            </tr>
+            <tr>
+              <td>GitHub Copilot (Microsoft)</td>
+              <td>21% (↓ from 29% Jan 2026)</td>
+              <td class="alert-cell">Billing shock day 2: Business -37%, Enterprise -44%; "Sep cliff" tools circulating</td>
+            </tr>
+            <tr>
+              <td>Cursor → Grok Bot (SpaceXAI)</td>
+              <td>64% Fortune 500 / $4B ARR</td>
+              <td class="alert-cell">Brand phasing out → Grok Bot; Grok 4.7 Sep 12; workforce in SpaceXAI</td>
+            </tr>
+            <tr>
+              <td>Windsurf (Cognition)</td>
+              <td>$492M+ ARR</td>
+              <td>SWE-1.5 default; 950 tok/s; free ~Nov 2026; no new signals</td>
+            </tr>
+            <tr>
+              <td class="highlight">Codex (OpenAI)</td>
+              <td>65% awareness / active use undisclosed</td>
+              <td>Sol $4/$20 (through Nov 21); WebMCP closes Sep 3; <span class="new-cell">Astra 59% by Sep 15</span></td>
+            </tr>
+            <tr>
+              <td>Google (Code Assist + Jules)</td>
+              <td>Growing</td>
+              <td>Gemini 3.5 Pro 26th delay; no new coding tool signals today</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">Community discussions on Reddit, HN, and X — September 2</div>
+      <div class="signal-card">
+        <h4>September 2 developer community: Cursor brand dissolution, Claude Code retraction, Copilot "September cliff" calculators, Grok 4.7 debate</h4>
+        <p><strong>r/programming:</strong> Cursor brand dissolution generating "I don't trust the product direction" sentiment — brand continuity cited as a tool selection factor alongside cost stability. Claude Code retraction circulating as credibility concern. Copilot "September cliff" calculators trending with Codex Sol ($4/$20 through November) appearing in cost comparison threads.</p>
+        <p><strong>r/LocalLLaMA:</strong> Grok 4.7 September 12 debate focused on whether SpaceX domain data improves general coding benchmarks or only aerospace-specific ones. Skepticism dominant.</p>
+        <p><strong>r/ClaudeAI:</strong> Fable 5.1 cache cost reduction positive reception — developers recalculating agentic workflow costs and finding meaningful savings. Developer survey data (digitalapplied.com): Claude Code 28% primary-tool market share, Cursor 24%; both lead Copilot's declining 21%. Trust in AI coding tools broadly declining — 29% positive sentiment in 2025 vs. 70%+ in 2023.</p>
+        <div class="source">Source: <a href="https://www.digitalapplied.com/blog/ai-coding-tool-adoption-2026-developer-survey">digitalapplied.com — AI Coding Tool Adoption 2026 survey</a> · Community synthesis (MEDIUM confidence)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — engineering &amp; product</h3>
+      <div class="section-desc">Job board signals from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">SpaceXAI (Cursor)</div>
+          <div class="detail">Brand dissolution and workforce integration underway. IDE product team engineers face role and identity uncertainty. Engineers who joined for Anysphere/Cursor startup culture may not fit SpaceXAI's integration model — attrition risk elevated.</div>
+          <div class="trend trend-watch">⚠ Watch LinkedIn for Cursor engineer departures</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Pre-IPO phase. Project Glasswing 150+ org expansion requires partnership management and security engineering headcount. Claude Security enterprise beta requires security engineering and enterprise customer success roles.</div>
+          <div class="trend trend-up">↑ Pre-IPO hiring surge (legal, compliance, IR) through Oct</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">WebMCP Challenge close (Sep 3) drives ecosystem DevRel build-out. Astra launch preparation requires go-to-market headcount. Sol November 21 expiry requires BD capacity for post-promo pricing negotiations.</div>
+          <div class="trend">→ Stable / scaling GTM</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">iOS 27 Siri partnership requires sustained Apple-Google joint engineering — API reliability, partner engineering, and joint GTM roles. Durable, multi-year headcount commitment implied.</div>
+          <div class="trend trend-up">↑ Sustained by Apple partnership scale</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: API & Models -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; capabilities</h3>
+      <div class="section-desc">New model launches, capability updates, and pricing changes — September 2, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Anthropic</span> — Claude Fable 5.1 and Mythos 5.1 launched September 1: cache reads $0.25/M (75% reduction), 52.6% Terminal-Bench-Science (2.1× over Fable 5); Claude Security enterprise beta; Project Glasswing 150+ orgs <span class="new-badge">NEW — FULL SPEC</span></h4>
+        <p>Fable 5.1 is GA via the Claude API. Mythos 5.1 restricted to Project Glasswing (cybersecurity, life sciences, critical infrastructure in 15+ countries). Key API implications: (a) 75% cache read reduction to $0.25/M — 25–45% total cost savings depending on workload; (b) Terminal-Bench-Science 52.6% vs. 24.7% for Fable 5 (2.1× improvement) — substantial reasoning advance for coding and agentic workloads; (c) Mid-conversation effort adjustment lets API users tune inference cost dynamically without new sessions; (d) C2PA content provenance tracking on all outputs for compliance; (e) Claude Security enterprise beta: CWE-classified vulnerability scanning with suggested fixes, billed through standard Enterprise token usage; (f) $35M open-source security fund — most aggressive institutional security play in AI. Project Glasswing: 10,000+ high/critical vulnerabilities found to date; now 150+ orgs in 15+ countries.</p>
+        <div class="implication-note"><strong>BD implication:</strong> The 75% cache read reduction is a direct pricing response to DeepSeek and open-weight alternatives. GPT-5.6 Sol ($4/$20 through November 21) remains competitive on output pricing but has no comparable cache read discount. BD should monitor whether this triggers Anthropic API share gains among high-volume agent builders.</div>
+        <div class="source">Source: <a href="https://venturebeat.com/technology/anthropics-claude-fable-5-1-and-mythos-5-1-arrive-with-a-75-cost-reduction-for-fable-cache-reads">VentureBeat</a> · <a href="https://www.marktechpost.com/2026/09/01/anthropic-releases-claude-fable-5-1-and-claude-mythos-5-1-52-6-on-terminal-bench-science-and-75-cheaper-cache-reads/">MarkTechPost</a> · <a href="https://www.datacamp.com/blog/claude-fable-5-1">DataCamp</a> · <a href="https://cyberscoop.com/anthropic-project-glasswing-expansion-critical-infrastructure-claude-mythos/">CyberScoop</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">SpaceXAI (Grok)</span> — Grok 4.7 confirmed September 12: 2.1T parameters, SpaceX engineering corpus; security vulnerability day 91 unpatched; Grok 4.7 deploys with unpatched risk <span class="new-badge">NEW DATE</span></h4>
+        <p>Training complete with SpaceX engineering corpus: Starlink satellite telemetry, rocket development records and test logs, internal engineering documents (ITAR-restricted material excluded). Musk claims "surpass all models" — no official benchmark card, model card, API pricing, or context window disclosed. xAI's cryptographic context injection vulnerability (40% exploit success rate) remains unpatched at day 91 — no CVE, no public mitigation timeline. Grok 4.7 will likely deploy September 12 carrying this vulnerability unless xAI acts in the next 10 days. Enterprise security teams evaluating Grok for tri-cloud deployment (AWS Bedrock, Google Enterprise, Microsoft Azure Foundry) should treat this as an open production risk.</p>
+        <div class="source">Source: <a href="https://www.nextbigfuture.com/2026/09/spacexai-grok-4-7-releases-september-12.html">NextBigFuture</a> · <a href="https://beincrypto.com/grok-4-7-release-spacex-data/">beincrypto.com</a> · <a href="https://adversa.ai/blog/cryptographic-context-injection-grok-data-theft/">adversa.ai</a> · <a href="https://www.theregister.com/ai-and-ml/2026/08/20/grok-chat-duped-into-swallowing-injected-instructions/5290019">The Register</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Google (Gemini)</span> — Gemini 3.5 Pro 26th consecutive missed window; iOS 27 Siri creates potential largest-ever API deployment if Apple routes queries through Gemini API at scale <span class="new-badge">NEW IMPLICATION</span></h4>
+        <p>Apple's Siri AI running on Gemini could represent a multi-billion-query-daily API deployment — the largest single enterprise API customer in AI history — if Apple pays per-token for Siri queries. The commercial terms of the ~$1B Apple-Google deal are undisclosed; Apple may be self-hosting Gemini models on-device or via private cloud rather than using the public Gemini API. Regardless of the billing model, Gemini's API is powering AI at Apple scale — a validation signal for enterprise API buyers evaluating Google. Gemini 3.5 Pro 26th missed window: Google's dual-track strategy (3.5 Pro perpetually delayed + Gemini 4 pretraining active) is clearly resolving toward Gemini 4 releasing before 3.5 Pro achieves meaningful penetration.</p>
+        <div class="source">Source: <a href="https://www.cnbc.com/2026/01/12/apple-google-ai-siri-gemini.html">CNBC</a> · <a href="https://tech-insider.org/apple-google-gemini-siri-deal-1-billion-2026/">tech-insider.org</a> · Apple WWDC 2026 keynote</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI (Astra)</span> — Polymarket 59% by September 15; Grok 4.7 (September 12) creates benchmark pressure; September 12–15 is the optimal Astra launch window</h4>
+        <p>Astra remains the most significant pending OpenAI API release. Grok 4.7's September 12 launch creates a window where, if Astra does not respond by September 15, the newest frontier model in the market is SpaceXAI's — trained on SpaceX engineering data with "beats all models" claims circulating. For BD: a September 12–15 Astra launch would preempt Grok 4.7 benchmark comparisons. An October launch cedes the benchmark-framing window. The cybersecurity safety review (August 7) remains the stated blocker.</p>
+        <div class="source">Source: <a href="https://polymarket.com/event/openais-astra-released-by-20260801214557729">Polymarket — 59% by Sep 15</a> · OpenAI official statement August 7</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>API pricing snapshot — September 2, 2026</h3>
+      <div class="section-desc">Current model pricing and competitive positioning</div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Model</th>
+              <th>Input / Output ($/1M tok)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Sol</td>
+              <td>$4 / $20</td>
+              <td>1M</td>
+              <td>Promo through Nov 21; 750 tok/s; ZDR + Private Safety; <span class="new-cell">Astra 59% by Sep 15</span></td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td class="new-cell">Astra (pending)</td>
+              <td class="new-cell">TBD</td>
+              <td class="new-cell">TBD</td>
+              <td class="new-cell">59% by Sep 15 (Polymarket); Grok 4.7 Sep 12 benchmark pressure</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td class="alert-cell">Grok 4.7 (INCOMING)</td>
+              <td class="alert-cell">TBD</td>
+              <td class="alert-cell">TBD</td>
+              <td class="alert-cell">SEP 12: 2.1T params, SpaceX data; VULN day 91 unpatched</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td>Grok 4.6</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td>Tri-cloud; security vulnerability day 91; Cursor brand → Grok Bot</td>
+            </tr>
+            <tr>
+              <td class="highlight">Anthropic</td>
+              <td class="highlight">Claude Fable 5.1</td>
+              <td class="highlight">$10 / $50 (cache: $0.25/M — 75% cut)</td>
+              <td>1M</td>
+              <td class="new-cell">NEW SEP 1: 52.6% Terminal-Bench-Sci; Claude Security; $35M OSS fund</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Mythos 5.1</td>
+              <td>Restricted / Project Glasswing</td>
+              <td>1M</td>
+              <td>Cybersecurity/life-sci vetted orgs; 150+ org program; 10K+ vulns found</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Opus 5</td>
+              <td>$5 / $25</td>
+              <td>1M</td>
+              <td class="alert-cell">Claude Code default; -17% limit cut Sep 14 (retraction issued)</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Sonnet 5</td>
+              <td>$3 / $15</td>
+              <td>1M</td>
+              <td>Standard; tokenizer adds 0–35% effective cost on identical workloads</td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.7 Flash</td>
+              <td>~$0.75 / $3.75 (intro)</td>
+              <td>1M</td>
+              <td>50% off through Dec 31; <span class="new-cell">iOS 27 Siri runs on Gemini</span></td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.5 Pro</td>
+              <td>TBD</td>
+              <td>2M (leaked)</td>
+              <td class="alert-cell">26TH CONSECUTIVE MISSED WINDOW; Gemini 4 pretraining active</td>
+            </tr>
+            <tr>
+              <td>Meta</td>
+              <td>Muse Glimmer 30B</td>
+              <td>Free (self-hosted)</td>
+              <td>TBD</td>
+              <td>Apache 2.0; Muse Spark 1.2 open weights still "soon"</td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td>
+              <td>V4-Pro-0813</td>
+              <td>Varies / ~$3.96 peak</td>
+              <td>1M</td>
+              <td>$8B second round in final signing; close expected imminently</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Partnership &amp; ecosystem signals</h3>
+      <div class="section-desc">New integrations, cloud partnerships, and strategic deployments</div>
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Google</span> — "Build with Gemini" developer workshop series begins today (Chicago); 5-city September tour; dual-platform consumer + enterprise developer engagement simultaneously <span class="new-badge">NEW</span></h4>
+        <p>Google begins its "Build with Gemini" developer workshop series in Chicago today (September 2). Remaining September tour: New York September 22, San Francisco September 23, Sunnyvale September 25, Seattle September 30. The workshop series runs simultaneously with the iOS 27 Siri launch (consumer distribution) — Google is executing both consumer ambient AI default and enterprise developer ecosystem development in the same calendar month.</p>
+        <div class="source">Source: Google Cloud official events page</div>
+      </div>
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI (GSA OneGov)</span> — T-28 days to September 30 expiry; $1.6B total savings documented; OpenAI and Google only (Anthropic excluded); prices expected to increase</h4>
+        <p>Government Executive and Nextgov confirmed: OneGov AI deals have saved the government $1.4–$1.6B to date. GSA officials confirmed prices will "eventually increase" after the promotional period. Some manufacturers have agreed to extend limited-time offers; new offers being brokered before September 30. OpenAI and Google are the only remaining providers (Anthropic terminated February 27) — a bilateral competitive advantage across 3.4M federal workers at 120+ agencies. For OpenAI BD: $1.6B savings is the strongest ROI anchor for federal renewal negotiations.</p>
+        <div class="source">Source: <a href="https://www.govexec.com/technology/2026/08/onegov-savings-balloon-over-16-b-agencies-weigh-future-ai-contracting/415437/">Government Executive</a> · <a href="https://fedscoop.com/onegov-ai-deals-expiring-whats-next/">FedScoop</a> · <a href="https://www.techtimes.com/articles/324049/20260812/gsa-dollar-deals-expire-sept-30-34m-federal-workers-locked-no-plan-named.htm">TechTimes</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Horizon Watch -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable challengers</h3>
+      <div class="section-desc">Rising competitors and strategic developments worth leadership attention</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · IPO Track</div>
+          <h4><span class="company-name">Anthropic</span> — S-1 public filing imminent; October Nasdaq target; institutional roadshow likely underway; $47B ARR, $2T implied valuation</h4>
+          <p>As of September 2, the public S-1 has not been filed. Institutional roadshow likely already underway — large-cap IPOs typically begin 2–3 weeks before public S-1 filing. Goldman Sachs, JPMorgan, Morgan Stanley leading a $60B+ offering. Fable 5.1's 75% cache read cut and Claudeforce's $300M/year token commitment will appear prominently in the prospectus. The "AI backlash" risk factor (CNBC August 21) will be the most-analyzed section.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · China</div>
+          <h4><span class="company-name">DeepSeek</span> — $8B second round in final signing; "late August" targeted close has moved into September; $74B valuation; 1GW compute buildout</h4>
+          <p>Combined 2026 fundraising: ~$15B+ across two rounds ($7.4B closed June + $8B in final signing). The 1GW compute buildout (~$3–4B in H100-class hardware) ensures sustained cost-efficiency pressure through 2027. DeepSeek's "talent intensification" against Alibaba Qwen, Tencent Hy4, and Zhipu GLM explicitly stated in funding context. Planning for a decade-long horizon — STAR Market IPO 2027.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · Open Source</div>
+          <h4><span class="company-name">Meta AI</span> — Muse Spark 1.2 open weights still "soon" (no date confirmed); if lands September, Meta has the most capable US-origin self-hostable model</h4>
+          <p>No new Meta signals September 2. Muse Glimmer 30B established (Apache 2.0). Muse Spark 1.2 open weights remain "soon" per Zuckerberg and Wang (August 10). If they land in September, Meta would have the most capable US-origin open-weight model for enterprise self-hosting — compelling given GLM-5.3's Chinese-origin concerns in regulated sectors.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Rising · Distribution</div>
+          <h4><span class="company-name">Google DeepMind</span> — Gemini 3.5 Pro 26th consecutive missed window; Gemini 4 pretraining active; iOS 27 Siri is largest API partnership deployment</h4>
+          <p>Google's distribution strategy (Android + iOS) makes the model timeline secondary — Google wins through defaults. The iOS 27 Siri deployment is a structural partnership that outlasts any single model release. Gemini 4 pretraining signals Google is skipping 3.5 Pro as a meaningful product milestone and going directly to the next generation. The model gap is real; the distribution gap is not.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech, governance &amp; emerging risks</h3>
+      <div class="section-desc">Monthly horizon scan — emerging paradigms, governance signals, and structural risks</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3-alert">
+          <div class="tier-label">Governance · NEW</div>
+          <h4><span class="company-name">EU AI Act Article 50</span> — T-~28 days to enforcement; Apple iOS 27 EU exclusion is the strongest public validation of AI Act as a real compliance barrier</h4>
+          <p>Apple's decision to exclude the EU from iOS 27 Siri AI at launch is the strongest public validation of the EU AI Act as a real compliance barrier to date — the first major tech company to explicitly acknowledge the constraint by excluding their entire EU customer base from a flagship feature. Anthropic's C2PA watermarking (all models from August 2, 2026) maintains its compliance first-mover position. No enforcement actions yet; enforcement window is approximately October 2026–February 2027.</p>
+        </div>
+        <div class="horizon-card tier3-alert">
+          <div class="tier-label">Security · ACTIVE</div>
+          <h4><span class="company-name">Grok Security Vulnerability</span> — Day 91 unpatched; Grok 4.7 (September 12) deploys with open vulnerability; tri-cloud live threat</h4>
+          <p>xAI's cryptographic context injection vulnerability (adversa.ai, 40% exploit success rate) remains unpatched at day 91. No CVE, no public mitigation timeline. Grok 4.7 may deploy on September 12 carrying this risk. Enterprise security teams evaluating Grok for production deployment should treat this as an open, unmitigated production risk across tri-cloud deployments (AWS Bedrock, Google Enterprise, Microsoft Azure Foundry). xAI's last public acknowledgment was a HackerOne ticket with no follow-up after August 10.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Federal</div>
+          <h4><span class="company-name">GSA OneGov</span> — T-28 days to September 30; $1.6B savings documented; OpenAI+Google bilateral position across 3.4M federal workers</h4>
+          <p>GSA officials confirmed prices will increase after the promotional period. New offers being brokered before September 30. OpenAI and Google are the only remaining providers (Anthropic terminated February 27) — this bilateral position across 120+ agencies represents a structural competitive advantage at the federal scale that compounds with each contract renewal.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Watch</div>
+          <h4>Agentic framework consolidation and WebMCP standard adoption</h4>
+          <p>WebMCP Challenge closes tomorrow (September 3) — the submission quality will signal how much developer adoption the standard is seeing beyond OpenAI's own ecosystem. LangGraph, CrewAI, and AutoGen continue consolidating, but the winning framework will likely be determined by which LLM provider offers the best native agent primitives. OpenAI's WebMCP positions Codex as the agent-native platform; adoption of the standard outside the challenge is the metric to watch.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — cross-cutting</h3>
+      <div class="section-desc">Strategic hiring patterns across the competitive landscape</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">1,087+ active postings. Pre-IPO: legal, compliance, IR hiring surge expected through October Nasdaq listing. Project Glasswing 150-org expansion: partnership management, security research, technical implementation. $35M OSS fund: grants and partnership management roles.</div>
+          <div class="trend trend-up">↑ Pre-IPO acceleration; Project Glasswing headcount surge</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">SpaceXAI (Cursor)</div>
+          <div class="detail">Brand dissolution creates attrition risk among Cursor IDE product team engineers. Grok 4.7 training complete reduces near-term ML hiring urgency. Watch LinkedIn for former Cursor engineers departing post-integration.</div>
+          <div class="trend trend-watch">⚠ Monitor LinkedIn departures — acquisition integration attrition risk</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">DeepSeek</div>
+          <div class="detail">"Talent intensification" against Alibaba Qwen, Tencent Hy4, and Zhipu GLM explicitly stated in $8B round context. 1GW compute buildout requires infrastructure engineering. China Money Network (August 29) confirmed the talent focus.</div>
+          <div class="trend trend-up">↑ Active talent intensification — confirmed in funding context</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">iOS 27 Siri partnership requires durable API reliability, partner engineering, and joint GTM headcount — multi-year commitment implied by partnership structure. Android migration support roles ongoing.</div>
+          <div class="trend trend-up">↑ Durable Apple partnership headcount investment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent v1.0. All signals are sourced from publicly available information. Confidence scores reflect source corroboration, not strategic certainty. For internal use only. Delta analysis vs. September 1, 2026 report.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <div class="sources-section">
+        <strong>Apple iOS 27 Siri AI (Google Gemini)</strong>
+        <a href="https://www.cnbc.com/2026/01/12/apple-google-ai-siri-gemini.html">cnbc.com — Apple picks Google's Gemini to run AI-powered Siri</a><br>
+        <a href="https://www.macrumors.com/2026/04/22/google-gemini-powered-siri-2026/">macrumors.com — Google Confirms Gemini-Powered Siri Coming Later This Year</a><br>
+        <a href="https://qz.com/apple-siri-ai-google-gemini-wwdc-2026-060826">qz.com — Apple unveils Siri AI with Google Gemini at WWDC 2026</a><br>
+        <a href="https://tech-insider.org/apple-google-gemini-siri-deal-1-billion-2026/">tech-insider.org — Apple's $1B Gemini Deal: Google AI Replaces Siri</a><br>
+        <a href="https://kersai.com/apple-siri-google-gemini-upgrade-2026-complete-guide-ios-26-ios-27/">kersai.com — Apple Kills Old Siri, Replaces It With Google Gemini 2026</a>
+      </div>
+      <div class="sources-section">
+        <strong>Grok 4.7 — September 12 Confirmation</strong>
+        <a href="https://www.nextbigfuture.com/2026/09/spacexai-grok-4-7-releases-september-12.html">nextbigfuture.com — SpaceXAI Grok 4.7 Releases September 12</a><br>
+        <a href="https://beincrypto.com/grok-4-7-release-spacex-data/">beincrypto.com — Elon Musk Says Grok 4.7 Lands in 10 Days and Will Beat Every Model</a><br>
+        <a href="https://finance.biggo.com/news/cdeb763e-3e82-4f0b-82bd-4f473881bf08">finance.biggo.com — Musk Announces Grok 4.7 Launch in Ten Days with 2.1 Trillion Parameters</a>
+      </div>
+      <div class="sources-section">
+        <strong>Cursor Brand Dissolution / SpaceXAI Integration</strong>
+        <a href="https://www.pymnts.com/news/artificial-intelligence/2026/cursor-brand-name-may-not-survive-spacex-acquisition/">pymnts.com — Cursor Brand Name May Not Survive SpaceX Acquisition</a><br>
+        <a href="https://finance.yahoo.com/technology/ai/articles/spacex-reportedly-nears-60b-cursor-220153276.html">finance.yahoo.com — SpaceX Reportedly Nears $60B Cursor Acquisition</a><br>
+        <a href="https://cursor.com/blog/joining-spacex">cursor.com — Cursor is now a part of SpaceX</a><br>
+        <a href="https://techcrunch.com/2026/08/15/spacex-officially-closes-its-cursor-acquisition/">techcrunch.com — SpaceX officially closes its Cursor acquisition</a><br>
+        <a href="https://www.theinformation.com/articles/cursor-maps-branding-changes-spacex-acquisition-nears">theinformation.com — Cursor Maps Out Branding, Other Changes as SpaceX Acquisition Nears</a>
+      </div>
+      <div class="sources-section">
+        <strong>Anthropic Claude Fable 5.1 + Mythos 5.1</strong>
+        <a href="https://venturebeat.com/technology/anthropics-claude-fable-5-1-and-mythos-5-1-arrive-with-a-75-cost-reduction-for-fable-cache-reads">venturebeat.com — Claude Fable 5.1 and Mythos 5.1 arrive with 75% cost reduction</a><br>
+        <a href="https://www.marktechpost.com/2026/09/01/anthropic-releases-claude-fable-5-1-and-claude-mythos-5-1-52-6-on-terminal-bench-science-and-75-cheaper-cache-reads/">marktechpost.com — Anthropic Releases Claude Fable 5.1 and Mythos 5.1</a><br>
+        <a href="https://www.datacamp.com/blog/claude-fable-5-1">datacamp.com — Claude Fable 5.1: Features, Benchmarks, and Pricing</a><br>
+        <a href="https://cyberscoop.com/anthropic-project-glasswing-expansion-critical-infrastructure-claude-mythos/">cyberscoop.com — Anthropic expanding access to Project Glasswing</a><br>
+        <a href="https://thenewstack.io/anthropic-mythos-claude-security/">thenewstack.io — Anthropic brings Mythos 5 to Claude Security</a>
+      </div>
+      <div class="sources-section">
+        <strong>Claude Code Limit Cut Retraction</strong>
+        <a href="https://www.ibtimes.sg/claude-codes-25-usage-increase-actually-17-cut-developers-are-angry-93098">ibtimes.sg — Claude Code's 25% Usage Increase Is Actually a 17% Cut; Developers Are Angry</a><br>
+        <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-cutting-claude-codes-current-weekly-limits-by-17-percent/">bleepingcomputer.com — Anthropic is cutting Claude Code's weekly limits by 17%</a><br>
+        <a href="https://claudelab.net/en/articles/claude-code/claude-code-weekly-limit-change-september-14-percent-math">claudelab.net — The Same Announcement Reads as '+25%' and as 'a 17% Cut'</a>
+      </div>
+      <div class="sources-section">
+        <strong>GitHub Copilot Billing Shock</strong>
+        <a href="https://www.cloudzero.com/blog/github-copilot-enterprise-pricing/">cloudzero.com — GitHub Copilot Enterprise pricing and the September cliff</a><br>
+        <a href="https://devtoolsreview.com/pricing/copilot-ai-credits-september-2026/">devtoolsreview.com — Copilot Included Credits Drop on 1 September 2026</a><br>
+        <a href="https://www.ghacks.net/2026/06/02/github-copilot-usage-based-billing-takes-effect-drawing-developer-backlash-over-rapid-credit-depletion/">ghacks.net — GitHub Copilot Usage-Based Billing Takes Effect</a>
+      </div>
+      <div class="sources-section">
+        <strong>Google Android Migration / GSA OneGov / Grok Vulnerability / Anthropic IPO</strong>
+        <a href="https://www.businesstoday.in/amp/technology/news/story/google-assistant-to-be-replaced-by-gemini-starting-september-on-android-and-wearos-547570-2026-08-06">businesstoday.in — Google Assistant replaced by Gemini September on Android and WearOS</a><br>
+        <a href="https://www.govexec.com/technology/2026/08/onegov-savings-balloon-over-16-b-agencies-weigh-future-ai-contracting/415437/">govexec.com — OneGov savings balloon to over $1.6B</a><br>
+        <a href="https://fedscoop.com/onegov-ai-deals-expiring-whats-next/">fedscoop.com — OneGov AI deals are ending</a><br>
+        <a href="https://adversa.ai/blog/cryptographic-context-injection-grok-data-theft/">adversa.ai — Cryptographic Context Injection: Grok Chat Data Theft</a><br>
+        <a href="https://www.theregister.com/ai-and-ml/2026/08/20/grok-chat-duped-into-swallowing-injected-instructions/5290019">theregister.com — Grok chat duped into swallowing injected instructions</a><br>
+        <a href="https://finance.yahoo.com/markets/stocks/articles/anthropic-files-confidential-1-joins-161008569.html">yahoo.com — Anthropic Files Confidential S-1</a><br>
+        <a href="https://www.bloomberg.com/news/articles/2026-08-06/deepseek-resumes-8-billion-round-with-monolith-in-the-running">bloomberg.com — DeepSeek Resumes $8 Billion Round</a>
+      </div>
+      <div class="sources-section">
+        <strong>Developer Sentiment &amp; Market Data</strong>
+        <a href="https://www.digitalapplied.com/blog/ai-coding-tool-adoption-2026-developer-survey">digitalapplied.com — AI Coding Tool Adoption 2026: Developer Survey</a><br>
+        <a href="https://webmcp.devpost.com/">webmcp.devpost.com — OpenAI WebMCP Challenge</a><br>
+        <a href="https://polymarket.com/event/openais-astra-released-by-20260801214557729">polymarket.com — OpenAI Astra release market (59% by Sep 15)</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
