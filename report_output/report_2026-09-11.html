@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — September 11, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F5F0E8; border: 1px solid #DED4C0; border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: #6B5C40; line-height: 1.65; }
+.trend-note strong { color: #4A3D28; }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-cross { background: #F0F5E8; color: #4A6E4A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new-signal { border-left: 3px solid #E53E3E; }
+.signal-card.standing { border-left: 3px solid var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card h4 .signal-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+.signal-badge.new { background: #FEE2E2; color: #DC2626; }
+.signal-badge.standing { background: #F3F4F6; color: #6B7280; }
+.signal-badge.t-minus { background: #FEF3C7; color: #D97706; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+.pricing-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text); vertical-align: top; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table .highlight-row td { background: #FFFBEB; font-weight: 500; }
+.pricing-table .alert-row td { background: #FFF5F5; }
+.pricing-table .mono { font-family: var(--font-mono); }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list h5 { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin: 12px 0 4px; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .pricing-table { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence &mdash; Daily Alert</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>September 11, 2026</span>
+      <span class="dot"></span>
+      <span>Generated September 11, 2026</span>
+      <span class="dot"></span>
+      <span>Prepared for OpenAI Strategy &amp; Operations</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>4 new confirmed signals vs. September 10 report:</strong> (1)&nbsp;<strong>Sam Altman tells employees OpenAI is open to slowing AI development</strong> — all-hands September 11; first time an OpenAI CEO has publicly entertained coordinated development pace reduction (Bloomberg). (2)&nbsp;<strong>Sébastien Bubeck publicly apologizes</strong> for "career remark" in Navier-Stokes dispute; Altman backs Bubeck within the hour; dispute enters managed de-escalation (The Next Web). (3)&nbsp;<strong>OpenAI signs 27-month OneGov federal deal</strong> — 50% token discount, $0 license fee, ~23M eligible workers starting October 1; Anthropic in quiet period cannot respond (Nextgov/FCW). (4)&nbsp;<strong>GitHub Copilot September 28 unified experience announced</strong> — Balanced review default (higher cost), permanent chat history (GitHub Changelog). <em>Standing: Grok 4.7 T-1 day · Day 101 vuln · GitSpawn Day 10 · Anthropic IPO Day 4 · Claude Code cut T-3 days · Gemini 3.5 Pro 33rd missed window · GSA OneGov T-19 days · Copilot billing shock Day 11 · wiki framework Day 6.</em>
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer / PMM</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">OpenAI internal</span> — Sam Altman's public statement that OpenAI is "open to slowing AI development," delivered at an all-hands and immediately reported by Bloomberg, is the most consequential OpenAI brand event since the Navier-Stokes announcement. Consumer news cycle this week: math controversy, researcher defection, executive apology, CEO suggesting slowdown.
+        </div>
+        <div class="implication">The Altman statement may be a regulatory signal — or it may be read as competitive disorientation. Meta Muse continues to gain consumer traction without this turbulence.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise / PM</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">SpaceXAI / GitHub Copilot</span> — Grok 4.7 is T-1 day from September 12 launch target, with two unpatched production vulnerabilities live at launch (Day 101 cryptographic + GitSpawn Day 10). GitHub Copilot billing shock Day 11; September 28 unified experience adds another procurement forcing event with higher costs.
+        </div>
+        <div class="implication">Enterprise procurement window is 2 weeks before Q4 budget freeze. Any uncommitted enterprise team will choose their coding tool stack by September 25.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform / BD</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">OpenAI (OneGov)</span> — New 27-month OneGov federal deal: 50% token discount, $0 license fee, 23M potential users starting October 1. Directly pre-empts Anthropic (in quiet period, legally constrained). DeepSeek V4.1 Flash September 14 auto-migration T-3 days generating developer concern about silent V4-Pro quality degradation.
+        </div>
+        <div class="implication">OpenAI sets the reference point for the largest government AI contract renewal in history — uncontested until Anthropic's IPO quiet period ends.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">OpenAI / Sam Altman</span> — Tells employees OpenAI is open to slowing AI development and hopes peer labs will join — first time a CEO has publicly entertained coordinated development pace reduction. Context: Jacob Coxon (Anthropic researcher) resignation warning both companies are "gambling with our lives"; Anthropic alignment lead Evan Hubinger publicly agreed. Altman also referenced the July Hugging Face model rogue incident in his all-hands framing. Bloomberg / QZ / Business Standard — September 11.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">OpenAI / GSA OneGov</span> — New 27-month federal deal signed: 50% token discount on ChatGPT models, $0 license fee, no minimum orders, eligibility expands from 3.4M to ~23M federal/state/local/tribal workers, effective October 1. Prior $1/year deal generated $1.4B in reported taxpayer savings. Anthropic in IPO quiet period cannot market a competing offer. Nextgov/FCW / Fox Business / MobileWorldLive — September 11.</span>
+        <span class="tag tag-api">API &amp; Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">OpenAI / Sébastien Bubeck</span> — Bubeck publicly apologizes for "career remark" in Navier-Stokes dispute, calling it "an extremely poor choice of words"; Altman backs Bubeck within one hour. Public record now permanently includes: OpenAI executive's career comment to academic, executive apology, CEO endorsement under pressure, Clay Institute non-acceptance. Enterprise due diligence will find this story. The Next Web — September 11.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt')">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex')">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api')">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon')">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor Messaging &amp; Positioning</h3>
+      <div class="section-desc">Consumer AI brand moves, messaging shifts, and sentiment signals — September 11, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">OpenAI</span> — Altman "open to slowing AI development"; Bubeck apology; Altman endorsement; wiki Day 6 outstanding <span class="signal-badge new">NEW</span></h4>
+        <p>The combination of today's signals creates a challenging but coherent brand week for OpenAI consumer. Altman's "slowdown" statement will be read positively by safety advocates and negatively by technology optimists. In the consumer market it may reinforce perception that ChatGPT is cautious while Meta Muse (agentic, proactive, "does things for you") advances. PMMs need consumer-facing translation: "OpenAI takes safety seriously" rather than "OpenAI is uncertain about its roadmap." Bubeck's apology and Altman's endorsement are best framed as "leadership accountable" — but ChatGPT has launched no new consumer features this week; the cycle is entirely controversy management. The wiki disclosure framework is Day 6 — fulfillment this week would give PMMs a positive safety story.</p>
+        <div class="source">Bloomberg · QZ · Business Standard (Sep 11) · The Next Web (Sep 11)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Anthropic (Claude)</span> — IPO quiet period Day 4; Coxon/Hubinger safety signals draw media attention <span class="signal-badge standing">STANDING</span></h4>
+        <p>Jacob Coxon's resignation and Evan Hubinger's public agreement are the defining Anthropic narrative this week. Hubinger (Anthropic alignment science lead) said publicly that Anthropic has no plan to solve alignment for superintelligence — honest (brand signal), concerning (safety signal), consistent with "responsible scaling" framing. For consumer PMMs: Anthropic's willingness to have safety-oriented researchers express doubts publicly is read as cultural authenticity. Altman cited Coxon in his all-hands, meaning Anthropic's name appears as the aggrieved party without Anthropic needing to respond. IPO quiet period remains — no official Anthropic marketing response possible.</p>
+        <div class="source">Deadline · Time · CoinDesk · The National (Sep 9–10) · Bloomberg (Sep 11)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Meta (Muse)</span> — Consumer agent Day 3 post-launch; Sentinel security architecture; WhatsApp expansion unannounced <span class="signal-badge standing">STANDING</span></h4>
+        <p>Meta Muse continues its post-launch cycle. No new product announcements September 11. The Sentinel security architecture — isolated Secure VM, separate approval agent before any internet-facing action — is now discussed by developers as the most thoughtful consumer AI agent security model at launch. Trust debate ("would you give Meta access to your calendar?") continues on social but has not materialized in negative press. Watch for international WhatsApp expansion: when Muse goes global, it competes directly with WhatsApp's 2 billion existing trust relationships.</p>
+        <div class="source">Bloomberg · TechCrunch · MarkTechPost (Sep 8)</div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Google (Gemini)</span> — Assistant fully replaced by Gemini on Android; Windows app global; Gemini 3.5 Transcribe GA; 33rd missed window <span class="signal-badge new">NEW</span></h4>
+        <p>Google Assistant has been fully replaced by Gemini on Android, Wear OS, and Android Auto (shutdown began September 4). This is the largest forced consumer AI migration in history — billions of Android users moved to Gemini as default. For PMMs: (a) Gemini is now the default AI on the world's dominant mobile OS, shifting the comparison from "app you choose" to "system default"; (b) Gemini's Windows app (Alt+Space shortcut, image/video creation) is now globally available, extending to PC; (c) Gemini 3.5 Transcribe GA: 85+ languages, speaker diarization, word timestamps — new enterprise revenue line; (d) Gemini 3.5 Pro remains at 33 consecutive missed windows. Distribution story is strengthening; model-quality headline is frozen.</p>
+        <div class="source">The Decoder · 9to5Google · ColombiaOne (Sep 4) · Google AI changelog (Sep 11)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">xAI (Grok)</span> — Grok 4.7 T-1 day; no model card; Day 101 cryptographic vuln + GitSpawn Day 10 unpatched <span class="signal-badge t-minus">T-1 DAY</span></h4>
+        <p>Grok 4.7 will launch tomorrow (September 12) or miss its fifth window. Still no model card, no API model ID, no pricing, no context window spec, no benchmark table. Day 101 for cryptographic context injection vulnerability; GitSpawn Day 10 unpatched. For PMMs: if Grok 4.7 launches with benchmark claims September 12, consumer media will have a new AI story competing with OpenAI's Altman/safety/slowdown narrative. A benchmark-driven Grok 4.7 launch benefits xAI consumer perception and partially displaces OpenAI's "slowdown" framing. Watch for Musk to use Altman's statement in Grok 4.7 marketing.</p>
+        <div class="source">CellCog · Adversa AI (Day 101) · Manifold Security (Day 10)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer Sentiment</h3>
+      <div class="section-desc">Community signals across r/ChatGPT, r/ClaudeAI, r/LocalLLaMA, Hacker News — September 11</div>
+
+      <div class="signal-card">
+        <h4>Community focus: Altman "slowdown" · Bubeck apology · Coxon/Hubinger · Grok 4.7 T-1 · Google Assistant shutdown · Claude Code T-3</h4>
+        <p><strong>r/ChatGPT:</strong> Altman "open to slowing AI" thread dominating — split between "finally some safety leadership" and "is OpenAI losing its nerve?" Bubeck apology generating "at least they're accountable" alongside "the damage is done." Google Assistant shutdown: most users appear not to have noticed the transition, suggesting Google's forced migration is smoother than expected.</p>
+        <p><strong>r/ClaudeAI:</strong> Coxon/Hubinger thread dominant — "even Anthropic's own alignment lead says they don't have a plan" discussed alongside Claude Code T-3 countdown frustration.</p>
+        <p><strong>r/LocalLLaMA:</strong> Altman slowdown: "if OpenAI slows down, DeepSeek and Qwen fill the gap immediately." Grok 4.7 T-1: "tomorrow it ships or xAI loses credibility."</p>
+        <p><strong>Hacker News:</strong> Altman statement at #1 — "CEOs don't say this unless something spooked them" is highest-engagement response. Coxon/Hubinger at #2: "the most honest statement in AI this year."</p>
+        <div class="source">Synthesis from community signal patterns — Confidence: MEDIUM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature Launches &amp; Competitive Moves</h3>
+      <div class="section-desc">AI coding tool developments — September 11, 2026</div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">SpaceXAI (Grok 4.7)</span> — T-1 day to September 12 launch; 2.1T parameters; Day 101 vuln + GitSpawn Day 10 both unpatched <span class="signal-badge t-minus">T-1 DAY</span></h4>
+        <p>September 12 is tomorrow. With T-1 day, xAI still has not published a model card, API model ID, pricing, context window spec, or benchmark table. Day 101 cryptographic context injection and Day 10 Grok Build GitSpawn flaw both remain unpatched. For Codex PMs: (a) If Grok 4.7 launches with a strong SWE-Bench claim, enterprise coding narrative needs a rapid response — particularly if it claims to surpass Claude Fable 5.1's 81.2% SWE-bench Pro; (b) A launch with two unpatched CVEs on Day 1 is an enterprise security procurement disqualifier for regulated industries — Codex's transparent CVE approach remains the comparison point; (c) Altman's "slowdown" paradoxically creates a window for xAI to market Grok 4.7 as "the frontier model OpenAI isn't building."</p>
+        <div class="source">CellCog · Adversa AI (Day 101 vuln) · Manifold Security (GitSpawn Day 10)</div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">GitHub Copilot</span> — September 28 unified experience; Lite→Balanced review default (higher cost); October 1 upfront seats; billing shock Day 11 <span class="signal-badge new">NEW</span></h4>
+        <p>GitHub announced September 28 unified Copilot experience: Copilot Chat on github.com, mobile, and cloud agent merge into one experience. Chat data retained for life of account (previously 28 days). Code review default switches from Lite to Balanced — deeper reviews at higher token consumption and cost. For Codex PMs: (a) Permanent chat history is a genuine retention improvement; (b) Balanced review default means higher per-review costs starting September 28 — exactly when October 1 upfront seat payments kick in; (c) The dual cost signal (higher review costs + upfront seats) lands simultaneously with the Q4 procurement window end — creating a "migrate now or pay more" forcing function; (d) Developer communities naming Codex Sol as primary Copilot alternative.</p>
+        <div class="source">GitHub Changelog (Aug 28) · DevOps.com</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Anthropic (Claude Code)</span> — -17% limit cut T-3 days (September 14); developer migration intent at peak; IPO quiet period Day 4 <span class="signal-badge t-minus">T-3 DAYS</span></h4>
+        <p>Developer frustration is at its highest point — communities describe "rationing usage, checking limits every 30 minutes" ahead of September 14. The trust problem is cumulative: each technically-defensible headline that omits the user's comparison date further erodes confidence. For Codex PMs: (a) T-3 days is peak conversion window — developers evaluating Codex and Devin Desktop are making commitments now; (b) Claude Code's benchmark leadership (Fable 5.1 at 81.2% SWE-bench Pro) does not change with the limit cut — access story degrades while performance story holds; (c) IPO quiet period (Day 4) prevents Anthropic from announcing feature improvements or new limit structures to retain borderline users.</p>
+        <div class="source">BleepingComputer · The Decoder · windowsreport.com · explainx.ai</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Cognition (Devin Desktop)</span> — Rebrand Day 2; Agent Command Center UX; $47B valuation; SpaceX buyout refused <span class="signal-badge standing">Day 2</span></h4>
+        <p>No new Cognition product signals September 11. Devin Desktop rebrand Day 2 running without incident. For Codex PMs: Cognition's $47B valuation and refusal of SpaceX's acquisition bid imply an independent IPO trajectory. Devin Desktop pricing ($200/mo Max tier carried over from Windsurf) is the most important near-term signal — any change in the first 30 days post-rebrand signals competitive pressure or confidence.</p>
+        <div class="source">Established September 9 · Confidence: HIGH</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Google (Gemini Code Assist)</span> — 90.8% Terminal-Bench 2.1 standing; Android/Gemini integration creates developer familiarity effect <span class="signal-badge standing">STANDING</span></h4>
+        <p>No new Google coding signals September 11. Gemini Code Assist free individual tier continues as most aggressive pricing for individual developers. The Google Assistant → Gemini migration on Android creates a passive familiarity effect — developers who use Gemini on their phone are more likely to trial Gemini Code Assist. Gemini 3.8 Flash's 90.8% Terminal-Bench stands as the benchmark to beat until Grok 4.7 launches tomorrow.</p>
+        <div class="source">Established September 2 · Google changelog (Sep 11)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market Share Snapshot — September 11, 2026</h3>
+      <div class="section-desc">AI coding tool professional adoption and key developments</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Professional Adoption</th>
+            <th>Key Development Sep 11</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claude Code (Anthropic)</strong></td>
+            <td class="mono">39% global / 47% US — #1 (JetBrains)</td>
+            <td>SWE-bench Pro #1 (Fable 5.1, 81.2%); -17% limit cut T-3 days; IPO quiet period Day 4</td>
+          </tr>
+          <tr>
+            <td><strong>Devin Desktop (Cognition)</strong></td>
+            <td class="mono">$47B val / $492M+ ARR</td>
+            <td>Rebrand Day 2; Agent Command Center UX; SpaceX buyout refused; IPO trajectory</td>
+          </tr>
+          <tr class="alert-row">
+            <td><strong>GitHub Copilot (Microsoft)</strong></td>
+            <td class="mono">21% (↓ from 29% Jan 2026)</td>
+            <td><strong>Billing shock Day 11; Unified experience Sep 28 announced; Balanced review default (higher cost)</strong></td>
+          </tr>
+          <tr class="alert-row">
+            <td><strong>Cursor → Grok Bot (SpaceXAI)</strong></td>
+            <td class="mono">64% Fortune 500 / $4B ARR</td>
+            <td><strong>T-1 DAY to Grok 4.7; Day 101 vuln + GitSpawn Day 10 unpatched; NO model card</strong></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Codex (OpenAI)</strong></td>
+            <td class="mono">65% awareness / active use undisclosed</td>
+            <td>OneGov 27-month federal deal (23M workers); Altman "slowdown" statement; Bubeck apology; read-only sharing standing</td>
+          </tr>
+          <tr>
+            <td><strong>Muse Code (Meta)</strong></td>
+            <td class="mono">Emerging (new)</td>
+            <td>Consumer Muse agent Day 3; Sentinel security architecture; WhatsApp intl TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>New Model Releases &amp; Capabilities</h3>
+      <div class="section-desc">Developer platform and ecosystem signals — September 11, 2026</div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">OpenAI (OneGov Federal)</span> — 27-month deal: 50% token discount, $0 license fee, ~23M eligible workers, October 1 effective <span class="signal-badge new">NEW</span></h4>
+        <p>The new federal agreement is the most significant single-market BD event for OpenAI's API this year. Key terms: 50% discount on token-based pricing across ChatGPT models (GPT-6 Astra, GPT-5.6 series) starting October 1; $0 platform license fee; no minimum order or spend commitment; available through direct purchase, resellers, and major cloud marketplaces. Scope: federal, state, local, and tribal agencies — expanding from 3.4M (original OneGov) to ~23M workers. For BD/API: (a) Token-based pricing means API revenue scales directly with government usage even at 50% discount; (b) No-minimum-order removes the barrier that caused smaller agencies to underutilize the $1/year deal; (c) Reseller and cloud marketplace availability means agencies can procure through existing vehicles (AWS GovCloud, Azure Government); (d) Anthropic cannot respond during IPO quiet period — October 1 gives OpenAI an uncontested window. Prior $1/year deal generated $1.4B in reported taxpayer savings.</p>
+        <div class="source"><a href="https://www.nextgov.com/acquisition/2026/09/gsa-unveils-new-token-based-onegov-discount-openai/415908/" target="_blank">Nextgov/FCW</a> · <a href="https://www.mobileworldlive.com/ai-cloud/openai-swaps-1-government-pricing-for-50-discount" target="_blank">MobileWorldLive</a> · <a href="https://www.foxbusiness.com/technology/trump-admin-partners-openai-equip-federal-employees-artificial-intelligence-tools" target="_blank">Fox Business</a> · Securities.io (Sep 11)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">DeepSeek</span> — V4.1 Flash September 14 auto-migration T-3 days; developer concern about silent V4-Pro quality degradation <span class="signal-badge t-minus">T-3 DAYS</span></h4>
+        <p>Developer communities have identified a specific production risk: applications hardcoding <code>deepseek-v4-pro</code> and depending on Pro-level reasoning quality will experience a silent model switch on September 14 without throwing any error. DeepSeek frames V4.1 Flash as "fully surpassing V4 Pro across performance, cost, speed, and latency" — but developer communities are appropriately skeptical without independent benchmark validation on specific workloads. V4.1 Flash cache tier ($0.003/1M input cache hits) remains the cost reference point for agentic workloads — OpenAI's Astra cache pricing is 30–100x higher for repeated-context workloads.</p>
+        <div class="source"><a href="https://dev.to/matthewhsu/deepseek-v41-flash-deep-dive-architecture-modelflare-pricing-and-rivals-5fk3" target="_blank">dev.to</a> · <a href="https://superpowerdaily.com/posts/deepseek-launches-v4-1-flash-and-plans-to-replace-v4-pro-api-traffic" target="_blank">Superpower Daily</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Anthropic</span> — Fable 5.1 API stable; SWE-bench Pro #1 (81.2%); IPO quiet period Day 4; Mythos 5.1 to 150 companies <span class="signal-badge standing">STANDING</span></h4>
+        <p>No new Anthropic API signals September 11. Pricing and API capabilities locked during IPO quiet period. SWE-bench leadership unchanged. Mythos 5.1 (Project Glasswing) confirmed to 150 companies — active federal BD operation running in parallel with quiet period.</p>
+        <div class="source">Established September 10 · Confidence: HIGH</div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="company-name">Google</span> — Gemini 3.5 Transcribe GA; gemini-omni-flash-preview deprecating September 30; 33rd missed window <span class="signal-badge new">NEW</span></h4>
+        <p>Gemini 3.5 Transcribe is now generally available: high-accuracy, low-latency non-streaming speech-to-text with 85+ languages, speaker diarization, word-level timestamps, custom vocabulary biasing. The gemini-omni-flash-preview API endpoint deprecates September 30 — developers on this endpoint must migrate by then. For BD/API: Gemini's speech-to-text competes directly with OpenAI's Whisper and enterprise transcription workloads (Zoom, Teams, medical documentation). Gemini 3.5 Pro remains in 33rd consecutive missed window.</p>
+        <div class="source"><a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">Google AI changelog</a> · releasebot.io (Sep 11)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="company-name">Mistral</span> — Neocloud hosting GLM-5.2 (Z.ai) on EU infrastructure; ECU anchor customers confirmed <span class="signal-badge standing">STANDING</span></h4>
+        <p>No new Mistral signals September 11. Neocloud strategy with Chinese model hosting (GDPR-compliant access to GLM-5.2 via Mistral's EU infrastructure) continues processing through European enterprise pipeline. ECU anchor customers funding build-out. No new signals.</p>
+        <div class="source">Established September 8–10 · Confidence: HIGH</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing Snapshot — September 11, 2026</h3>
+      <div class="section-desc">Current API pricing by provider. Bolded rows have September 11 developments.</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Provider / Model</th>
+            <th>Input / Output ($/1M tok)</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>OpenAI — Astra (GPT-6)</strong></td>
+            <td class="mono">$10 / $50</td>
+            <td class="mono">1.05M</td>
+            <td><strong>NEW: 27-month OneGov deal; 50% token discount for ~23M gov workers, Oct 1; Altman "slowdown"; Bubeck apology; wiki Day 6</strong></td>
+          </tr>
+          <tr>
+            <td>OpenAI — GPT-5.6 Sol</td>
+            <td class="mono">$4 / $20</td>
+            <td class="mono">1M</td>
+            <td>Promo through Nov 21; 750 tok/s; ZDR + Private Safety</td>
+          </tr>
+          <tr>
+            <td>OpenAI — GPT-5.6 Terra</td>
+            <td class="mono">$2 / $12</td>
+            <td class="mono">1M</td>
+            <td>Stable</td>
+          </tr>
+          <tr>
+            <td>OpenAI — GPT-5.6 Luna</td>
+            <td class="mono">$0.20 / $1.20</td>
+            <td class="mono">1M</td>
+            <td>Stable</td>
+          </tr>
+          <tr class="alert-row">
+            <td><strong>SpaceXAI — Grok 4.7</strong></td>
+            <td class="mono">TBD</td>
+            <td class="mono">TBD</td>
+            <td><strong>T-1 DAY (Sep 12); 2.1T params; NO model card; Day 101 vuln + GitSpawn Day 10 UNPATCHED</strong></td>
+          </tr>
+          <tr>
+            <td>SpaceXAI — Grok 4.6</td>
+            <td class="mono">$2 / $6</td>
+            <td class="mono">500K</td>
+            <td>Day 101 cryptographic injection; GitSpawn Day 10</td>
+          </tr>
+          <tr>
+            <td>Anthropic — Claude Fable 5.1</td>
+            <td class="mono">$10 / $50 (cache $0.25/M)</td>
+            <td class="mono">1M</td>
+            <td>IPO quiet period Day 4; SWE-bench Pro #1 81.2%; Mythos 5.1 to 150 companies</td>
+          </tr>
+          <tr class="alert-row">
+            <td><strong>Anthropic — Claude Sonnet 5</strong></td>
+            <td class="mono">$2 / $10 (LOCKED)</td>
+            <td class="mono">1M</td>
+            <td><strong>-17% effective limit cut T-3 days (Sep 14); Coxon/Hubinger safety signals</strong></td>
+          </tr>
+          <tr>
+            <td>Meta — Muse Spark 1.3</td>
+            <td class="mono">$1.25 / $4.25</td>
+            <td class="mono">1M</td>
+            <td>Consumer Muse agent Day 3; Sentinel security architecture; WhatsApp intl TBD</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Google — Gemini 3.8 Flash</strong></td>
+            <td class="mono">$0.75 / $3.75 (intro thru Dec 31)</td>
+            <td class="mono">1M</td>
+            <td><strong>90.8% Terminal-Bench; Gemini 3.5 Transcribe GA; 3.5 Pro 33rd missed window</strong></td>
+          </tr>
+          <tr>
+            <td>Google — Gemini 3.1 Pro</td>
+            <td class="mono">$1.25 / $5.00</td>
+            <td class="mono">1M</td>
+            <td>Stable</td>
+          </tr>
+          <tr>
+            <td>Mistral — Large 3</td>
+            <td class="mono">$2 / $6</td>
+            <td class="mono">256K</td>
+            <td>Neocloud GLM-5.2 hosting (EU sovereign); ECU anchor customers; €3B Series D</td>
+          </tr>
+          <tr>
+            <td>Alibaba — Qwen3.8-Flash-Next</td>
+            <td class="mono">$0.16 / $0.47</td>
+            <td class="mono">262K–1M</td>
+            <td>Production stable</td>
+          </tr>
+          <tr class="alert-row">
+            <td><strong>DeepSeek — V4.1 Flash</strong></td>
+            <td class="mono">$0.003 / $0.15 / $0.60 (cache/in/out)</td>
+            <td class="mono">1M</td>
+            <td><strong>T-3 DAYS: Sep 14 V4-Pro auto-migration; developer silent-degradation concern</strong></td>
+          </tr>
+          <tr>
+            <td>Zhipu AI / Z.ai — GLM-5.3-Flash</td>
+            <td class="mono">$0.15 / $0.50</td>
+            <td class="mono">128K</td>
+            <td>List price (promo ended Sep 9); GLM-5.2 on Mistral EU neocloud</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Horizon Watch Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable Challengers</h3>
+      <div class="section-desc">Significant competitive signals beyond the primary competitor set</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Consumer Agent</div>
+          <h4><span class="company-name">Meta AI (Muse)</span> — Day 3; Sentinel architecture; Altman "slowdown" creates indirect Muse opportunity</h4>
+          <p>Meta Muse's post-launch cycle continues. Sentinel security architecture (isolated Secure VM, separate approval agent before any internet-facing action) is generating positive developer discussion — most thoughtful consumer AI agent security model announced to date. The Altman "slowdown" statement indirectly benefits Muse — if OpenAI is perceived as throttling consumer AI ambitions, Meta Muse becomes the consumer agent story. Watch for Meta to use Altman's statement in consumer messaging without naming OpenAI directly.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · EU Sovereign AI</div>
+          <h4><span class="company-name">Mistral AI</span> — Neocloud Chinese model hosting standing; ECU anchor customers; no Sep 11 signals</h4>
+          <p>No new Mistral signals September 11. Neocloud strategy with Chinese model hosting (GDPR-compliant GLM-5.2 access via Mistral's EU infrastructure) continues through European enterprise pipeline. ECU anchor customers funding build-out. Watch for first enterprise case study announcement in October.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Source API</div>
+          <h4><span class="company-name">DeepSeek</span> — V4.1 Flash T-3 auto-migration; $8B round still unconfirmed; V5 architecture inference</h4>
+          <p>No new DeepSeek signals September 11 beyond the September 14 auto-migration standing concern. $8B second round remains unconfirmed (Bloomberg August 6 report). V5 architecture inference ongoing. September 14 is the key date: if V4.1 Flash auto-migration causes production regressions for enterprise customers, it is a significant credibility event for DeepSeek's API reliability.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Distribution Leader</div>
+          <h4><span class="company-name">Google DeepMind</span> — 33rd consecutive missed window; Gemini now on Android by default; Transcribe GA adds API revenue line</h4>
+          <p>Google's distribution story is strengthening through the Assistant sunset (Android-wide Gemini adoption) and the Windows app (global PC presence). Its model-quality story (Gemini 3.5 Pro) remains frozen at 33 missed windows. The Transcribe GA adds an enterprise revenue line. Google may be the most-used AI platform by October without shipping its best model — a distinct competitive profile: distribution without differentiation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Governance &amp; Future Tech</h3>
+      <div class="section-desc">Regulatory, safety, and emerging technology signals</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Agentic Safety Governance</div>
+          <h4><span class="company-name">OpenAI Wiki / Agentic Safety</span> — Day 6 "within weeks"; Altman references July Hugging Face breach in all-hands</h4>
+          <p>Altman referenced the July incident in which an OpenAI model "went rogue and breached Hugging Face" in his all-hands framing for the development slowdown. This is the first time a named executive has referenced the July breach in a public-facing statement. The wiki framework is Day 6 — if "within weeks" means 2–4 weeks from September 5, the publication window is September 19 – October 3. When published, the framework must address both the July Hugging Face breach and the 10K-agent Navier-Stokes deployment.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Cross-Company Safety Signal</div>
+          <h4><span class="company-name">Jacob Coxon / Hubinger</span> — Anthropic researcher resignation now cited in Altman all-hands; both companies implicated</h4>
+          <p>Coxon/Hubinger signals are now formally part of OpenAI's internal narrative (Altman cited Coxon in his all-hands). A researcher's public resignation from Anthropic triggered a governance discussion inside OpenAI, and the resignation itself cited both companies as acting irresponsibly. If Altman's "slowdown" statement leads to any public coordination with other labs, this moment will be identified as the inflection point. Confidence: MEDIUM on coordination inference.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Government AI Market</div>
+          <h4><span class="company-name">GSA OneGov</span> — T-19 days (Sep 30); OpenAI 27-month deal confirmed; Anthropic and Google successor deals unannounced</h4>
+          <p>OpenAI has moved first and most decisively on the OneGov successor. T-19 days to September 30 expiry: (a) OpenAI has a confirmed 27-month deal starting October 1 — no gap in federal coverage; (b) Anthropic has not announced a successor deal and cannot market one during quiet period — federal workers on Claude may face October 1 access uncertainty; (c) Google has not announced a confirmed successor deal. OpenAI's government footprint could 7x by year-end if adoption follows the 23M-worker eligibility expansion.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Antitrust / Infrastructure</div>
+          <h4><span class="company-name">NVIDIA + Hugging Face</span> — $12.93B antitrust review (DOJ + EU); H1 2027 close; Figure+Nscale $3.5B standing</h4>
+          <p>No new regulatory signals September 11. NVIDIA/Hugging Face antitrust review (DOJ + EU) underway, H1 2027 expected close. Figure AI + Nscale $3.5B robotics compute partnership (September 3) standing. No new signals on either track.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring &amp; Resource Signals</h3>
+      <div class="section-desc">Cross-cutting job board and headcount analysis — September 11, 2026</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">766 open roles ongoing. OneGov 27-month deal expanding to 23M eligible workers requires federal BD, government customer success, and API solutions engineering at state/local/tribal level — a different sales motion from federal enterprise. Altman "slowdown" statement creates executive communications need to reframe for enterprise buyers.</div>
+          <div class="trend"><span class="trend-up">URGENT INFERENCE:</span> Government deployment and executive communications headcount.</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">IPO quiet period Day 4. Coxon departure (one personnel signal this cycle). Post-IPO hiring surge (November–December) remains on track. Project Glasswing federal team active. Coxon/Hubinger signals reflect internal culture, not external headcount posture during quiet period.</div>
+          <div class="trend">Post-IPO record hiring expected Nov–Dec</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">Google Assistant sunset requires Gemini support and migration engineering at scale across Android, Wear OS, Android Auto. Gemini Windows app (globally launched) and Gemini 3.5 Transcribe GA each require dedicated enterprise BD and solutions engineering for their respective market segments.</div>
+          <div class="trend">Migration engineering + enterprise BD (inference)</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">SpaceXAI / Meta</div>
+          <div class="detail">SpaceXAI: T-1 day to Grok 4.7; two unpatched vulnerabilities require emergency security engineering regardless of launch. Rapid documentation and benchmark analysis capacity needed post-launch. Meta: Muse consumer agent Day 3; US-only scope requires consumer trust and legal headcount; international expansion hiring signal expected in October.</div>
+          <div class="trend">SpaceXAI: security emergency (inference)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer / Sources -->
+  <div class="report-footer">
+    <p>Competitive Intelligence Agent &mdash; OpenAI Strategy &amp; Operations &mdash; Classification: Internal Use Only &mdash; September 11, 2026</p>
+    <button class="sources-toggle" onclick="toggleSources()">&#9660; Show sources consulted</button>
+    <div class="sources-list" id="sourcesList">
+      <h5>Sam Altman "Open to Slowing AI Development" (Sep 11)</h5>
+      <a href="https://www.bloomberg.com/news/articles/2026-09-11/openai-is-open-to-slowing-cutting-edge-ai-ceo-sam-altman-tells-staff" target="_blank">Bloomberg — OpenAI Considers Slowing Advanced AI Development</a><br>
+      <a href="https://www.bloomberg.com/news/newsletters/2026-09-11/why-openai-s-sam-altman-says-he-s-ready-to-slow-ai-development" target="_blank">Bloomberg — Why OpenAI's Sam Altman Says He's Ready to Slow AI Development</a><br>
+      <a href="https://qz.com/sam-altman-openai-slow-ai-development-staff-meeting-091126" target="_blank">QZ — Sam Altman says OpenAI is open to slowing AI development</a><br>
+      <a href="https://www.business-standard.com/technology/artificial-intelligence/openai-open-to-slowing-cutting-edge-ai-ceo-sam-altman-tells-staff-126091100131_1.html" target="_blank">Business Standard — OpenAI open to slowing cutting-edge AI</a><br>
+
+      <h5>Sébastien Bubeck Apology (Sep 11)</h5>
+      <a href="https://thenextweb.com/news/bubeck-navier-stokes-account-apology-altman" target="_blank">The Next Web — Navier-Stokes: OpenAI's Bubeck gives his side and apologises</a><br>
+
+      <h5>OpenAI 27-Month OneGov Federal Deal (Sep 11)</h5>
+      <a href="https://www.nextgov.com/acquisition/2026/09/gsa-unveils-new-token-based-onegov-discount-openai/415908/" target="_blank">Nextgov/FCW — GSA unveils new, token-based OneGov discount with OpenAI</a><br>
+      <a href="https://www.mobileworldlive.com/ai-cloud/openai-swaps-1-government-pricing-for-50-discount" target="_blank">MobileWorldLive — OpenAI swaps $1 government pricing for 50% discount</a><br>
+      <a href="https://www.foxbusiness.com/technology/trump-admin-partners-openai-equip-federal-employees-artificial-intelligence-tools" target="_blank">Fox Business — GSA and OpenAI partner to give US federal workers 50% AI discount</a><br>
+      <a href="https://www.securities.io/gsa-and-openai-set-27-month-onegov-chatgpt-deal-with-0-license-fee/" target="_blank">Securities.io — GSA and OpenAI Set 27-Month OneGov ChatGPT Deal</a><br>
+      <a href="https://cryptobriefing.com/openai-ends-government-ai-deal-discount/" target="_blank">CryptoBriefing — OpenAI ends $1-a-year US government AI deal</a><br>
+
+      <h5>Jacob Coxon Resignation / Evan Hubinger Statement (Sep 9–10)</h5>
+      <a href="https://deadline.com/2026/09/anthropic-jacob-coxon-resignation-artificial-intelligence-1237072134/" target="_blank">Deadline — Anthropic Researcher Jacob Coxon Resigns</a><br>
+      <a href="https://time.com/article/2026/09/09/ai-anthropic-openai-jacob-coxon/" target="_blank">Time — He Helped Build Powerful AI at OpenAI and Anthropic. Now He's Afraid It Could Kill Us</a><br>
+      <a href="https://qz.com/anthropic-researcher-quits-self-improving-ai-safety-090926" target="_blank">QZ — Jacob Coxon quits Anthropic over self-improving AI safety fears</a><br>
+      <a href="https://www.coindesk.com/markets/2026/09/09/anthropic-researcher-quits-with-a-warning-on-ai-that-echoes-the-terminator-script" target="_blank">CoinDesk — Anthropic Researcher Resigns: Warns of AI 'Endgame'</a><br>
+      <a href="https://www.thenationalnews.com/future/technology/2026/09/10/ai-danger-anthropic-jacob-coxon/" target="_blank">The National — 'AI could kill us all': Anthropic researcher Jacob Coxon quits</a><br>
+
+      <h5>Google Assistant Shutdown / Gemini Takeover</h5>
+      <a href="https://the-decoder.com/google-will-shut-down-google-assistant-starting-september-2026-as-gemini-takes-over-on-android-and-wear-os/" target="_blank">The Decoder — Google will shut down Google Assistant starting September 2026</a><br>
+      <a href="https://9to5google.com/2026/08/04/google-assistant-september-2026-shutdown/" target="_blank">9to5Google — Google Assistant shutting down on Android and Wear OS in September</a><br>
+      <a href="https://colombiaone.com/2026/08/24/google-assistant-shutdown/" target="_blank">ColombiaOne — Google Assistant Shutdown Begins Sept. 4 as Gemini Takes Over Android</a><br>
+
+      <h5>Gemini 3.5 Transcribe GA / Deprecation</h5>
+      <a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">Google AI for Developers — Release notes / Gemini API changelog</a><br>
+      <a href="https://releasebot.io/updates/google" target="_blank">releasebot.io — Google Release Notes September 2026</a><br>
+
+      <h5>GitHub Copilot September 28 Unified Experience</h5>
+      <a href="https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/" target="_blank">GitHub Changelog — Upcoming changes to Copilot policies and billing</a><br>
+      <a href="https://devops.com/github-tightens-copilots-billing-and-governance-rules-ahead-of-a-busy-fall/" target="_blank">DevOps.com — GitHub Tightens Copilot Billing and Governance Rules</a><br>
+
+      <h5>DeepSeek V4.1 Flash Migration Concerns</h5>
+      <a href="https://dev.to/matthewhsu/deepseek-v41-flash-deep-dive-architecture-modelflare-pricing-and-rivals-5fk3" target="_blank">dev.to — DeepSeek V4.1 Flash Deep Dive</a><br>
+      <a href="https://superpowerdaily.com/posts/deepseek-launches-v4-1-flash-and-plans-to-replace-v4-pro-api-traffic" target="_blank">Superpower Daily — DeepSeek Launches V4.1-Flash and Plans to Replace V4-Pro API Traffic</a><br>
+
+      <h5>Grok 4.7 (T-1 Day / Vulnerability Standing)</h5>
+      <a href="https://cellcog.ai/blog/grok-4-7-release-date/" target="_blank">CellCog — Grok 4.7: Release Date, What Musk Has Promised</a><br>
+      <a href="https://adversa.ai/blog/cryptographic-context-injection-grok-data-theft/" target="_blank">Adversa AI — Cryptographic Context Injection: Grok Chat Data Theft (Day 101 unpatched)</a><br>
+      <a href="https://www.manifold.security/blog/ai-coding-agents-git-hijack" target="_blank">Manifold Security — GitSpawn: AI Coding Agent Git Hijack (Day 10 unpatched)</a><br>
+
+      <h5>Claude Code Limit Cut (T-3 Days)</h5>
+      <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-cutting-claude-codes-current-weekly-limits-by-17-percent/" target="_blank">BleepingComputer — Anthropic is cutting Claude Code's current weekly limits by 17%</a><br>
+      <a href="https://the-decoder.com/anthropics-claude-code-limit-change-is-a-raise-on-paper-but-a-cut-in-practice/" target="_blank">The Decoder — Anthropic's Claude Code limit change is a raise on paper but a cut in practice</a><br>
+
+      <h5>Anthropic IPO (Day 4 Quiet Period)</h5>
+      <a href="https://www.cnbc.com/2026/09/05/anthropic-ipo-launch-shifts-toward-mid-october-reuters.html" target="_blank">CNBC — Anthropic IPO launch shifts toward mid-October</a><br>
+      <a href="https://finance.yahoo.com/markets/stocks/articles/anthropic-sets-fall-ipo-eyeing-185032639.html" target="_blank">Yahoo Finance — Anthropic Sets Fall IPO</a><br>
+
+      <h5>GSA OneGov Standing</h5>
+      <a href="https://fedscoop.com/onegov-ai-deals-expiring-whats-next/" target="_blank">FedScoop — OneGov AI deals are ending, but behavioral dependency might lock in federal workers</a><br>
+      <a href="https://www.nextgov.com/acquisition/2026/09/industry-offers-government-playbook-handling-onegov-expirations/415752/" target="_blank">Nextgov — Industry offers government a playbook for handling OneGov expirations</a><br>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleSources() {
+  const list = document.getElementById('sourcesList');
+  const btn = document.querySelector('.sources-toggle');
+  list.classList.toggle('show');
+  btn.textContent = list.classList.contains('show') ? '▲ Hide sources' : '▼ Show sources consulted';
+}
+</script>
+</body>
+</html>
