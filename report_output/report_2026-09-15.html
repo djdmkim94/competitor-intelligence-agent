@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — September 15, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0e;
+    --surface: #191918;
+    --surface-alt: #222221;
+    --surface-hover: #2a2a29;
+    --text: #f0ede8;
+    --text-secondary: #b5b0a8;
+    --text-tertiary: #7a756d;
+    --border: #2e2e2c;
+    --border-light: #3a3a38;
+    --accent: #1D1D1B;
+    --blue-text: #6baed6;
+    --high-bg: #2a1515;
+    --high-border: #7f2020;
+    --high-text: #f87171;
+    --medium-bg: #241f10;
+    --medium-border: #7a5c10;
+    --medium-text: #f5c842;
+    --low-bg: #112318;
+    --low-border: #1e5c35;
+    --low-text: #4ade80;
+    --tag-chatgpt: #2563eb;
+    --tag-codex: #7c3aed;
+    --tag-api: #0e7490;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue-text); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Header ── */
+  .report-header {
+    background: linear-gradient(180deg, #111110 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 0 28px;
+  }
+
+  .report-header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+  }
+
+  .report-header h1 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .report-header .meta {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .report-header .meta span::before {
+    content: '·';
+    margin-right: 8px;
+  }
+  .report-header .meta span:first-child::before { content: ''; margin-right: 0; }
+
+  .trend-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue-text);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-top: 16px;
+  }
+
+  .trend-banner strong { color: var(--text); }
+
+  /* ── Section wrappers ── */
+  section { padding: 32px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 24px 0 12px;
+  }
+
+  /* ── Threat cards ── */
+  .threat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 700px) {
+    .threat-grid { grid-template-columns: 1fr; }
+  }
+
+  .threat-card {
+    background: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .threat-card.high { border-top: 3px solid var(--high-border); }
+  .threat-card.medium { border-top: 3px solid var(--medium-border); }
+  .threat-card.low { border-top: 3px solid var(--low-border); }
+
+  .threat-card-product {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  .threat-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .threat-level-badge.high { background: var(--high-bg); color: var(--high-text); border: 1px solid var(--high-border); }
+  .threat-level-badge.medium { background: var(--medium-bg); color: var(--medium-text); border: 1px solid var(--medium-border); }
+  .threat-level-badge.low { background: var(--low-bg); color: var(--low-text); border: 1px solid var(--low-border); }
+
+  .confidence-dots {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .confidence-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-light);
+  }
+
+  .confidence-dot.filled { background: var(--text-secondary); }
+
+  .threat-card-sowhat {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ── Must Know ── */
+  .must-know {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 4px;
+  }
+
+  .must-know-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .must-know-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .must-know-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .must-know-item:last-child { border-bottom: none; }
+
+  .must-know-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    min-width: 24px;
+    line-height: 1.4;
+  }
+
+  .must-know-body { flex: 1; }
+
+  .must-know-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .tag-chatgpt { background: rgba(37,99,235,0.18); color: #93bbf8; border: 1px solid rgba(37,99,235,0.35); }
+  .tag-codex   { background: rgba(124,58,237,0.18); color: #c4b5fd; border: 1px solid rgba(124,58,237,0.35); }
+  .tag-api     { background: rgba(14,116,144,0.18); color: #7dd3e0; border: 1px solid rgba(14,116,144,0.35); }
+  .tag-high    { background: var(--high-bg); color: var(--high-text); border: 1px solid var(--high-border); }
+  .tag-new     { background: rgba(22,163,74,0.15); color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
+
+  .must-know-headline {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+
+  .must-know-detail {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Tab nav ── */
+  .tab-nav {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--text-secondary); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--text); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── Signal cards ── */
+  .signal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+  }
+
+  .signal-card.key-new { border-left: 3px solid var(--high-text); }
+  .signal-card.key-update { border-left: 3px solid var(--medium-text); }
+  .signal-card.standing { border-left: 3px solid var(--border-light); }
+  .signal-card.correction { border-left: 3px solid #f97316; }
+
+  .signal-company {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .signal-company .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .badge-new { background: rgba(249,115,22,0.18); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
+  .badge-correction { background: rgba(249,115,22,0.25); color: #f97316; border: 1px solid rgba(249,115,22,0.5); }
+  .badge-standing { background: rgba(120,113,108,0.2); color: #a8a29e; border: 1px solid rgba(120,113,108,0.3); }
+  .badge-update { background: rgba(245,200,66,0.15); color: var(--medium-text); border: 1px solid rgba(245,200,66,0.3); }
+
+  .signal-body {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .signal-body ul {
+    margin: 8px 0 0 0;
+    padding-left: 16px;
+  }
+
+  .signal-body li {
+    margin-bottom: 5px;
+  }
+
+  .signal-body strong { color: var(--text); }
+
+  .signal-source {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 8px;
+  }
+
+  /* ── Subsection heading ── */
+  .subsec {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    padding: 14px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+
+  .subsec:first-of-type { margin-top: 0; }
+
+  /* ── Hiring cards ── */
+  .hiring-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .hiring-grid { grid-template-columns: 1fr; }
+  }
+
+  .hiring-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .hiring-company {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .hiring-body {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .hiring-signals {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .hiring-signal-tag {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+  }
+
+  /* ── Horizon cards ── */
+  .horizon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .horizon-grid { grid-template-columns: 1fr; }
+  }
+
+  .horizon-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .horizon-card.tier2 { border-top: 2px solid #6366f1; }
+  .horizon-card.tier3 { border-top: 2px solid #06b6d4; }
+
+  .horizon-tier-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .horizon-card.tier2 .horizon-tier-label { color: #818cf8; }
+  .horizon-card.tier3 .horizon-tier-label { color: #22d3ee; }
+
+  .horizon-company {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+
+  .horizon-body {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Pricing table ── */
+  .pricing-table-wrap {
+    overflow-x: auto;
+    margin: 12px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-tertiary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-top: 1px solid var(--border);
+  }
+
+  tbody tr:hover { background: var(--surface-hover); }
+
+  tbody td {
+    padding: 9px 12px;
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  tbody td:first-child { color: var(--text); font-weight: 500; }
+
+  tbody td strong { color: var(--text); }
+
+  .price-highlight { color: var(--medium-text); font-weight: 600; }
+  .price-concern { color: var(--high-text); font-weight: 600; }
+
+  /* ── Sentiment block ── */
+  .sentiment-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+
+  .sentiment-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  .sentiment-body {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .confidence-note {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ── Sources section ── */
+  .sources-section { padding: 24px 0 48px; }
+
+  .sources-toggle-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sources-toggle-btn:hover { background: var(--surface-hover); }
+
+  .sources-list { display: none; margin-top: 16px; }
+  .sources-list.open { display: block; }
+
+  .source-group {
+    margin-bottom: 20px;
+  }
+
+  .source-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .source-group ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .source-group li {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 3px 0;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .source-group li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border-light);
+  }
+
+  /* ── Footer ── */
+  .report-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-classification {
+    background: var(--high-bg);
+    color: var(--high-text);
+    border: 1px solid var(--high-border);
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Inline stat chips ── */
+  .stat { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-text); }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ HEADER ══════════════════════ -->
+<header class="report-header">
+  <div class="container">
+    <div class="eyebrow">OpenAI Strategy &amp; Operations — Daily Intelligence</div>
+    <h1>Competitive Intelligence Report</h1>
+    <div class="meta">
+      <span>September 15, 2026</span>
+      <span>Daily Update</span>
+      <span>Generated September 15, 2026</span>
+      <span>6 new confirmed signals</span>
+    </div>
+    <div class="trend-banner">
+      <strong>Trend vs. September 14:</strong> Six new confirmed signals this cycle:
+      (1) <strong>Gemini 3.8 Flash + 3.8 Flash Cyber — 13-day intelligence gap corrected</strong> — released September 2; Cyber leads CyberGym at <strong>86.2%</strong> vs. GPT-5.5 Cyber 85.6%; Fairwind Program gating confirmed.
+      (2) <strong>Anthropic $15B credit facility + mid-October IPO marketing start locked</strong> — $2T valuation discussed; Morgan Stanley-led; S-1 targeting late September.
+      (3) <strong>Anthropic EU Mythos access + Sonnet 5 price permanently locked</strong> at $2/$10.
+      (4) <strong>Grok 4.7 Day 3 delay — "Opus 5.0 parity"</strong> capability downgrade from original "best model ever" claim.
+      (5) <strong>AI Standards Body: Altman vs. Amodei structural disagreement confirmed.</strong>
+      (6) <strong>Moonshot Kimi K3 — #3 Artificial Analysis Intelligence Index, #1 Frontend Code Arena.</strong>
+      Standing: Claude Code -17% limit cut Day 1 post; DeepSeek V4.1 Flash auto-migration Day 1; Meta Muse Day 7; GitHub Copilot T-13; GSA OneGov T-15.
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════ C-SUITE DASHBOARD ══════════════════════ -->
+<section id="csuite">
+  <div class="container">
+    <div class="section-label">01 — C-Suite Dashboard</div>
+    <h2>Threat-Level Summary</h2>
+
+    <div class="threat-grid">
+      <!-- ChatGPT -->
+      <div class="threat-card medium">
+        <div class="threat-card-product">ChatGPT</div>
+        <div class="threat-level-badge medium">MEDIUM</div>
+        <div class="confidence-dots">
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+        </div>
+        <div class="threat-card-sowhat">
+          Anthropic's $15B credit facility + mid-October IPO locks in massive Q4 competitive investment — OpenAI faces a fully-capitalized public rival in ~5 weeks. Meta Muse Day 7 iCloud privacy incident is Week 1's dominant narrative (temporary negative). EU Mythos expands Anthropic consumer reach in Europe. Altman "no 2026 IPO" and ChatGPT Financial Services maintain the upper hand domestically.
+        </div>
+      </div>
+
+      <!-- Codex -->
+      <div class="threat-card high">
+        <div class="threat-card-product">Codex</div>
+        <div class="threat-level-badge high">HIGH</div>
+        <div class="confidence-dots">
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+        </div>
+        <div class="threat-card-sowhat">
+          Gemini 3.8 Flash — stronger than 3.7 for coding/agents — has been live since September 2 (13-day gap). Google's zero-dollar base subscription and 20% token discounts directly undercut Codex pricing architecture. Claude Code migration window Day 1 continues. Grok 4.7 "Opus 5.0 parity" downgrade keeps the market a two-way Codex/Claude Code contest. GitHub Copilot T-13 days.
+        </div>
+      </div>
+
+      <!-- API & Models -->
+      <div class="threat-card high">
+        <div class="threat-card-product">API &amp; Models</div>
+        <div class="threat-level-badge high">HIGH</div>
+        <div class="confidence-dots">
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+          <div class="confidence-dot filled"></div>
+        </div>
+        <div class="threat-card-sowhat">
+          Gemini 3.8 Flash Cyber leads CyberGym at 86.2% (beats GPT-5.5 Cyber 85.6%) — Google holds the leading autonomous vulnerability benchmark, gated via Fairwind Program. Kimi K3 is #3 on the Intelligence Index — Chinese models are tier-1 on capability, not just cost. Anthropic $15B credit facility signals post-IPO API investment surge.
+        </div>
+      </div>
+    </div>
+
+    <!-- Must Know -->
+    <div class="must-know">
+      <div class="must-know-header">Must Know This Week</div>
+
+      <div class="must-know-item">
+        <div class="must-know-num">1</div>
+        <div class="must-know-body">
+          <div class="must-know-tags">
+            <span class="tag tag-api">API</span>
+            <span class="tag tag-codex">Codex</span>
+            <span class="tag tag-high">HIGH</span>
+            <span class="tag tag-new">New</span>
+          </div>
+          <div class="must-know-headline">Gemini 3.8 Flash Cyber (released Sep 2 — 13-day intelligence gap) leads CyberGym at 86.2%, beating GPT-5.5 Cyber at 85.6%. Google's Fairwind Program gates access to government authorities and critical infrastructure. Chrome Security: 2.6x more correct patches than best commercial models.</div>
+          <div class="must-know-detail">
+            Google released Gemini 3.8 Flash and 3.8 Flash Cyber on September 2 — its third Flash model in six weeks — absent from all September 8–14 reports. 3.8 Flash (general) delivers "significant improvements across software engineering, agentic tasks, and critical multi-step reasoning" at $0.75/$3.75. Gemini 3.8 Flash Cyber posts 86.2% pass@1 on CyberGym vs. GPT-5.5 Cyber 85.6%; exclusively gated via the Fairwind Program (government authorities, critical infrastructure operators, software maintainers).
+            <br><br>
+            <strong>For C-Suite:</strong> Google has held the leading cybersecurity AI benchmark for 13 days without appearing in OpenAI intelligence. The Fairwind Program creates a government enterprise sales motion analogous to OneGov. Google's pace of 3 Flash models in 6 weeks while holding Gemini 3.5 Pro suggests deliberate strategy — ship capable workhorses fast, hold the flagship for a coordinated capability narrative.
+          </div>
+        </div>
+      </div>
+
+      <div class="must-know-item">
+        <div class="must-know-num">2</div>
+        <div class="must-know-body">
+          <div class="must-know-tags">
+            <span class="tag tag-chatgpt">ChatGPT</span>
+            <span class="tag tag-api">API</span>
+            <span class="tag tag-high">HIGH</span>
+            <span class="tag tag-new">New</span>
+          </div>
+          <div class="must-know-headline">Anthropic $15B credit facility confirmed; IPO mid-October marketing start locked. $2T valuation discussed. Morgan Stanley, Goldman Sachs, JPMorgan, Citigroup. S-1 public filing targeting late September. Fully-capitalized public competitor in approximately 5 weeks.</div>
+          <div class="must-know-detail">
+            Anthropic finalized an expansion of its revolving credit facility to $15B (up from $2.5B), led by Morgan Stanley. IPO institutional marketing expected mid-October; S-1 filing targeting late September. Some investors have discussed a $2T valuation — potentially the largest US tech IPO since Saudi Aramco. ARR: $65B as of July 2026.
+            <br><br>
+            <strong>For C-Suite:</strong> A $2T Anthropic resets the competitive framing to two trillion-dollar AI companies competing publicly. The $15B credit facility is independent of IPO proceeds — Anthropic can ramp hiring and marketing in Q4 regardless of IPO timing. OpenAI's "not 2026 IPO" positioning now looks strategically smart relative to Anthropic's quiet-period constraints and disclosure risks.
+          </div>
+        </div>
+      </div>
+
+      <div class="must-know-item">
+        <div class="must-know-num">3</div>
+        <div class="must-know-body">
+          <div class="must-know-tags">
+            <span class="tag tag-codex">Codex</span>
+            <span class="tag tag-api">API</span>
+          </div>
+          <div class="must-know-headline">Grok 4.7 Day 3 delay — Musk Sep 14: "roughly on par with Opus 5.0, not 5.1." Original "beats every model" claim significantly scaled back. No model card, API ID, pricing, or benchmarks published. Day 103 cryptographic vuln + Day 12 GitSpawn still unpatched.</div>
+          <div class="must-know-detail">
+            Three consecutive days of delay from xAI. The September 14 Musk post is the most material update: Grok 4.7 is now "roughly on par with Opus 5.0" — not Fable 5.1, and not "best model in the world." At Opus 5.0 parity, Grok 4.7 is behind Fable 5.1 on Real-SWE (38.8% Fable 5.1 vs. estimated ~33% Opus 5.0 range).
+            <br><br>
+            <strong>For C-Suite:</strong> Two missed windows + capability downgrade structurally damages xAI's enterprise credibility. Day 103 cryptographic vulnerability is a hard blocker for any enterprise security evaluation. The market remains a two-way Codex/Claude Code contest through at minimum end of week.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ TABBED SECTIONS ══════════════════════ -->
+<section id="intel">
+  <div class="container">
+    <div class="section-label">02–05 — Intelligence by Product Line</div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('chatgpt')">ChatGPT (PMM)</button>
+      <button class="tab-btn" onclick="showTab('codex')">Codex (PM)</button>
+      <button class="tab-btn" onclick="showTab('api')">API &amp; Models (BD)</button>
+      <button class="tab-btn" onclick="showTab('hiring')">Hiring Signals</button>
+      <button class="tab-btn" onclick="showTab('horizon')">Horizon Watch</button>
+    </div>
+
+    <!-- ── CHATGPT TAB ── -->
+    <div id="tab-chatgpt" class="tab-content active">
+      <div class="subsec">Competitor Messaging &amp; Positioning</div>
+
+      <div class="signal-card key-new">
+        <div class="signal-company">
+          Anthropic (Claude + Mythos) <span class="badge badge-new">Key New</span>
+        </div>
+        <div class="signal-body">
+          EU access granted to Claude Mythos during IPO quiet period; Sonnet 5 price permanently locked at $2/$10 (no scheduled increase); $15B credit facility signals uncapped Q4 marketing budget.
+          <ul>
+            <li>Mythos in EU completes EU AI Act compliance — European enterprise buyers now access the same model tier as US customers, reducing the geographic capability gap that previously benefited OpenAI.</li>
+            <li>Sonnet 5 permanent price lock arrives on Day 1 of the Claude Code migration window — developers evaluating alternatives due to the limit cut now have pricing certainty. Three coordinated signals (EU Mythos, price lock, credit facility) arriving on the same day suggests narrative management during quiet period.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Releasebot September 2026 — confirmed. Forbes September 7 — confirmed ($15B credit facility).</div>
+      </div>
+
+      <div class="signal-card key-new">
+        <div class="signal-company">
+          Google (Gemini) <span class="badge badge-correction">Intelligence Correction</span>
+        </div>
+        <div class="signal-body">
+          Gemini Enterprise pricing restructured: pay-as-you-go, 20% token discounts, monthly agent spending caps, zero-dollar base subscription. Gemini 3.8 Flash active workhorse since September 2 (not 3.7 Flash as previously reported). Gemini 3.5 Pro: 35th missed window.
+          <ul>
+            <li>Zero-dollar Gemini Enterprise base subscription eliminates the procurement barrier for Workspace customers — no new budget line, no approval chain, free trial-to-production path for Google's 10M+ Workspace enterprise customers.</li>
+            <li>Gemini 3.8 Flash (active since Sep 2) offers improved capability vs. 3.7 Flash — Google's consumer product was stronger than reported across September 8–14. The 35th 3.5 Pro missed window means 3.8 Flash is Google's consumer ceiling indefinitely.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Google Blog Sep 2 — confirmed. Google official Enterprise pricing — confirmed.</div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          Meta (Muse) <span class="badge badge-standing">Standing — Day 7</span>
+        </div>
+        <div class="signal-body">
+          iCloud photo exposure incident generating sustained negative media coverage — Day 7 dominant narrative. Muse pulled personal iCloud photos when asked only to identify toys at a birthday party. WhatsApp international expansion still unannounced.
+          <ul>
+            <li>The incident is an opportunity for ChatGPT messaging — OpenAI can position its Operator framework and user data controls as the more responsible consumer AI architecture.</li>
+            <li>WhatsApp international expansion (2B users) remains the key signal to watch; no announced date. If the story persists into Week 2, Muse's consumer adoption funnel narrows measurably.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Forbes September 9 — confirmed (iCloud incident). Bloomberg September 8 — confirmed (Muse launch).</div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          xAI (Grok) <span class="badge badge-update">Key Update</span>
+        </div>
+        <div class="signal-body">
+          Grok 4.7 Day 3 delay; "Opus 5.0 parity" capability downgrade; consumer Grok 4.6 standing; Day 103 cryptographic vulnerability approaching consumer privacy journalist attention threshold.
+          <ul>
+            <li>Capability downgrade from "best model" to "Opus 5.0 parity" reduces competitive urgency for ChatGPT consumer positioning — Grok 4.7 is no longer a near-term capability threat even when it ships.</li>
+            <li>Day 103 cryptographic vulnerability: at this duration, consumer privacy journalists (not just enterprise security researchers) may begin covering the story — a reputational risk that could dominate xAI's consumer narrative through Q4.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Musk X September 14 — confirmed. iweaver.ai, CellCog — confirmed.</div>
+      </div>
+
+      <div class="subsec">Customer Sentiment — September 15</div>
+
+      <div class="sentiment-block">
+        <div class="sentiment-label">Reddit / Hacker News / Community</div>
+        <div class="sentiment-body">
+          <strong>r/ChatGPT:</strong> Meta Muse iCloud incident gaining discussion — "Meta's AI already caused a privacy incident in week one" framing dominant. Anthropic IPO $15B facility generating "Anthropic is going to be massive" threads.
+          <br><br>
+          <strong>r/ClaudeAI:</strong> Sonnet 5 permanent price lock generating positive surprise ("they kept the introductory price permanently — good PR timing"). Day 1 limit cut migration ongoing with "Auto mode offset is real" moderating churn.
+          <br><br>
+          <strong>r/LocalLLaMA:</strong> Kimi K3 #3 Intelligence Index — "Chinese labs are tier-1 on capability now, not just price."
+          <br><br>
+          <strong>HN:</strong> Gemini 3.8 Flash intelligence gap thread — "3.8 Flash has been live since September 2 and we've been comparing 3.7 — how did this miss the radar?" Grok 4.7 downgrade — "Opus 5.0 parity after 'beats everything' claims is embarrassing."
+        </div>
+        <div class="confidence-note">Confidence: MEDIUM — synthesis from community signal patterns.</div>
+      </div>
+
+      <div class="subsec">Hiring Signals — Marketing &amp; Growth</div>
+
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="hiring-company">Anthropic</div>
+          <div class="hiring-body">$15B credit facility enables uncapped Q4 2026 marketing investment. EU Mythos access creates European GTM headcount need (UK, France, Germany enterprise sales and compliance). Day 8 quiet period — no external hiring signals. Watch LinkedIn immediately after late-September S-1 filing for first public headcount plans.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">EU GTM</span>
+            <span class="hiring-signal-tag">Enterprise Sales</span>
+            <span class="hiring-signal-tag">Post-IPO Surge</span>
+          </div>
+        </div>
+        <div class="hiring-card">
+          <div class="hiring-company">Google</div>
+          <div class="hiring-body">Zero-dollar Gemini Enterprise base subscriptions create large CS conversion pipeline requiring enterprise CS at scale. Fairwind Program requires dedicated government/defense BD vetting and onboarding team. Gemini Robotics 2 + Apptronik partnership requires robotics industry BD headcount — a new vertical signal.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">Gov/Defense BD</span>
+            <span class="hiring-signal-tag">Enterprise CS</span>
+            <span class="hiring-signal-tag">Robotics BD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CODEX TAB ── -->
+    <div id="tab-codex" class="tab-content">
+      <div class="subsec">Feature Launches &amp; Competitive Moves</div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          OpenAI (GPT-6 Astra / Codex) <span class="badge badge-standing">Standing — Day 7</span>
+        </div>
+        <div class="signal-body">
+          GPT-6 Astra stable since September 8. Real-SWE #2 (33.8% vs. Fable 5.1 38.8%). ChatGPT Financial Services live. Active Claude Code migration window Day 1.
+          <ul>
+            <li>The 5-point Real-SWE gap to Fable 5.1 persists. Day 1 of the Claude Code migration window is the active conversion opportunity — the "similar performance, no quota" narrative is the conversion thesis reinforced today by Grok 4.7's continued absence.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="signal-card correction">
+        <div class="signal-company">
+          Google (Gemini 3.8 Flash + Enterprise) <span class="badge badge-correction">Intelligence Correction</span>
+        </div>
+        <div class="signal-body">
+          Google's active coding/agent model has been Gemini 3.8 Flash since September 2 — not 3.7 Flash. 3.8 Flash: "significant improvements across software engineering and agentic tasks." Enterprise pricing: 20% token discount, zero-dollar base subscription. 3.5 Pro: 35th missed window.
+          <ul>
+            <li>Zero-dollar Gemini Enterprise base subscription is the most aggressive enterprise coding tool pricing move since Google's original free-tier-under-25 announcement — it eliminates the budget approval barrier for Workspace accounts. At $0.75/$3.75 vs. $4/$20 (GPT-5.6 Sol), Google's cost-performance ratio for non-frontier coding workloads is 80–95% cheaper on input.</li>
+            <li>Enterprise developers who evaluated Gemini 3.7 Flash in September 8–14 were comparing against a stale baseline — the competitive API picture for coding is materially different today than perceived. The 35th 3.5 Pro missed window means 3.8 Flash is Google's coding ceiling indefinitely — no imminent upgrade narrative to counter.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Google Blog Sep 2 — confirmed. Vellum AI pricing — confirmed. Google official Enterprise pricing — confirmed.</div>
+      </div>
+
+      <div class="signal-card key-update">
+        <div class="signal-company">
+          Anthropic (Claude Code) <span class="badge badge-update">Key Update — Day 1 Post-Cut</span>
+        </div>
+        <div class="signal-body">
+          Day 1 post -17% limit cut. Two offset signals: (1) Sonnet 5 permanently locked at $2/$10; (2) Auto mode permission classifier exclusion remains — agentic developers see smaller effective reduction. EU Mythos access; $15B credit facility. No new feature announcements (quiet period Day 8).
+          <ul>
+            <li>Claude Code benchmark leadership unchanged: Fable 5.1 38.8% Real-SWE, 81.2% SWE-bench Pro. Access has degraded, capability has not. The permanent Sonnet 5 price lock stabilizes cost dimension exactly when developers are evaluating alternatives.</li>
+            <li>$15B credit facility means Anthropic can invest in Claude Code infrastructure at scale from Q4 2026 — the access cuts of today may reverse post-IPO. EU Mythos access potentially expands Claude Code's benchmark lead in European markets if Mythos includes coding improvements above Fable 5.1.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Releasebot Sep 2026 — confirmed. Forbes Sep 7 — confirmed ($15B).</div>
+      </div>
+
+      <div class="signal-card key-update">
+        <div class="signal-company">
+          xAI (Grok 4.7) <span class="badge badge-update">Key Update — Day 3</span>
+        </div>
+        <div class="signal-body">
+          Day 3 delay; "roughly on par with Opus 5.0, not 5.1" (Musk September 14); 2.1T parameters; SpaceX data; no model card/API ID/pricing/benchmarks. Day 103 cryptographic vulnerability + Day 12 GitSpawn both unpatched.
+          <ul>
+            <li>At Opus 5.0 parity, Grok 4.7 is not a Real-SWE leader — the enterprise coding benchmark gap to Codex is likely similar to the current Claude Code gap or wider. Two missed windows + capability downgrade means enterprise evaluators should remove Grok 4.7 from September/Q3 coding tool evaluations entirely.</li>
+            <li>The SpaceX engineering data training may make Grok 4.7 exceptional in aerospace/manufacturing/engineering domains not captured by standard coding benchmarks — a niche but real differentiation for industrial enterprises. Day 103 vulnerability is a hard blocker for any enterprise security evaluation regardless of capability.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Musk X Sep 14 — confirmed. Adversa AI, Manifold Security — confirmed (vulns).</div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          GitHub Copilot <span class="badge badge-standing">Standing — T-13</span>
+        </div>
+        <div class="signal-body">
+          T-13 days to September 28 unified experience; Balanced review default (cost increase); T-16 days October 1 upfront seats.
+          <ul>
+            <li>No new signals. Procurement-level decisions are being made this week for teams not yet committed to a coding stack for Q4. The unified experience pricing change is still the most significant pending enterprise disruption in the coding tool market.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          Cognition (Devin Desktop) <span class="badge badge-standing">Standing — Day 8</span>
+        </div>
+        <div class="signal-body">
+          No new September 15 signals. $47B valuation; Agent Command Center stable. Remains primary migration destination for autonomous agent workflows departing Claude Code post-limit-cut.
+        </div>
+      </div>
+
+      <div class="subsec">Market Share Snapshot — September 15, 2026</div>
+      <div class="pricing-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Adoption</th>
+              <th>Key Signal — Sep 15</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Claude Code (Anthropic)</strong></td>
+              <td>39% global / 47% US — #1 (JetBrains)</td>
+              <td><span class="price-concern">Day 1 post -17% limit cut</span>; Sonnet 5 LOCKED $2/$10; EU Mythos; $15B credit facility</td>
+            </tr>
+            <tr>
+              <td><strong>Devin Desktop (Cognition)</strong></td>
+              <td>$47B valuation / $492M+ ARR</td>
+              <td>Day 8 rebrand; Agent Command Center stable; IPO trajectory</td>
+            </tr>
+            <tr>
+              <td><strong>GitHub Copilot (Microsoft)</strong></td>
+              <td>21% (↓ from 29% Jan 2026)</td>
+              <td><span class="price-concern">T-13 unified experience</span> (Sep 28); Balanced review = cost increase; T-16 upfront seats</td>
+            </tr>
+            <tr>
+              <td><strong>Cursor / Grok Bot (SpaceXAI)</strong></td>
+              <td>64% Fortune 500 / $4B ARR</td>
+              <td><span class="price-concern">Grok 4.7 Day 3 delay — "Opus 5.0 parity"</span>; Day 103 vuln + GitSpawn unpatched</td>
+            </tr>
+            <tr>
+              <td><strong>Codex (OpenAI)</strong></td>
+              <td>65% awareness</td>
+              <td>GPT-6 Astra Real-SWE #2 (33.8%); active migration window; 5-pt gap to Fable 5.1</td>
+            </tr>
+            <tr>
+              <td><strong>Gemini Code Assist (Google)</strong></td>
+              <td>Growing (free individual)</td>
+              <td><span class="price-highlight">3.8 Flash active Sep 2 (CORRECTION)</span>; Enterprise 20% discount + zero-dollar base; 35th 3.5 Pro missed window</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsec">Developer Sentiment — September 15</div>
+      <div class="sentiment-block">
+        <div class="sentiment-label">HN / Reddit / Community</div>
+        <div class="sentiment-body">
+          <strong>HN:</strong> Gemini 3.8 Flash thread — "3.8 Flash has been live since Sep 2 and AI reports were citing 3.7 — how did this miss a week?" Grok 4.7 downgrade — "Opus 5.0 parity after 'best model ever' is embarrassing for xAI's credibility."
+          <br><br>
+          <strong>Claude Code Day 1:</strong> "Auto mode offset is real, I'm staying" and "Switching to Codex Sol, the gap isn't worth the quota" both trending — genuine developer split forming.
+          <br><br>
+          <strong>r/programming:</strong> Sonnet 5 permanent price lock — "Actually a smart move: lock price on cut day." AI Standards Body Altman/Amodei disagreement — "OpenAI and Anthropic can't agree on whether to include the government — that's going to take 18 months."
+        </div>
+        <div class="confidence-note">Confidence: MEDIUM — synthesis from community signal patterns.</div>
+      </div>
+    </div>
+
+    <!-- ── API & MODELS TAB ── -->
+    <div id="tab-api" class="tab-content">
+      <div class="subsec">New Model Releases &amp; Capabilities</div>
+
+      <div class="signal-card correction">
+        <div class="signal-company">
+          Google (Gemini 3.8 Flash + 3.8 Flash Cyber) <span class="badge badge-correction">Critical Correction — 13-Day Gap</span>
+        </div>
+        <div class="signal-body">
+          Released September 2. 3.8 Flash: agents/coding workhorse, $0.75/$3.75. 3.8 Flash Cyber: <strong>86.2% CyberGym pass@1</strong> (beats GPT-5.5 Cyber 85.6%; Chrome: 2.6x more correct patches). Gated via Fairwind Program only.
+          <ul>
+            <li>Google leads the autonomous vulnerability discovery benchmark — the most decision-relevant security AI benchmark for government and critical infrastructure contracts. The Fairwind Program creates a controlled government enterprise sales motion analogous to OneGov — Google is building a federal AI procurement moat in security AI.</li>
+            <li>At $0.75/$3.75, Gemini 3.8 Flash undercuts GPT-5.6 Sol ($4/$20) by 80–95% on input/output for equivalent or better agentic/coding workloads by Google's own framing. Developer evaluations during September 8–14 that concluded "Gemini 3.7 Flash is Google's best" are now materially stale.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: VentureBeat Sep 2, Google Blog Sep 2, Metacurity, Vellum AI — all confirmed.</div>
+      </div>
+
+      <div class="signal-card key-update">
+        <div class="signal-company">
+          Anthropic (Claude API + Fable 5.1) <span class="badge badge-update">Key Update — Sep 15</span>
+        </div>
+        <div class="signal-body">
+          Sonnet 5 permanently locked at $2/$10. EU Mythos access (EU AI Act Article 51 compliance signal for high-risk AI). $15B credit facility; Day 8 quiet period; $65B ARR.
+          <ul>
+            <li>Anthropic is betting that its performance premium over Gemini 3.8 Flash ($2/$10 vs. $0.75/$3.75 — a 2.5–8x premium) is defensible on reasoning and coding quality. EU Mythos access likely means Anthropic has completed EU AI Act compliance for a model with "unprecedented cybersecurity risks" — a significant regulatory signal for EU enterprise API buyers.</li>
+            <li>$15B credit facility means Anthropic's API infrastructure investment capacity in Q4 2026 is materially larger than before September 7. The access cuts of today may reverse post-IPO as Anthropic scales compute.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Releasebot Sep 2026 — confirmed. Forbes Sep 7 — confirmed. GraniteShares — confirmed (ARR).</div>
+      </div>
+
+      <div class="signal-card key-new">
+        <div class="signal-company">
+          Moonshot AI (Kimi K3) <span class="badge badge-new">Key New</span>
+        </div>
+        <div class="signal-body">
+          <strong>#3 overall Artificial Analysis Intelligence Index</strong> — behind only Claude Fable 5 and GPT-5.6 Sol. <strong>#1 Frontend Code Arena.</strong> Priced at ~$15/1M output tokens. "Strongest available without VPN in restricted markets."
+          <ul>
+            <li>Kimi K3 at #3 Intelligence Index means Chinese models now occupy the tier-1 capability bracket, not just the cost-disruption bracket. Frontend Code Arena leadership is a high-specificity signal — frontend development is a large portion of enterprise developer API usage.</li>
+            <li>"Strongest available without a VPN in restricted markets" is a geopolitical distribution moat that OpenAI and Anthropic cannot replicate in China, SE Asia, and other restricted geographies. At $15/1M output (premium), Moonshot is pricing for quality positioning — not cost-disruption but a capability-competitive play.</li>
+          </ul>
+        </div>
+        <div class="signal-source">Sources: Swfte.com AI Leaderboard Sep 2026 — confirmed. mysummit.school — confirmed.</div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          DeepSeek <span class="badge badge-standing">Standing — Day 1 Auto-Migration</span>
+        </div>
+        <div class="signal-body">
+          V4.1 Flash auto-migration Day 1; V4 Pro preserved; developer response period; no new September 15 model signals.
+          <ul>
+            <li>V4.1 Flash auto-migration is 24 hours in. Developer response trackable via OpenRouter V4.1 Flash vs. explicit V4 Pro endpoint adoption. No new signals today.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-company">
+          Mistral <span class="badge badge-standing">Standing</span>
+        </div>
+        <div class="signal-body">
+          Microsoft EU data center deal execution ongoing; Shieldstral open-sourced; Mistral Medium 3.5 in Microsoft Foundry. No new September 15 signals.
+        </div>
+      </div>
+
+      <div class="subsec">Pricing Snapshot — September 15, 2026</div>
+      <div class="pricing-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Model</th>
+              <th>Input / Output ($/1M tok)</th>
+              <th>Context</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td><strong>GPT-6 Astra</strong></td>
+              <td>$10 / $50</td>
+              <td>1.05M</td>
+              <td>Financial Services live; Real-SWE #2 (33.8%); OneGov T-15 days</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Sol</td>
+              <td>$4 / $20</td>
+              <td>1M</td>
+              <td>Promo through Nov 21; 750 tok/s</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Terra</td>
+              <td>$2 / $12</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-5.6 Luna</td>
+              <td>$0.20 / $1.20</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td><strong>Grok 4.7</strong></td>
+              <td class="price-concern">TBD</td>
+              <td>TBD</td>
+              <td><span class="price-concern">Day 3 delay — "Opus 5.0 parity"; no API/card; Day 103 vuln + GitSpawn UNPATCHED</span></td>
+            </tr>
+            <tr>
+              <td>SpaceXAI</td>
+              <td>Grok 4.6</td>
+              <td>$2 / $6</td>
+              <td>500K</td>
+              <td>Day 103 vuln; GitSpawn unpatched</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td><strong>Claude Fable 5.1</strong></td>
+              <td>$10 / $50 (cache $0.25/M)</td>
+              <td>1M</td>
+              <td>Day 8 IPO quiet; $15B credit; Real-SWE #1 (38.8%); EU Mythos</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td><strong>Claude Sonnet 5</strong></td>
+              <td class="price-highlight">$2 / $10 (PERMANENT)</td>
+              <td>1M</td>
+              <td><strong>Price PERMANENTLY locked</strong>; Day 1 post -17% limit cut</td>
+            </tr>
+            <tr>
+              <td>Meta</td>
+              <td>Muse Spark 1.3</td>
+              <td>$1.25 / $4.25</td>
+              <td>1M</td>
+              <td>Day 7; iCloud privacy incident; WhatsApp intl TBD</td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td><strong>Gemini 3.8 Flash</strong></td>
+              <td class="price-highlight">$0.75 / $3.75</td>
+              <td>1M</td>
+              <td><strong>GA Sep 2 (CORRECTION)</strong>; Cyber leads CyberGym 86.2%; 35th 3.5 Pro missed window</td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 3.1 Pro</td>
+              <td>$1.25 / $5.00</td>
+              <td>1M</td>
+              <td>Stable</td>
+            </tr>
+            <tr>
+              <td>Moonshot AI</td>
+              <td><strong>Kimi K3</strong></td>
+              <td>~$15 (output)</td>
+              <td>TBD</td>
+              <td><strong>#3 Intelligence Index; #1 Frontend Code Arena</strong></td>
+            </tr>
+            <tr>
+              <td>Mistral</td>
+              <td>Mistral Large 3</td>
+              <td>$2 / $6</td>
+              <td>256K</td>
+              <td>Microsoft EU deal execution; Shieldstral open-sourced</td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td>
+              <td>V4.1 Flash</td>
+              <td class="price-highlight">$0.15 / $0.60 off-peak</td>
+              <td>1M</td>
+              <td>Auto-migration Day 1; V4 Pro preserved; cache $0.003</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── HIRING TAB ── -->
+    <div id="tab-hiring" class="tab-content">
+      <div class="subsec">Cross-Cutting Hiring &amp; Resource Signals</div>
+
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="hiring-company">Google</div>
+          <div class="hiring-body">Three simultaneous hiring signals from product launches: (1) Fairwind Program government vetting, onboarding, and CS for defense/infrastructure; (2) Enterprise CS at scale to convert zero-dollar base subscriptions to paid; (3) Robotics BD and solutions engineering for Apptronik Apollo 2 partnership. The zero-dollar → paid conversion motion requires more headcount than traditional trial-to-paid.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">Gov/Defense BD</span>
+            <span class="hiring-signal-tag">Enterprise CS Scale</span>
+            <span class="hiring-signal-tag">Robotics BD</span>
+            <span class="hiring-signal-tag">Security Engineering</span>
+          </div>
+        </div>
+        <div class="hiring-card">
+          <div class="hiring-company">Anthropic</div>
+          <div class="hiring-body">Day 8 quiet period — no external signals. $15B credit facility funds post-IPO Q4 hiring surge; EU Mythos access confirms significant Q3 European infrastructure/compliance engineering completed. S-1 public filing (late September) will be the first source of actual headcount and department breakdown. Post-IPO hiring begins October/November.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">EU Compliance Eng (Q3)</span>
+            <span class="hiring-signal-tag">Post-IPO Surge (Q4)</span>
+            <span class="hiring-signal-tag">S-1 Watch — Late Sep</span>
+          </div>
+        </div>
+        <div class="hiring-card">
+          <div class="hiring-company">OpenAI</div>
+          <div class="hiring-body">766+ open roles ongoing. ChatGPT Financial Services, OneGov (T-15), and AI Standards Body all requiring specialized headcount from September 14 report. No new headcount signals today. Three specialized hiring needs remain active across financial services compliance, federal contract delivery, and governance legal teams.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">FinSvcs Compliance</span>
+            <span class="hiring-signal-tag">Federal Delivery</span>
+            <span class="hiring-signal-tag">Governance Legal</span>
+          </div>
+        </div>
+        <div class="hiring-card">
+          <div class="hiring-company">Moonshot AI</div>
+          <div class="hiring-body">Kimi K3 #3 Intelligence Index signals a frontier-tier research team that has recently cleared significant technical barriers. A #3 ranking signals Moonshot is likely accelerating hiring to defend position and advance toward #1. Watch for RLHF, multimodal, and inference infrastructure hiring acceleration on LinkedIn and academic job boards.</div>
+          <div class="hiring-signals">
+            <span class="hiring-signal-tag">RLHF Research</span>
+            <span class="hiring-signal-tag">Multimodal</span>
+            <span class="hiring-signal-tag">Inference Infra</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HORIZON WATCH TAB ── -->
+    <div id="tab-horizon" class="tab-content">
+      <div class="subsec">Tier 2 — Notable Challengers</div>
+
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="horizon-tier-label">Tier 2 — Standing</div>
+          <div class="horizon-company">Mistral AI</div>
+          <div class="horizon-body">Microsoft EU data center deal execution ongoing; Shieldstral safety classifier open-sourced; Mistral Medium 3.5 in Microsoft Foundry. No new September 15 signals. Multibillion-dollar Microsoft EU deal execution continues; building toward 200MW data center capacity by 2027.</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="horizon-tier-label">Tier 2 — Day 1</div>
+          <div class="horizon-company">DeepSeek</div>
+          <div class="horizon-body">V4.1 Flash auto-migration Day 1; V4 Pro preserved; developer response period ongoing. $8B second funding round still unconfirmed; V5 architecture horizon signal ongoing. No new V5 or organizational signals on September 15. Developer response to auto-migration now trackable via OpenRouter.</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="horizon-tier-label">Tier 2 — Day 7</div>
+          <div class="horizon-company">Meta AI (Muse)</div>
+          <div class="horizon-body">iCloud photo exposure incident now the Week 1 dominant narrative. Week 1 privacy incidents create lasting perception damage — if the story persists into Week 2, Muse's consumer adoption funnel narrows. Meta's response strategy (or silence) this week defines the brand narrative. WhatsApp international expansion, when announced, will either reset the narrative or amplify the privacy concern across 2B users.</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="horizon-tier-label">Tier 2 — Key New</div>
+          <div class="horizon-company">Google DeepMind — Gemini Robotics 2</div>
+          <div class="horizon-body"><strong>Gemini Robotics 2 + Apptronik Apollo 2 humanoid robot partnership announced September 15.</strong> CNBC: Google "starts September with AI momentum after its longest monthly losing streak in over a decade." Positions Google as a robotics-AI convergence player alongside Figure AI and 1X. If Gemini 3.5 Pro ships in October, Google's Q4 narrative becomes "comeback of the year." Significant model revenue potential as humanoid robots enter production deployment.</div>
+        </div>
+      </div>
+
+      <div class="subsec" style="margin-top:20px">Tier 3 — Future Tech &amp; Governance</div>
+
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="horizon-tier-label">Tier 3 — Key Update</div>
+          <div class="horizon-company">AI Industry Self-Regulatory Standards Body</div>
+          <div class="horizon-body"><strong>Altman/Amodei structural disagreement confirmed September 15.</strong> Altman: voluntary industry-led, no government backing. Amodei: government partnership model. This is a governance architecture disagreement that requires negotiation, not just alignment — pushing end-of-2026 timeline to medium confidence. OpenAI is positioned to lead a fast, industry-only body; Anthropic's IPO quiet period prevents Amodei from publicly advocating his model — OpenAI has a temporary advocacy advantage. Trump administration preference for industry self-regulation aligns with Altman's position.</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="horizon-tier-label">Tier 3 — Standing Day 10</div>
+          <div class="horizon-company">OpenAI Agentic Safety Framework</div>
+          <div class="horizon-body">Framework committed September 5 ("within weeks") remains unpublished. October 3 is the outer window. If published before the standards body is established, it becomes OpenAI's foundational contribution to the governance conversation. Day 10 of the commitment period; no publication as of September 15.</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="horizon-tier-label">Tier 3 — T-15 Days</div>
+          <div class="horizon-company">GSA OneGov</div>
+          <div class="horizon-body">T-15 days (September 30); OpenAI 27-month deal confirmed (October 1); Anthropic and Google successor deals still unconfirmed. Anthropic's quiet period prevents publicly announcing a successor deal. OpenAI remains the only confirmed post-September 30 federal AI contract. 15 days to the transition.</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="horizon-tier-label">Tier 3 — Standing</div>
+          <div class="horizon-company">NVIDIA + Hugging Face</div>
+          <div class="horizon-body">$12.93B antitrust review (DOJ + EU) H1 2027 close. No new September 15 signals. Standing watch — outcome could reshape open-source AI infrastructure dynamics if blocked.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ SOURCES ══════════════════════ -->
+<section class="sources-section">
+  <div class="container">
+    <div class="section-label">07 — Sources</div>
+    <button class="sources-toggle-btn" onclick="toggleSources()">
+      <span id="sources-toggle-label">Show all sources (30+)</span>
+      <span style="font-size:10px;color:var(--text-tertiary)" id="sources-toggle-icon">▼</span>
+    </button>
+    <div class="sources-list" id="sources-list">
+      <div class="source-group">
+        <div class="source-group-title">Gemini 3.8 Flash + 3.8 Flash Cyber (September 2, 2026)</div>
+        <ul>
+          <li><a href="https://venturebeat.com/security/googles-gemini-3-8-flash-is-built-for-agents-while-its-cyber-twin-hunts-vulnerabilities" target="_blank">VentureBeat — Google's Gemini 3.8 Flash is built for agents, while its Cyber twin hunts vulnerabilities</a></li>
+          <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" target="_blank">Google Blog — Introducing Gemini 3.8 Flash and 3.8 Flash Cyber</a></li>
+          <li><a href="https://www.androidheadlines.com/2026/09/google-debuts-gemini-3-8-flash-cyber-variants.html" target="_blank">AndroidHeadlines — Google Debuts Gemini 3.8 Flash and Cyber Variants with Massive Performance Leap</a></li>
+          <li><a href="https://www.metacurity.com/google-debuts-gemini-3-8-flash-cyber-for-autonomous-vulnerability-discovery/" target="_blank">Metacurity — Google debuts Gemini 3.8 Flash Cyber for autonomous vulnerability discovery</a></li>
+          <li><a href="https://www.vellum.ai/blog/gemini-3-8-flash-benchmarks-explained" target="_blank">Vellum AI — Google Gemini 3.8 Flash &amp; 3.8 Flash Cyber Benchmarks Explained</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Anthropic $15B Credit Facility + IPO Timeline (September 4–7, 2026)</div>
+        <ul>
+          <li><a href="https://www.forbes.com/sites/jonmarkman/2026/09/07/anthropic-delays-ipo-to-mid-october-locks-in-15-billion-credit-line/" target="_blank">Forbes — Anthropic Delays IPO And Expands Credit Line To $15 Billion</a></li>
+          <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-expands-credit-facility-to-15-billion-ahead-of-mega-ipo" target="_blank">PYMNTS — Anthropic Expands Credit Facility to $15 Billion Ahead of Mega IPO</a></li>
+          <li><a href="https://qz.com/anthropic-15-billion-credit-facility-ipo-090426" target="_blank">Quartz — Anthropic nears $15 billion credit facility before IPO</a></li>
+          <li><a href="https://dealroom.co/news/148839-anthropic-secures-15b-credit-facility-ahead-of-ipo/" target="_blank">Dealroom — Anthropic secures $15B credit facility ahead of IPO</a></li>
+          <li><a href="https://www.datastudios.org/post/anthropic-ipo-could-reach-2-trillion-mid-october-launch-15-billion-credit-facility-major-banks-and-ais-public-market-test" target="_blank">DataStudios — Anthropic IPO Could Reach $2 Trillion</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Anthropic EU Mythos + Sonnet 5 Price Lock (September 2026)</div>
+        <ul>
+          <li><a href="https://releasebot.io/updates/anthropic/claude" target="_blank">Releasebot — Anthropic Claude Updates September 2026</a></li>
+          <li><a href="https://blog.mean.ceo/anthropic-claude-news-september-2026/" target="_blank">blog.mean.ceo — Anthropic Claude News September 2026</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Grok 4.7 — Day 3 Delay, Capability Downgrade</div>
+        <ul>
+          <li><a href="https://www.iweaver.ai/blog/grok-4-7/" target="_blank">iWeaver AI — Grok 4.7 Release Date, Features &amp; Latest Updates</a></li>
+          <li><a href="https://cellcog.ai/blog/grok-4-7-release-date/" target="_blank">CellCog — Grok 4.7 Release Date: What Musk Has Promised, What xAI Has Shipped</a></li>
+          <li><a href="https://www.orcarouter.ai/blog/grok-4-7-release-date" target="_blank">OrcaRouter — Grok 4.7 Release Date: Musk Confirms Mid-September</a></li>
+          <li><a href="https://adversa.ai/blog/cryptographic-context-injection-grok-data-theft/" target="_blank">Adversa AI — Cryptographic Context Injection: Grok Chat Data Theft</a></li>
+          <li><a href="https://www.manifold.security/blog/ai-coding-agents-git-hijack" target="_blank">Manifold Security — GitSpawn: AI Coding Agent Git Hijack</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Moonshot AI — Kimi K3</div>
+        <ul>
+          <li><a href="https://www.swfte.com/ai/leaderboard" target="_blank">Swfte.com — AI Model Leaderboard September 2026</a></li>
+          <li><a href="https://mysummit.school/blog/en/kimi-k25-moonshot-review-2026/" target="_blank">mysummit.school — Kimi by Moonshot in 2026: K3, K2.6, K2.7-Code and Agents</a></li>
+          <li><a href="https://fortune.com/2026/07/26/china-moonshot-deepseek-zai-kimi-challenging-us-ai-cost/" target="_blank">Fortune — China's Moonshot, Z.AI, and DeepSeek are challenging U.S. AI labs</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">AI Standards Body — Altman/Amodei Disagreement</div>
+        <ul>
+          <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/google-openai-and-anthropic-float-idea-of-ai-standards-body/" target="_blank">PYMNTS — Google, OpenAI and Anthropic Float Idea of AI Standards Body</a></li>
+          <li><a href="https://investinglive.com/news/anthropic-openai-and-google-held-talks-on-ai-safety-body-report-says/" target="_blank">investinglive.com — Anthropic, OpenAI and Google held talks on AI safety body</a></li>
+          <li><a href="https://aiweekly.co/alerts/anthropic-openai-google-meet-since-july-on-ai-standards-body" target="_blank">AI Weekly — Anthropic, OpenAI, Google Meet Since July on AI Standards Body</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Meta Muse — Launch + iCloud Incident</div>
+        <ul>
+          <li><a href="https://www.bloomberg.com/news/articles/2026-09-08/meta-announces-muse-ai-agent-for-personal-tasks-and-organization" target="_blank">Bloomberg — Meta Announces Muse AI Agent</a></li>
+          <li><a href="https://www.forbes.com/sites/gabrielalinzainescu/2026/09/09/meta-launches-muse-personal-ai-agent-as-staff-flag-security-flaws/" target="_blank">Forbes — Meta Launches Muse Personal AI Agent As Staff Flag Security Flaws</a></li>
+          <li><a href="https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/" target="_blank">TechCrunch — Meta debuts its Muse AI agent. Will consumers trust it?</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Google DeepMind — Gemini Robotics 2 + September AI Momentum</div>
+        <ul>
+          <li><a href="https://www.scientificamerican.com/article/google-deepmind-wants-gemini-to-power-many-different-robots/" target="_blank">Scientific American — Google DeepMind wants Gemini to power many different robots</a></li>
+          <li><a href="https://www.cnbc.com/2026/09/02/google-starts-september-with-ai-momentum-after-long-losing-streak.html" target="_blank">CNBC — Google starts September with AI momentum after longest monthly losing streak</a></li>
+        </ul>
+      </div>
+      <div class="source-group">
+        <div class="source-group-title">Gemini Enterprise Pricing + OpenAI GPT-6 Astra (Standing)</div>
+        <ul>
+          <li><a href="https://blog.mean.ceo/google-gemini-news-september-2026/" target="_blank">blog.mean.ceo — Google Gemini News September 2026</a></li>
+          <li><a href="https://www.cnbc.com/2026/09/03/open-ai-astra-gpt-6-cyber.html" target="_blank">CNBC — OpenAI announces rollout of GPT-6 Astra model</a></li>
+          <li><a href="https://9to5mac.com/2026/09/04/openai-releasing-major-upgrade-to-chatgpt-and-codex-with-gpt-6-astra-details-here/" target="_blank">9to5Mac — OpenAI releasing major upgrade to ChatGPT and Codex with GPT-6 Astra</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="report-footer">
+      <div>
+        Competitive Intelligence Agent &nbsp;·&nbsp; OpenAI Strategy &amp; Operations &nbsp;·&nbsp; September 15, 2026
+      </div>
+      <div>
+        <span class="footer-classification">INTERNAL USE ONLY</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    const content = document.getElementById('tab-' + tabId);
+    if (content) content.classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleSources() {
+    const list = document.getElementById('sources-list');
+    const label = document.getElementById('sources-toggle-label');
+    const icon = document.getElementById('sources-toggle-icon');
+    if (list.classList.contains('open')) {
+      list.classList.remove('open');
+      label.textContent = 'Show all sources (30+)';
+      icon.textContent = '▼';
+    } else {
+      list.classList.add('open');
+      label.textContent = 'Hide sources';
+      icon.textContent = '▲';
+    }
+  }
+</script>
+
+</body>
+</html>
