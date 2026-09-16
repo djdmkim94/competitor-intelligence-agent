@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — September 16, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; padding: 14px 18px; margin-bottom: 36px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.4px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-family: var(--font-mono); vertical-align: middle; }
+.badge-new { background: #ECFDF5; color: #065F46; }
+.badge-standing { background: #F0F9FF; color: #0369A1; }
+.badge-correction { background: #FFF7ED; color: #9A3412; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pricing-table th { text-align: left; padding: 10px 12px; background: var(--surface-alt); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); border-bottom: 1px solid var(--border); }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.pricing-table td:first-child { font-weight: 600; color: var(--text); }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table tr:hover td { background: var(--surface-alt); }
+.price-new { color: var(--text); font-weight: 600; }
+.status-alert { color: #DC2626; font-size: 12px; font-family: var(--font-mono); }
+.status-ok { color: #16A34A; font-size: 12px; font-family: var(--font-mono); }
+.status-warn { color: #D97706; font-size: 12px; font-family: var(--font-mono); }
+
+.market-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.market-table th { text-align: left; padding: 8px 12px; background: var(--surface-alt); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); border-bottom: 1px solid var(--border); }
+.market-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 13px; color: var(--text-secondary); vertical-align: top; }
+.market-table td:first-child { font-weight: 600; color: var(--text); }
+.market-table tr:hover td { background: var(--surface-alt); }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>September 16, 2026</span>
+      <span class="dot"></span>
+      <span>Generated September 16, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend vs. September 15:</strong> Five new confirmed signals: (1) <strong>xAI shelved Grok 4.7 — announced Grok 4.8 at 2.5T params</strong>, RL this week on Colossus 2 gigawatt-scale cluster; Grok 5 framed as AGI target. (2) <strong>Cursor Projects beta rolling out</strong> (Sep 10 launch) — coordinator agent + cloud subagents + months-long persistence. Most significant Codex-category feature launch this cycle. (3) <strong>Anthropic × Novo Nordisk drug discovery partnership</strong> announced September 16 — pharma vertical expansion during IPO quiet period. (4) <strong>Factory $200M/$5B</strong> (Khosla/Blackstone/Sequoia, Sep 15) — model-agnostic coding Droids for enterprise. (5) <strong>Atria Dawn Preview</strong> (Shanghai AI Lab, 744B MoE, MIT, Sep 11 stealth release). Standing: Anthropic S-1 public filing imminent; Claude Code limit cut Day 2; Gemini 3.8 Flash Day 14; GitHub Copilot T-12 days; GSA OneGov T-14 days.
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge medium">Medium</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Anthropic</span> — Novo Nordisk drug discovery partnership announced September 16 expands Anthropic's enterprise narrative into pharma/biotech during IPO quiet period. Sonnet 5 permanently locked $2/$10. S-1 public filing imminent (late September).
+        </div>
+        <div class="implication">No new direct consumer threat today. Anthropic's enterprise expansion and imminent IPO signal a Q4 consumer marketing surge. Meta Muse privacy incident narrative ongoing.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Cursor</span> — Projects beta rolling out now: coordinator agent delegates to "thousands of subagents," cloud-native persistence, Slack/PR/schedule hooks. Platform shift — no longer an IDE. <span class="company-name">Factory</span> $200M/$5B with model-agnostic Droids for enterprise (NVIDIA, Adobe customers).
+        </div>
+        <div class="implication">Cursor Projects is a structural threat to Codex's enterprise orchestration positioning. Factory adds a third well-funded full-lifecycle coding agent competitor. Grok 4.8 (announced, not shipped) is a future threat.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Shanghai AI Lab</span> — Atria Dawn Preview: 744B agentic MoE, MIT license, released September 11 with no announcement. Third frontier-class MIT-licensed open-weight model in 6 weeks. <span class="company-name">Salesforce/NVIDIA Koa</span> — vertical CRM reasoning model built on Nemotron signals enterprise customers leaving generic APIs.
+        </div>
+        <div class="implication">Open-weight frontier tier expanding without US IP claims. Vertical AI models (Koa) signal enterprises will train specialized models instead of calling OpenAI APIs for domain workloads.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Cursor</span> — Projects beta (Sep 10 launch, rolling out now): coordinator agent delegates to thousands of subagents, persistent context over months, cloud-native, reacts to Slack/PRs/schedules autonomously. Cursor is no longer an IDE — it is an enterprise software orchestration platform at $29.3B valuation targeting OpenAI, Uber, Spotify, Shopify, MLB accounts.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">xAI</span> — Musk shelved Grok 4.7 on September 13 (RL training architecture failure), announced Grok 4.8 at 2.5T parameters entering RL on Colossus 2 gigawatt-scale cluster this week. Simultaneously framed Grok 5 as xAI's AGI target. No Grok 4.7 ever shipped. The AGI narrative is a recruitment and fundraising escalation that all AI labs must respond to.</span>
+        <span class="tag tag-api">API &amp; Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Anthropic</span> — Novo Nordisk partnership announced September 16 for Claude Science in drug discovery R&D — pharma-grade vertical expansion during IPO quiet period. 598 open roles (261 in 30 days). S-1 public filing targeting late September. Anthropic's enterprise narrative has expanded from tech to pharma in one deal.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', this)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', this)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', this)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon', this)">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their products this cycle</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Novo Nordisk drug discovery partnership expands enterprise narrative into pharma <span class="badge badge-new">NEW SEP 16</span></h4>
+        <p>Novo Nordisk (Europe's most valuable company by market cap) and Anthropic announced a collaboration to advance AI-driven drug discovery using Claude Science and Anthropic models. Initial focus: targeted computational biology workflows and scientific reasoning for R&D. Anthropic described as a tool for "agentic software engineering" within Novo's R&D organization.</p>
+        <p>For PMMs: (a) The Novo Nordisk deal is Anthropic's IPO quiet period's most visible enterprise expansion — pharma is a new vertical that signals Claude Science has cleared industry-grade validation. (b) Drug discovery as a use case elevates Anthropic's brand from "AI assistant" to "AI for consequential work." (c) Timing (two weeks before S-1 public filing) suggests this becomes a flagship enterprise customer narrative in the IPO roadshow. (d) OpenAI's pharma/biotech API footprint is less visible than Anthropic's Claude Science positioning — this vertical deserves a response strategy.</p>
+        <div class="source">Source: <a href="https://www.globenewswire.com/news-release/2026/09/16/3363106/0/en/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude.html">GlobeNewswire September 16</a> · <a href="https://www.biospace.com/press-releases/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude">BioSpace</a> · <a href="https://kalkinemedia.com/uk/news/announcements/novo-nordisk-0qiu-collaborates-with-anthropic-to-enhance-ai-powered-drug-discovery-and-rd-processes">Kalkinemedia</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI</span> — Musk skipped Grok 4.7, announced Grok 4.8 with AGI framing for Grok 5 <span class="badge badge-new">NEW SEP 13–14</span></h4>
+        <p>After four missed Grok 4.7 windows, Musk shelved the model entirely on September 13, citing an RL training architecture failure. Grok 4.8 (2.5T parameters, new C++ stack, Colossus 2) was announced entering RL this week. Simultaneously, Musk introduced Grok 5 as xAI's anticipated AGI threshold — framing the entire product line as an AGI pursuit.</p>
+        <p>For PMMs: (a) The "Grok 5 = AGI" narrative is a new consumer messaging escalation — ChatGPT should be prepared to address the AGI framing, especially given OpenAI's own AGI mission heritage. (b) The gap between xAI's announcement cadence and shipping cadence (four missed windows, one version skipped) is a credibility story that differentiates OpenAI's track record. (c) Consumer Grok 4.6 remains unchanged — the product is not improving at the pace of the announcements.</p>
+        <div class="source">Source: <a href="https://startupfortune.com/elon-musk-shelves-grok-47-and-unveils-grok-48-instead/">Startup Fortune</a> · <a href="https://www.kucoin.com/news/flash/musk-announces-2-5t-parameter-grok-4-8-training-to-shift-to-rl-this-week">KuCoin</a> · <a href="https://www.tipranks.com/news/elon-musk-expects-grok-5-to-reach-agi-as-xai-prepares-grok-4-8-reinforcement-learning">TipRanks</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Meta (Muse)</span> — Day 8: iCloud privacy incident still dominant narrative; no public response <span class="badge badge-standing">STANDING D8</span></h4>
+        <p>Meta has not publicly responded to the iCloud photo exposure incident (Forbes September 9: Muse pulled personal iCloud photos when asked only to identify birthday party toys). Day 8 of silence. For PMMs: (a) The 8-day silence on a consumer AI privacy incident is itself becoming a story in enterprise AI risk circles — ChatGPT can position its Operator framework and explicit data controls as the more responsible architecture. (b) WhatsApp international expansion (2B users) remains the key signal to watch — it will either reset the narrative or amplify it.</p>
+        <div class="source">Source: <a href="https://www.forbes.com/sites/gabrielalinzainescu/2026/09/09/meta-launches-muse-personal-ai-agent-as-staff-flag-security-flaws/">Forbes September 9</a> · <a href="https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/">TechCrunch</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Gemini)</span> — Enterprise Agent Platform developer session September 16; omni-flash-preview deprecation September 30 <span class="badge badge-new">NEW</span></h4>
+        <p>Google hosted a developer session on September 16 covering the Gemini Enterprise Agent Platform lifecycle. The gemini-omni-flash-preview endpoint will be deprecated September 30. For PMMs: (a) The deprecation creates a developer migration window — any developer evaluating alternatives to this endpoint is in active decision mode over the next 14 days. (b) Gemini's consumer narrative continues to be driven by 3.8 Flash (workhorse) rather than a flagship model — the 35th missed Gemini 3.5 Pro window reinforces "capable but not inspiring" brand perception.</p>
+        <div class="source">Source: <a href="https://cloud.google.com/events">Google Cloud Events</a> · <a href="https://ai.google.dev/gemini-api/docs/changelog">Google AI Changelog</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">Community reactions on Twitter/X, Reddit, and Hacker News — September 16</div>
+
+      <div class="signal-card">
+        <h4>Community signal synthesis — September 16</h4>
+        <p><strong>r/ChatGPT:</strong> Grok 4.8/AGI announcement — "xAI keeps announcing bigger numbers without shipping" dominant; some genuine Grok 5 AGI excitement. <strong>r/ClaudeAI:</strong> Novo Nordisk deal — "Anthropic is getting enterprise deals while in quiet period, IPO will be massive." Claude Code Day 2 limit cut: Auto mode offset working, migration conversations quieting. <strong>HN:</strong> Cursor Projects lead story — "Cursor just became a platform, not an editor." RSA-260/Devin — "I finally believe AI coding agents can do something I can't do myself." Grok 4.8 — "xAI is announcing models 2 versions ahead of what they can ship." <strong>r/LocalLLaMA:</strong> Atria Dawn — "Shanghai AI Lab dropped a 744B MoE with MIT weights and no announcement."</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">598 open roles (261 posted in last 30 days). Customer Success Manager, Product Marketing Manager, Forward Deployed Engineer posted. S-1 public filing in late September will be first public headcount data.</div>
+          <div class="trend trend-up">↑ 261 roles in 30 days — pre-IPO acceleration</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google (Gemini)</div>
+          <div class="detail">Enterprise Agent Platform developer session signals enterprise developer advocacy hiring need. gemini-omni-flash-preview deprecation creates enterprise CS migration workload requiring headcount.</div>
+          <div class="trend">→ inferred from product signals</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches</h3>
+      <div class="section-desc">New capabilities from enterprise coding tools this cycle</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Cursor</span> — Projects beta: coordinator agent, thousands of subagents, cloud-native persistence <span class="badge badge-new">NEW SEP 10</span></h4>
+        <p>Cursor launched Projects (September 10, rolling out to all users now). A coordinator agent plans work and delegates to subagents that implement it. Each Project runs on its own cloud computer — shutting a laptop doesn't halt work. Projects can set reminders, run scheduled tasks, follow PRs to fix CI, and watch Slack for bug reports. No user prompting required for recurring tasks.</p>
+        <p>For Codex PMs: (a) This is a platform re-architecture, not a feature: Cursor now competes on enterprise software orchestration, not just coding quality. (b) Cursor's enterprise clients (OpenAI, Uber, Spotify, Shopify, MLB) are now being offered a "virtual team of agents" — exactly the enterprise use case Codex is targeting. (c) The coordinator-agent architecture creates a new evaluation dimension: enterprise customers will ask "can your tool orchestrate thousands of subagents over months?" (d) $2.3B funding provides runway for the cloud compute required; Codex needs to evaluate whether comparable orchestration is on the near-term roadmap.</p>
+        <div class="source">Source: <a href="https://cursor.com/changelog/projects">Cursor Changelog</a> · <a href="https://aiweekly.co/alerts/cursor-ships-projects-beta-with-delegating-coordinator-agent">AI Weekly</a> · <a href="https://www.technobezz.com/news/cursor-projects-cloud-agents-beta">Technobezz</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Factory (Droids)</span> — $200M raised at $5B valuation; model-agnostic coding agents; NVIDIA, Adobe, Palo Alto Networks customers <span class="badge badge-new">NEW SEP 15</span></h4>
+        <p>Factory (makers of coding "Droids") raised $200M at $5B valuation (Khosla Ventures, Blackstone, Sequoia Capital) — tripling from $1.5B in April. Droids cover the full software lifecycle (build, test, review, document, deploy) and switch between models by task complexity. Funding trajectory: $150M Series C (April) → $120M extension (July) → $200M round (September) = $470M raised in 5 months.</p>
+        <p>For Codex PMs: (a) Factory is now a credible Tier 2 coding agent threat alongside Cursor ($29.3B) and Cognition ($47B) — the enterprise coding agent market has three $5B+ well-funded players plus GitHub Copilot competing for the same accounts. (b) Model-agnostic architecture means Factory wins regardless of which model leads any given benchmark — immune to single-model lead shifts. (c) NVIDIA, Adobe, Palo Alto Networks as customers confirms Fortune 500 enterprise penetration with security-conscious buyers.</p>
+        <div class="source">Source: <a href="https://www.techmeme.com/260915/p37">Techmeme/WSJ</a> · <a href="https://cryptobriefing.com/factory-200m-raise-5b-valuation/">CryptoBriefing</a> · <a href="https://insideai.news/news/agentic-ai/factory-funding-round/11992/">InsideAI.news</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Cognition (Devin)</span> — RSA-260 factorization with Devin agents trending HN; strongest Devin performance demonstration to date <span class="badge badge-standing">STANDING D13</span></h4>
+        <p>Cognition engineer Eric Lu's September 3 factorization of RSA-260 (the largest RSA challenge number publicly factored, unfactored for 35 years) using GPU-accelerated GNFS developed with Devin agents is still trending on HN as of September 16. Devin rebuilt the sqrt component three times, and the final version using GPU-accelerated NTT multiplication ran in 88 minutes.</p>
+        <p>For Codex PMs: (a) RSA-260 factorization is the strongest Devin performance demonstration to date — a complete, independently verifiable, non-synthetic technical achievement, not a SWE-bench number. (b) The "Devin rebuilt the algorithm three times autonomously" narrative is exactly what enterprise evaluators need to see for autonomous agent trust. (c) Enterprise accounts evaluating coding agents are now discussing Devin in the context of research-grade tasks, not just code generation.</p>
+        <div class="source">Source: <a href="https://cognition.com/blog/factoring-rsa-260">Cognition Blog</a> · <a href="https://blog.senthorus.ch/posts/rsa_260_factorization_cognition_explanation">Senthorus</a> · <a href="https://lilting.ch/en/articles/rsa-260-factored-how-computed">lilting.ch</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI (Codex / GPT-6 Astra)</span> — Deep research added; Day 8 stable; Real-SWE #2 (33.8%); Claude Code migration window Day 2 <span class="badge badge-standing">STANDING D8</span></h4>
+        <p>GPT-6 Astra stable since September 8. Deep research is now available in ChatGPT Work and Codex, enabling complex multi-source research with editable document output — a differentiating enterprise feature beyond pure coding quality. For Codex PMs: (a) Deep research in Codex addresses enterprise developer needs (technical documentation, codebase analysis) that pure coding tools don't cover. (b) Day 2 of the Claude Code migration window — "similar performance, no quota" remains the conversion thesis.</p>
+        <div class="source">Source: <a href="https://releasebot.io/updates/openai/chatgpt">OpenAI Releasebot</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">GitHub Copilot</span> — BYOK in Visual Studio 2026 (September 8); T-12 days to September 28 unified experience <span class="badge badge-standing">T-12</span></h4>
+        <p>Visual Studio 2026 (September 8) introduced Bring Your Own Key (BYOK) — developers can use AI in VS with preferred models through Copilot or their own deployments, without requiring GitHub sign-in. For Codex PMs: (a) BYOK reduces Copilot's lock-in to OpenAI-powered models — this is Microsoft de-risking its single-model dependency; (b) T-12 days to September 28 unified experience — procurement decisions are being finalized this week by teams not yet committed to a coding stack.</p>
+        <div class="source">Source: <a href="https://learn.microsoft.com/en-us/visualstudio/releases/2026/release-notes">Visual Studio 2026 Release Notes</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Salesforce/NVIDIA (Koa)</span> — First CRM reasoning model built on Nemotron; Dreamforce September 15; pilot now, GA winter 2026 <span class="badge badge-new">NEW SEP 15</span></h4>
+        <p>Salesforce and NVIDIA launched Koa at Dreamforce (September 15): a CRM reasoning model built by post-training Nemotron 3 Super on 30 years of Salesforce synthetic CRM data. Koa matches or exceeds leading model performance on CRM actions with 3x fewer errors (Salesforce internal benchmark). Missionforce extends the same architecture to government and regulated industries. For Codex PMs: (a) The vertical-specialized enterprise reasoning model trend is now a commercial reality — if Koa succeeds, other verticals (healthcare, legal, engineering) will replicate this architecture, reducing generic API TAM. (b) NVIDIA is a Salesforce investor AND a Factory customer AND powers Koa — Jensen Huang's ecosystem influence over enterprise AI architecture is a strategic risk factor for OpenAI's API revenue.</p>
+        <div class="source">Source: <a href="https://www.salesforce.com/news/press-releases/2026/09/15/koa-reasoning-model/">Salesforce Press Release</a> · <a href="https://techcrunch.com/2026/09/15/salesforce-and-nvidias-new-reasoning-model-is-everything-the-ai-labs-should-fear/">TechCrunch</a> · <a href="https://blogs.nvidia.com/blog/jensen-huang-dreamforce/">NVIDIA Blog</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — September 16, 2026</h3>
+      <div class="section-desc">Enterprise coding tool positioning</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption Signal</th>
+            <th>Key Development Sep 16</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Code (Anthropic)</td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td>Day 2 post -17% limit cut; Sonnet 5 LOCKED $2/$10; geo-pinned inference + budget controls added</td>
+          </tr>
+          <tr>
+            <td>Cursor (Anysphere)</td>
+            <td>64% Fortune 500 / $4B ARR</td>
+            <td><strong>Projects beta rolling out — cloud subagents, months-long persistence, Slack/PR hooks</strong></td>
+          </tr>
+          <tr>
+            <td>Devin Desktop (Cognition)</td>
+            <td>$47B valuation / $492M+ ARR</td>
+            <td>RSA-260 factorization milestone Day 13, trending HN</td>
+          </tr>
+          <tr>
+            <td>GitHub Copilot (Microsoft)</td>
+            <td>21% (down from 29% Jan 2026)</td>
+            <td>BYOK in VS 2026; T-12 unified experience (Sep 28)</td>
+          </tr>
+          <tr>
+            <td>Factory (Droids)</td>
+            <td>NVIDIA, Adobe, PAN, T-Mobile, Blackstone</td>
+            <td><strong>$200M/$5B confirmed Sep 15; model-agnostic Droids</strong></td>
+          </tr>
+          <tr>
+            <td>Codex (OpenAI)</td>
+            <td>65% awareness</td>
+            <td>GPT-6 Astra Day 8; Real-SWE #2 (33.8%); deep research added; migration window Day 2</td>
+          </tr>
+          <tr>
+            <td>Gemini Code Assist (Google)</td>
+            <td>Growing (free individual tier)</td>
+            <td>3.8 Flash Day 14; omni-flash-preview deprecation Sep 30; Enterprise Agent Platform session</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">HN and Reddit signals — September 16</div>
+      <div class="signal-card">
+        <h4>Community synthesis — September 16</h4>
+        <p><strong>HN:</strong> Cursor Projects — "Cursor just became a platform, not an editor." RSA-260/Devin — "I finally believe AI coding agents can do something I can't do myself" (rare genuine enthusiasm). Grok 4.8 — "xAI is announcing models 2 versions ahead of what they can ship." <strong>r/programming:</strong> Factory $5B — "There are now 4 AI coding agent companies worth $5B+ — this market is getting crowded." <strong>r/LocalLLaMA:</strong> Atria Dawn — "Shanghai AI Lab dropped a 744B MoE with MIT weights and no announcement — paper-after-release is the new stealth move."</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — engineering &amp; product</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Cursor</div>
+          <div class="detail">Projects beta requires cloud infrastructure, orchestration middleware, enterprise security/compliance engineering. $2.3B funding + Graphite acquisition signals 100+ headcount expansion in next 6 months.</div>
+          <div class="trend trend-up">↑ inferred from Projects launch + funding</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Factory</div>
+          <div class="detail">$470M raised in 5 months = rapid headcount scaling. Enterprise customers (NVIDIA, Adobe) need dedicated customer success and solutions engineering. Three funding rounds in 5 months signals sustained aggressive hiring.</div>
+          <div class="trend trend-up">↑ $200M raise signals imminent surge</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic (Claude Code)</div>
+          <div class="detail">598 open roles, 261 posted in 30 days. Post-IPO October hiring surge expected. EU Mythos access confirms Q3 European infrastructure engineering. S-1 public filing will reveal headcount breakdown.</div>
+          <div class="trend trend-up">↑ pre-IPO acceleration confirmed</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Salesforce/NVIDIA (Koa)</div>
+          <div class="detail">Koa requires CRM-domain ML engineering for post-training. Missionforce (government) requires security clearances and compliance headcount — a specialized hiring signal.</div>
+          <div class="trend">→ new vertical signals headcount need</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; capabilities</h3>
+      <div class="section-desc">New model launches, capability updates, and architectural shifts</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Atria Dawn Preview (Shanghai AI Lab)</span> — 744B agentic MoE, MIT license, stealth release September 11 <span class="badge badge-new">NEW SEP 11</span></h4>
+        <p>Shanghai AI Laboratory released Atria Dawn Preview on GitHub September 11 with no announcement — the 140-author technical paper followed September 14, reversing the standard paper-first convention. Atria Dawn is a 744B-parameter agentic mixture-of-experts model built on the GLM-5.2 foundation, released under MIT license. The "agentic MoE" framing positions it specifically for agent workloads.</p>
+        <p>For BD/API: (a) MIT license + 744B parameters is the third frontier-class open-weight model with MIT licensing in 6 weeks (after Kimi K3, GLM-5.3-Flash) — self-hosting threshold for enterprise-grade agent capability continues to fall. (b) The stealth release (GitHub before paper) is becoming a coordination signal among Chinese labs for maximizing organic developer community coverage. (c) Agent-driven workloads are already &gt;50% of API output tokens — an agentic-architecture MIT model directly threatens this revenue stream. (d) Shanghai AI Lab (InternLM lineage) is a separate research group from Zhipu AI/GLM-5 — at least two independent Chinese organizations are training frontier-class agentic models on non-US hardware.</p>
+        <div class="source">Source: <a href="https://aiweekly.co/alerts/shanghai-ai-lab-ships-atria-dawn-preview-a-744b-agentic-moe">AI Weekly</a> · <a href="https://huggingface.co/internlm/Atria-Dawn-Preview">HuggingFace</a> · <a href="https://www.orcarouter.ai/blog/atria-dawn-preview-quiet-release">OrcaRouter</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">xAI (Grok 4.8)</span> — 2.5T params, new C++ training stack, Colossus 2 gigawatt-scale cluster, RL this week <span class="badge badge-new">NEW SEP 13–14</span></h4>
+        <p>Grok 4.8 announced September 13–14: 2.5T parameters (vs. skipped Grok 4.7's 2.1T), trained on xAI's new C++ stack on Colossus 2 — the world's first gigawatt-scale training cluster. RL phase beginning this week. No ship date, API model ID, model card, pricing, or benchmark table. Grok 4.6 remains the only production model.</p>
+        <p>For BD/API: (a) Colossus 2 gigawatt-scale compute could enable aggressive API pricing upon release — the cost basis at that compute scale is not public but the infrastructure scale is real. (b) The C++ training stack is unusual (most labs use Python/CUDA) — it signals xAI is betting on lower-level optimization for efficiency at scale; whether this pays off is unknown. (c) Until Grok 4.8 ships, xAI API evaluation is effectively blocked by persistent Grok 4.6 security vulnerabilities (Day 104 cryptographic attack, Day 13 GitSpawn). (d) The API market remains a two-way OpenAI/Anthropic contest through minimum week-end.</p>
+        <div class="source">Source: <a href="https://startupfortune.com/elon-musk-shelves-grok-47-and-unveils-grok-48-instead/">Startup Fortune</a> · <a href="https://www.kucoin.com/news/flash/musk-announces-2-5t-parameter-grok-4-8-training-to-shift-to-rl-this-week">KuCoin</a> · <a href="https://teslanorth.com/2026/09/14/elon-grok-roadmap-through-grok-5/">TeslaRorth</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic (Claude API)</span> — Developer Platform ships budget controls, geo-pinned inference, GitHub-loaded skills; Novo Nordisk = pharma API validation <span class="badge badge-new">NEW SEP 16</span></h4>
+        <p>Anthropic's Developer Platform update (September 16): (1) Budget controls for Managed Agents sessions — reduces runaway cost risk for agentic workloads; (2) Geo-pinned inference — allows enterprise API customers to pin inference to specific geographic regions, a GDPR compliance signal for EU buyers; (3) GitHub-loaded skills for Claude Code sessions — enterprise teams can load pre-built agent skills from GitHub repos; (4) Admin API user-management out of beta. Simultaneously, Novo Nordisk validates Claude Science for pharma-grade R&D.</p>
+        <p>For BD/API: (a) Geo-pinned inference removes a key EU enterprise objection — EU-regulated buyers who previously could not commit to Anthropic's API due to data residency concerns now have a path. (b) Budget controls for agentic sessions is an enterprise operational necessity that OpenAI's API should evaluate for parity. (c) Pharma-grade API validation (Novo Nordisk) enables Anthropic BD teams to target the global pharmaceutical vertical — a high-margin enterprise segment.</p>
+        <div class="source">Source: <a href="https://releasebot.io/updates/anthropic/claude-developer-platform">Releasebot Developer Platform</a> · <a href="https://www.globenewswire.com/news-release/2026/09/16/3363106/0/en/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude.html">GlobeNewswire</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google (Gemini API)</span> — gemini-omni-flash-preview deprecated September 30; Enterprise Agent Platform developer session <span class="badge badge-standing">STANDING</span></h4>
+        <p>gemini-omni-flash-preview endpoint deprecated September 30 (T-14 days) — developers using this endpoint must migrate. For BD/API: (a) The 14-day migration window is an active developer acquisition opportunity — developers evaluating alternatives to this deprecated endpoint are in decision mode now. (b) Google's Enterprise Agent Platform (the session focus today) signals Google is building dedicated enterprise agent orchestration infrastructure — a response to Cursor Projects and Codex's enterprise positioning.</p>
+        <div class="source">Source: <a href="https://ai.google.dev/gemini-api/docs/changelog">Google AI Changelog</a> · <a href="https://cloud.google.com/events">Google Cloud Events</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Partnership &amp; ecosystem signals</h3>
+      <div class="section-desc">Enterprise integrations and vertical AI developments</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Salesforce/NVIDIA (Koa + Missionforce)</span> — Vertical AI model trend made commercial; enterprises training on Nemotron instead of calling generic APIs <span class="badge badge-new">NEW SEP 15</span></h4>
+        <p>Koa (CRM reasoning, Nemotron-based) and Missionforce (government/regulated, Nemotron-based) represent a production commercial deployment of the vertical-specialized model architecture. Salesforce controls model weights and performs post-training and inference within its own trust boundary — no customer data crosses the boundary during inference. Jensen Huang at Dreamforce: "Now We Can Know Everything and Do Anything."</p>
+        <p>For BD/API: (a) The Salesforce/NVIDIA template (domain-specific post-training on Nemotron, inference in customer trust boundary) directly competes with OpenAI's API for high-value enterprise domain workloads. (b) If enterprises adopt this pattern broadly, the API TAM for CRM, healthcare, legal, and manufacturing narrows to commoditized general-purpose workloads. (c) NVIDIA's Jensen Huang is actively positioning Nemotron-based vertical models as the future of enterprise AI — a coordinated push with significant market influence. (d) Air Force and defense agencies are watching Missionforce, which means NVIDIA/Salesforce could enter the federal market that OneGov is meant to secure for OpenAI.</p>
+        <div class="source">Source: <a href="https://www.salesforce.com/news/press-releases/2026/09/15/koa-reasoning-model/">Salesforce</a> · <a href="https://blogs.nvidia.com/blog/jensen-huang-dreamforce/">NVIDIA Blog</a> · <a href="https://www.unite.ai/salesforce-debuts-koa-reasoning-model-for-agentforce-trained-on-nemotron/">Unite.AI</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing snapshot — September 16, 2026</h3>
+      <div class="section-desc">Live API pricing across major providers</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Input / Output ($/1M tok)</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI</td>
+            <td class="price-new">Astra (GPT-6)</td>
+            <td class="price-new">$10 / $50</td>
+            <td>1.05M</td>
+            <td class="status-ok">Day 8 stable; Real-SWE #2 (33.8%); deep research added; OneGov T-14</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-5.6 Sol</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td class="status-ok">Promo through Nov 21; 750 tok/s</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-5.6 Terra / Luna</td>
+            <td>$2/$12 / $0.20/$1.20</td>
+            <td>1M</td>
+            <td class="status-ok">Stable</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td class="price-new">Grok 4.8 (announced)</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td class="status-alert">ANNOUNCED — not shipped; 2.5T; RL this week; Colossus 2; no API/card</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td>Grok 4.6</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td class="status-alert">Day 104 vuln; GitSpawn unpatched; only production model</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Fable 5.1</td>
+            <td>$10 / $50</td>
+            <td>1M</td>
+            <td class="status-ok">Day 9 IPO quiet; $15B credit; Real-SWE #1 (38.8%)</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td class="price-new">Claude Sonnet 5</td>
+            <td class="price-new">$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td class="status-ok">Price LOCKED; geo-pinned inference + budget controls added</td>
+          </tr>
+          <tr>
+            <td>Meta</td>
+            <td>Muse Spark 1.3</td>
+            <td>$1.25 / $4.25</td>
+            <td>1M</td>
+            <td class="status-warn">Day 8; iCloud incident; no public response</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td class="price-new">Gemini 3.8 Flash</td>
+            <td class="price-new">$0.75 / $3.75</td>
+            <td>1M</td>
+            <td class="status-warn">Day 14; omni-flash-preview deprecated Sep 30</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td>Gemini 3.1 Pro</td>
+            <td>$1.25 / $5.00</td>
+            <td>1M</td>
+            <td class="status-ok">Stable</td>
+          </tr>
+          <tr>
+            <td>Moonshot AI</td>
+            <td>Kimi K3</td>
+            <td>~$15 (output)</td>
+            <td>1M</td>
+            <td class="status-ok">#3 Intelligence Index; #1 Frontend Code Arena; 93.4% SWE-bench; MIT</td>
+          </tr>
+          <tr>
+            <td>Shanghai AI Lab</td>
+            <td class="price-new">Atria Dawn Preview</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td class="status-warn">NEW Sep 11; 744B MoE, MIT, agentic; no pricing yet</td>
+          </tr>
+          <tr>
+            <td>Mistral</td>
+            <td>Mistral Large 3</td>
+            <td>$2 / $6</td>
+            <td>256K</td>
+            <td class="status-ok">Microsoft EU deal ongoing; Shieldstral open-sourced</td>
+          </tr>
+          <tr>
+            <td>DeepSeek</td>
+            <td>V4.1 Flash</td>
+            <td>$0.15 / $0.60 off-peak</td>
+            <td>1M</td>
+            <td class="status-ok">Auto-migration Day 2; V4 Pro preserved</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Horizon Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable challengers</h3>
+      <div class="section-desc">Competitive signals beyond the top tier this cycle</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Coding Agents</div>
+          <h4><span class="company-name">Factory (Droids)</span> — $200M/$5B, model-agnostic, enterprise-grade</h4>
+          <p>Factory has crossed the credibility threshold for Tier 2 tracking. Model-agnostic coding agents (build, test, review, document, deploy) with Fortune 500 customers. $470M raised in 5 months. Khosla, Blackstone, Sequoia backing. Valuation tripled in 5 months. Watch for Q4 enterprise sales acceleration.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Vertical AI</div>
+          <h4><span class="company-name">Salesforce/NVIDIA (Koa)</span> — CRM reasoning model, Missionforce government</h4>
+          <p>First commercial vertical-specialized reasoning model built on open-weight (Nemotron) post-training. GA winter 2026. If the Koa architecture proliferates to other verticals (healthcare, legal, engineering), it represents a structural shift away from generic API consumption. Watch winter GA adoption.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Weight</div>
+          <h4><span class="company-name">Shanghai AI Lab (Atria Dawn)</span> — 744B MoE, MIT, agentic architecture</h4>
+          <p>Third frontier-class MIT-licensed open-weight model in 6 weeks. Stealth GitHub release before paper is a new coordination pattern. Agentic MoE architecture directly targets the agent workload TAM. Elevation to Tier 1 watch if independent benchmarks confirm frontier performance.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Weight</div>
+          <h4><span class="company-name">Moonshot AI (Kimi K3)</span> — #3 Intelligence Index, 93.4% SWE-bench, MIT</h4>
+          <p>Kimi K3 at #3 on the Artificial Analysis Intelligence Index (behind only Fable 5 and GPT-5.6 Sol) and #1 Frontend Code Arena signals Chinese labs at tier-1 capability level, not just cost disruption. 93.4% SWE-bench Verified is the highest open-weight coding score. Standing from September 15.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · European</div>
+          <h4><span class="company-name">Mistral AI</span> — Microsoft EU data center deal; Shieldstral open-sourced</h4>
+          <p>Multibillion-dollar Microsoft EU deal execution ongoing (200MW data center capacity by 2027). Shieldstral safety classifier open-sourced. No new September 16 signals. EU sovereignty positioning continues to differentiate in regulated markets.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Cost Floor</div>
+          <h4><span class="company-name">DeepSeek</span> — V4.1 Flash auto-migration Day 2; V4 Pro preserved</h4>
+          <p>V4.1 Flash auto-migration 48 hours in with no new model signals. $8B second funding round still unconfirmed. V5 architecture on the horizon. No new September 16 signals.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Long-horizon strategic signals and emerging paradigms</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · AGI Race</div>
+          <h4><span class="company-name">xAI</span> — Grok 5 as AGI target; Colossus 2 gigawatt-scale; 10T-param parallel training</h4>
+          <p>Musk's Grok 5 AGI framing and parallel training of multiple models up to 10T parameters is an early Tier 3 signal. If xAI sustains Colossus 2 compute investment, Grok 5 could be a genuine H1 2027 frontier competitor. The AGI narrative escalation will affect talent recruitment across all AI labs.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4>AI Standards Body — Altman/Amodei disagreement; end-of-2026 timeline medium confidence</h4>
+          <p>Structural disagreement confirmed: Altman (voluntary industry-led) vs. Amodei (government partnership). Anthropic's IPO quiet period constrains Amodei's public advocacy. OpenAI has a temporary advocacy advantage for the voluntary industry-led structure, which aligns with the Trump administration's preference.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Federal AI</div>
+          <h4>GSA OneGov — T-14 days (September 30); OpenAI 27-month deal confirmed for October 1</h4>
+          <p>OpenAI remains the only confirmed post-September 30 federal AI contract. Anthropic cannot announce a government deal during IPO quiet period. Salesforce/NVIDIA Missionforce (announced September 15) is a new federal AI competitor for regulated environments.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Safety</div>
+          <h4>OpenAI Agentic Safety Framework — Day 11; October 3 outer deadline; unpublished</h4>
+          <p>Framework committed September 5 ("within weeks") remains unpublished at Day 11. 17 days to October 3 outer window. If published before the AI standards body is established, it becomes OpenAI's foundational governance contribution to the industry conversation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent v1.0. All signals are sourced from publicly available information. Confidence scores reflect source corroboration, not strategic certainty. For internal use only — September 16, 2026.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <a href="https://cursor.com/changelog/projects">cursor.com/changelog/projects</a><br>
+      <a href="https://aiweekly.co/alerts/cursor-ships-projects-beta-with-delegating-coordinator-agent">aiweekly.co — Cursor Projects</a><br>
+      <a href="https://startupfortune.com/elon-musk-shelves-grok-47-and-unveils-grok-48-instead/">startupfortune.com — Grok 4.8</a><br>
+      <a href="https://www.kucoin.com/news/flash/musk-announces-2-5t-parameter-grok-4-8-training-to-shift-to-rl-this-week">kucoin.com — Grok 4.8 announcement</a><br>
+      <a href="https://www.tipranks.com/news/elon-musk-expects-grok-5-to-reach-agi-as-xai-prepares-grok-4-8-reinforcement-learning">tipranks.com — Grok 5 AGI</a><br>
+      <a href="https://teslanorth.com/2026/09/14/elon-grok-roadmap-through-grok-5/">teslanorth.com — Grok roadmap</a><br>
+      <a href="https://www.globenewswire.com/news-release/2026/09/16/3363106/0/en/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude.html">globenewswire.com — Novo Nordisk × Anthropic</a><br>
+      <a href="https://www.biospace.com/press-releases/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude">biospace.com — Novo × Anthropic</a><br>
+      <a href="https://www.techmeme.com/260915/p37">techmeme.com — Factory $200M</a><br>
+      <a href="https://cryptobriefing.com/factory-200m-raise-5b-valuation/">cryptobriefing.com — Factory raise</a><br>
+      <a href="https://insideai.news/news/agentic-ai/factory-funding-round/11992/">insideai.news — Factory</a><br>
+      <a href="https://cognition.com/blog/factoring-rsa-260">cognition.com/blog — RSA-260</a><br>
+      <a href="https://blog.senthorus.ch/posts/rsa_260_factorization_cognition_explanation">senthorus.ch — RSA-260 explanation</a><br>
+      <a href="https://aiweekly.co/alerts/shanghai-ai-lab-ships-atria-dawn-preview-a-744b-agentic-moe">aiweekly.co — Atria Dawn</a><br>
+      <a href="https://huggingface.co/internlm/Atria-Dawn-Preview">huggingface.co — Atria Dawn</a><br>
+      <a href="https://www.salesforce.com/news/press-releases/2026/09/15/koa-reasoning-model/">salesforce.com — Koa</a><br>
+      <a href="https://techcrunch.com/2026/09/15/salesforce-and-nvidias-new-reasoning-model-is-everything-the-ai-labs-should-fear/">techcrunch.com — Koa/Salesforce</a><br>
+      <a href="https://blogs.nvidia.com/blog/jensen-huang-dreamforce/">nvidia.com — Jensen at Dreamforce</a><br>
+      <a href="https://releasebot.io/updates/anthropic/claude-developer-platform">releasebot.io — Claude Developer Platform</a><br>
+      <a href="https://releasebot.io/updates/anthropic/claude-code">releasebot.io — Claude Code</a><br>
+      <a href="https://learn.microsoft.com/en-us/visualstudio/releases/2026/release-notes">VS 2026 Release Notes</a><br>
+      <a href="https://ai.google.dev/gemini-api/docs/changelog">Google AI Changelog</a><br>
+      <a href="https://cloud.google.com/events">Google Cloud Events Sep 16</a><br>
+      <a href="https://finance.yahoo.com/markets/stocks/articles/anthropic-files-confidential-1-joins-161008569.html">Yahoo Finance — Anthropic S-1</a><br>
+      <a href="https://jobera.com/employer/anthropic/">jobera.com — Anthropic hiring</a><br>
+      <a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">buildfastwithai.com — Sep 16 AI news</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (el) el.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
