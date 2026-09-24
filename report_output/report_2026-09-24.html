@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — September 24, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #FFFBF0; border: 1px solid #F0E6B0; border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-all { background: #E8F5EC; color: #3A7A4A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new-signal { border-left: 3px solid #22C55E; }
+.signal-card.standing { border-left: 3px solid var(--border); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .source a:hover { text-decoration: underline; }
+.signal-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; }
+.signal-badge.new { background: #DCFCE7; color: #166534; }
+.signal-badge.standing { background: var(--surface-alt); color: var(--text-tertiary); }
+
+.model-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.model-table th { font-weight: 600; text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.model-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.model-table tr:last-child td { border-bottom: none; }
+.model-table tr:hover td { background: var(--surface-alt); }
+.model-table .highlight td { font-weight: 600; }
+.model-table .deprecated { text-decoration: line-through; opacity: 0.5; }
+.model-table .model-new { color: #15803D; font-weight: 600; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; color: #15803D; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: #8B5CF6; }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 16px; }
+.sources-list.show { display: block; }
+.sources-list ul { list-style: none; }
+.sources-list ul li { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list ul li a { color: var(--blue-text); text-decoration: none; }
+.sources-list ul li a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .model-table { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>September 24, 2026</span>
+      <span class="dot"></span>
+      <span>Generated September 24, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend vs. September 23:</strong> Two new confirmed signals: (1) <strong>Claude autonomously discovered a CRISPR-like enzyme system</strong> in bacteriophage DNA — 950 agents, 21 hours, 210M tokens — Anthropic's biology lab first major public scientific result (Anthropic.com, TechCrunch, Al Jazeera — confirmed). (2) <strong>OpenAI Sora/Videos API fully deprecated September 24</strong> — complete exit from AI video generation (OpenAI API docs — confirmed). Standing: GitHub Copilot unified T-4 days (Sep 28); Grok 4.8 Day 11 unshipped; Gemini breach Day 6; antitrust lawsuit Day 6; $278B cash burn Day 6; GPT-5.5 retiring Oct 14 (T-20 days); Anthropic computer use GA Day 4; SpaceX/Cursor Day 41; Anthropic IPO November 2026; Opus 5.5 + GPT-6 Sol/Luna price war Day 2.
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">Anthropic</span> — Claude deployed 950 agents to discover a CRISPR-like enzyme system in 21 hours. "AI that does real science" is a brand category ChatGPT doesn't occupy. OpenAI simultaneously exits video with Sora's full shutdown.
+        </div>
+        <div class="implication">Two simultaneous narrative moves: Anthropic expands into frontier science; OpenAI retreats from consumer video. Brand gap widens in two directions today.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">GitHub / Anthropic</span> — Copilot unified experience in T-4 days with Opus 5.5 (GitHub CPO-endorsed) and Sol/Luna loaded. GPT-5.5 retires in 20 days. Claude's CRISPR agent framework validates multi-agent orchestration at enterprise scale.
+        </div>
+        <div class="implication">Codex migration window and Copilot unification collide: enterprise developers making tool decisions this week will encounter GitHub's CPO endorsement of Opus 5.5.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text">
+          <span class="company-name">OpenAI / DeepSeek</span> — GPT-6 Luna ($0.10/MTok) now undercuts DeepSeek V4.1 Flash ($0.15/MTok) on input price — Day 2 of the test. Sora API exit frees compute; Grok 4.8 (2.5T params, Day 11) is the next major entrant.
+        </div>
+        <div class="implication">Price war Day 2: the structural test of whether closed frontier pricing can displace open-source at scale has begun. Next OpenRouter cycle will show first data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span>
+          <span class="company-name">Anthropic</span> — Claude autonomously discovered a CRISPR-like enzyme system (ART) in bacteriophage DNA using 950 agents, 21 hours, and 210 million tokens. Published September 24 on Anthropic.com. First AI-led frontier scientific discovery announced by a major AI lab. Anthropic's stated goal: compress life sciences R&D timelines by 10x.
+        </span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span>
+          <span class="company-name">OpenAI</span> — Sora 2 / Videos API fully deprecated September 24. The Sora app shut down April 26; today's API shutdown marks OpenAI's complete exit from AI video generation. Google Veo, Runway, Pika, and ByteDance now operate in a frontier video segment with no OpenAI rival.
+        </span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span>
+          <span class="company-name">GitHub / Microsoft</span> — Copilot unified experience launches September 28 (T-4 days), merging Copilot Chat (web), mobile, and cloud agent into one. Launches with Opus 5.5 (GitHub CPO-endorsed for agentic coding) and GPT-6 Sol/Luna in the model picker. Enterprise IT teams must finalize policies this week.
+        </span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt')">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex')">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api')">API &amp; Models</button>
+    <button class="tab" onclick="showTab('hiring')">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon')">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Messaging &amp; positioning shifts</h3>
+      <div class="section-desc">How competitors are framing their consumer products today</div>
+
+      <div class="signal-card new-signal">
+        <span class="signal-badge new">NEW — Sep 24</span>
+        <h4><span class="company-name">Anthropic</span> — "AI that does real science": Claude discovers CRISPR-like enzyme system in bacteriophage DNA</h4>
+        <p>Claude screened 200,000+ reverse transcriptases, flagging ART (array-associated reverse transcriptases) — a phage enzyme system with CRISPR-like repeat arrays capable of cutting, copying, and pasting DNA. The biology lab (SF, opened spring 2026) used 950 agents and 210M tokens over 21 hours. Human scientists conducted all physical experiments. Anthropic frames the goal as compressing life sciences R&D by 10x.</p>
+        <p><strong>For PMMs:</strong> Anthropic has claimed a brand category — "AI that autonomously accelerates frontier science" — that ChatGPT has not publicly matched. The mainstream media coverage (Al Jazeera, TechCrunch, The Next Web) reaches research-adjacent audiences. Dario Amodei noted a Stanford team found a "similar" system previously, adding methodological nuance, but Anthropic's scale and speed (200K+ proteins in 21 hours) is the headline claim.</p>
+        <div class="source">Sources: <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank">Anthropic.com</a> · <a href="https://techcrunch.com/2026/09/23/anthropic-says-its-biology-lab-has-already-found-something-big/" target="_blank">TechCrunch</a> · <a href="https://www.aljazeera.com/economy/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says" target="_blank">Al Jazeera</a> · <a href="https://thenextweb.com/news/anthropic-claude-enzyme-system-crispr-like-repeats" target="_blank">The Next Web</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <span class="signal-badge new">NEW — Sep 24</span>
+        <h4><span class="company-name">OpenAI</span> — Sora fully deprecated: complete exit from AI video generation removes consumer differentiator</h4>
+        <p>The Videos API and all Sora 2 model identifiers (sora-2, sora-2-pro, sora-2-2025-10-06, sora-2-2025-12-08) are permanently offline as of September 24. Any video content stored only on Sora servers is deleted. The Sora app had shut down April 26, 2026.</p>
+        <p><strong>For PMMs:</strong> ChatGPT's multimodal story — text, image, voice, code — no longer includes video. Google Veo 3 (available in Gemini Advanced), Runway, Pika 2, and ByteDance's MiniMax Hailuo now operate without a closed frontier rival from OpenAI. The "does ChatGPT support video generation?" answer is now "no."</p>
+        <div class="source">Sources: <a href="https://developers.openai.com/api/docs/deprecations" target="_blank">OpenAI API Deprecations</a> · <a href="https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation" target="_blank">OpenAI Help Center</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Day 6</span>
+        <h4><span class="company-name">Google</span> — Gemini breach "sending mixed signals": $4M UN General Assembly education commitment runs alongside unresolved enterprise trust damage</h4>
+        <p>Google.org committed $4M to Digital Promise at the UN General Assembly September 24 for AI education via the Google AI Educator Series. Google Cloud Q2 revenue: 82% surge to $24.77B with 90% of Fortune 100 firms running Gemini Enterprise. The "Gemini thought it was in a test" breach narrative (Day 6) remains unresolved. Rep. Don Beyer's regulatory push specifically targets Gemini 3.5 Flash Cyber.</p>
+        <div class="source">Sources: <a href="https://247wallst.com/investing/2026/09/23/google-says-gemini-hacked-three-companies-on-its-own-now-google-is-sending-mixed-signals-about-ai/" target="_blank">247 Wall St</a> · Google.org announcement</div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Day 2</span>
+        <h4><span class="company-name">Anthropic (Claude Opus 5.5)</span> — Day 2 post-price war: "Anthropic set the price, OpenAI chased it" narrative hardening in developer media</h4>
+        <p>Opus 5.5 ($4/$20/MTok, 40% cheaper than Opus 5) maintains developer media coverage two days after the September 22 same-day price war. GitHub CPO Mario Rodriguez's endorsement ("solved more terminal tasks than Opus 5 in less than half the steps") continues to circulate. Anthropic IPO November 2026 target confirmed (WSJ, Forbes).</p>
+        <div class="source">Source: <a href="https://venturebeat.com/technology/anthropic-releases-claude-opus-5-5-beating-fable-5-1-on-key-agentic-benchmarks-at-60-cheaper-api-price" target="_blank">VentureBeat</a> · <a href="https://github.blog/changelog/2026-09-22-claude-opus-5-5-is-now-available-in-github-copilot/" target="_blank">GitHub Changelog</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment</h3>
+      <div class="section-desc">Signal synthesis from HN, Reddit, and developer community — September 23–24</div>
+      <div class="signal-card">
+        <h4>Developer community reactions — CRISPR discovery, Sora exit, Copilot T-4 days</h4>
+        <p><strong>HN:</strong> Claude CRISPR — "950 agents screening 200K proteins in 21 hours is agentic science at scale — this is what I've been building toward." High engagement. Sora — "OpenAI killed video generation. Runway and Pika just won by default." r/ClaudeAI: "First time I feel like AI is actually advancing science, not just summarizing it." r/ChatGPT: Mixed — some frustration at video loss, others note they never used Sora. r/programming: "Copilot unified in 4 days — hope it doesn't break my workflows." Developer community noting "rough optics day for OpenAI" — Sora shutdown vs. Claude CRISPR contrast.</p>
+        <p>Confidence: MEDIUM — synthesis from community signal patterns.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Career page activity from competitor marketing and growth teams</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">617+ open roles (September 22 standing). CRISPR biology lab discovery will generate distinct marketing needs: life sciences enterprise sales, academic/research communications, biotech partnership BD. Roles likely incoming above September 22 count.</div>
+          <div class="trend trend-up">↑ New science comms category expected</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">Sora deprecation frees video engineering and product team. Reallocation target unknown — Astra multimodal improvements and GPT-6 architecture are most plausible. No specific new hiring data September 24.</div>
+          <div class="trend">→ Team reallocation implied</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">$4M AI Educator Series commitment implies policy, government relations, and education-sector BD expansion. Gemini Enterprise zero-dollar base subscription requires consultative inside sales staff.</div>
+          <div class="trend">→ Gov relations + edu BD inference</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches &amp; signals</h3>
+      <div class="section-desc">Key developments in AI coding tools — September 23–24</div>
+
+      <div class="signal-card new-signal">
+        <span class="signal-badge new">NEW — Sep 24</span>
+        <h4><span class="company-name">Anthropic (Claude / Biology Lab)</span> — 950-agent CRISPR discovery validates Claude's multi-agent framework at enterprise research scale</h4>
+        <p>The same multi-agent architecture that screened 200,000+ reverse transcriptases is accessible to enterprise developers via the Claude API. The "210 million tokens in 21 hours" usage scale validates Claude's agentic throughput for production enterprise workloads. Anthropic has demonstrated that its agent framework produces publishable scientific results — not just code completions.</p>
+        <p><strong>For Codex PMs:</strong> The CRISPR discovery is simultaneously a science announcement and a Claude Code/API capability demonstration. Enterprise developers evaluating AI coding tools will encounter the result in mainstream press. The leap from "code agent" to "autonomous research agent" is the capability claim that differentiates Claude Code's positioning from Codex.</p>
+        <div class="source">Sources: <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank">Anthropic.com</a> · <a href="https://techcrunch.com/2026/09/23/anthropic-says-its-biology-lab-has-already-found-something-big/" target="_blank">TechCrunch</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — T-4 days</span>
+        <h4><span class="company-name">GitHub Copilot (Microsoft)</span> — Unified experience September 28: Opus 5.5 + Sol/Luna in model picker; code review defaults to Balanced; chat retention lifts to account lifetime</h4>
+        <p>Three separate Copilot experiences (Chat web, Chat mobile, cloud agent) merge into one on September 28. Code review defaults to Balanced (higher AI consumption). Chat data retained for account lifetime (previously 28 days). Model picker: Claude Opus 5.5, GPT-6 Sol, GPT-6 Luna, and multiple Astra variants.</p>
+        <p><strong>For Codex PMs:</strong> Enterprise IT teams are making final policy decisions and billing configurations this week — the window for competitor outreach to unsatisfied Copilot admins closes in 4 days. The unified experience launches with GitHub's CPO endorsement of Opus 5.5's agentic coding efficiency baked in from Day 1.</p>
+        <div class="source">Sources: <a href="https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/" target="_blank">GitHub Changelog</a> · <a href="https://www.c-sharpcorner.com/article/preparing-for-the-github-copilot-unified-experience-coming-september-28" target="_blank">C-Sharp Corner</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — T-20 days</span>
+        <h4><span class="company-name">OpenAI (Codex)</span> — GPT-5.5 retires from ChatGPT/Codex October 14. T-20 days. API unaffected.</h4>
+        <p>Codex users must migrate to GPT-5.6 Sol or GPT-6 Astra by October 14. GPT-6 Sol and Luna were added September 22 as the forward migration targets. Any forced migration event is a competitor recruitment window — Cursor (SpaceX), Claude Code, and Cognition will have coordinated outreach timed to users who are tool-transitioning anyway.</p>
+        <div class="source">Sources: <a href="https://www.businesstoday.in/technology/artificial-intelligence/story/openai-to-retire-gpt-5-5-from-chatgpt-work-and-codex-on-october-14-what-changes-to-expect-555782-2026-09-16" target="_blank">BusinessToday</a> · OpenAI documentation</div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING</span>
+        <h4><span class="company-name">Cognition (Devin/SWE-2)</span> — $48B valuation; SWE-2: 50% FrontierCode 1.1 at 64% lower cost than Fable 5.1; RSA-260 factorization standing</h4>
+        <p>SWE-2 (released September 10, post-trained from Kimi K3 2.8T) scored 50.0% on FrontierCode 1.1 Main vs. Fable 5.1 at 50.9% — competitive performance at 64% lower cost. SWE-2 medium uses 58% fewer agent steps and costs 81% less per run vs. SWE-1.7. $48B valuation confirmed TechCrunch September 8.</p>
+        <div class="source">Sources: <a href="https://www.orcarouter.ai/blog/cognition-swe-2-release" target="_blank">OrcaRouter</a> · <a href="https://techcrunch.com/2026/09/08/cognition-hits-48b-valuation-signaling-investors-believe-ai-coding-is-far-from-a-winner-take-all-market/" target="_blank">TechCrunch</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Day 41</span>
+        <h4><span class="company-name">Cursor (SpaceX)</span> — 1.5T-parameter native model in development; Day 41 post-acquisition integration phase</h4>
+        <p>SpaceX is developing a Cursor-native model described as "as big as Opus and GPT," pre-trained on 100,000 GPUs. When it ships, Cursor will have a proprietary model moat it currently lacks. No new product announcements September 23–24.</p>
+        <div class="source">Sources: <a href="https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition" target="_blank">Bloomberg</a> · <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank">CNBC</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — September 24, 2026</h3>
+      <div class="section-desc">Professional developer adoption across major AI coding tools</div>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption Signal</th>
+            <th>Key Development Sep 24</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claude Code (Anthropic)</strong></td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td><span class="model-new">CRISPR discovery validates 950-agent pipeline; Day 4 computer use GA; 617+ roles</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cursor (SpaceX)</strong></td>
+            <td>64% Fortune 500 / $4B ARR</td>
+            <td>Day 41 integration; 1.5T native model in development; stable</td>
+          </tr>
+          <tr>
+            <td><strong>Devin Desktop (Cognition)</strong></td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td>SWE-2: 50% FrontierCode at 64% below Fable cost; RSA-260 standing</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Copilot (Microsoft)</strong></td>
+            <td>21% (↓ from 29% Jan 2026)</td>
+            <td><strong>T-4 days to Sep 28 unified; Opus 5.5 + Sol/Luna loaded</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Codex (OpenAI)</strong></td>
+            <td>65% awareness</td>
+            <td><strong>GPT-5.5 retiring Oct 14 (T-20 days); Sol/Luna added Sep 22; Astra Day 20</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Gemini Code Assist (Google)</strong></td>
+            <td>Growing (free individual tier)</td>
+            <td>Breach Day 6; Build with Gemini workshops standing; enterprise pay-as-you-go</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; pricing changes</h3>
+      <div class="section-desc">New models, pricing moves, and platform shifts — September 23–24</div>
+
+      <div class="signal-card new-signal">
+        <span class="signal-badge new">NEW — Sep 24</span>
+        <h4><span class="company-name">OpenAI</span> — Sora 2 / Videos API fully deprecated: complete exit from AI video generation</h4>
+        <p>All Sora 2 models (sora-2, sora-2-pro, sora-2-2025-10-06, sora-2-2025-12-08, sora-2-pro-2025-10-06) are permanently offline. Sora app shutdown was April 26, 2026; today completes the full exit. Any developer pipeline using Sora 2 must migrate immediately to alternatives.</p>
+        <p><strong>For BD/API:</strong> OpenAI has no announced video generation replacement. Google Veo 3 API, Runway API, Pika 2 API, and ByteDance (MiniMax Hailuo) now operate in a frontier video segment without a closed rival from OpenAI. Resource freed from Sora infrastructure likely redistributes to Astra multimodal or GPT-6 architecture — watch for a rebranded video capability in Q4/Q1.</p>
+        <div class="source">Sources: <a href="https://developers.openai.com/api/docs/deprecations" target="_blank">OpenAI API Deprecations</a> · <a href="https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation" target="_blank">OpenAI Help Center</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Day 2</span>
+        <h4>Price war Day 2: GPT-6 Luna ($0.10/MTok) vs. DeepSeek V4.1 Flash ($0.15/MTok) — structural open-source retention test live</h4>
+        <p>GPT-6 Luna at $0.10/MTok input is the first instance of a closed frontier model priced below a major Chinese open-weight model on input price at scale. Day 2 of this pricing environment. OpenRouter data will not reflect the shift until the next weekly cycle.</p>
+        <p><strong>For BD/API:</strong> The key metric: whether DeepSeek's 25.4% OpenRouter request share holds over the next 2 weekly cycles. Claude Sonnet 5 ($2/$10 permanent) and GPT-6 Sol ($2/$10) are now matched — the frontier mid-tier is commodity priced. Grok 4.8 (2.5T, Day 11 unshipped) is the next pricing wildcard.</p>
+        <div class="source">Sources: <a href="https://tokenmaxxing.com/openrouter-rankings" target="_blank">Tokenmaxxing</a> · <a href="https://www.teamday.ai/blog/top-ai-models-openrouter-2026" target="_blank">Teamday.ai</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Current model &amp; pricing snapshot</h3>
+      <div class="section-desc">September 24, 2026 state of play</div>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Input / Output ($/1M tok)</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI</td>
+            <td><strong>Astra (GPT-6)</strong></td>
+            <td>$10 / $50</td>
+            <td>1.05M</td>
+            <td>Day 20; Sora deprecated same day</td>
+          </tr>
+          <tr class="highlight">
+            <td>OpenAI</td>
+            <td><span class="model-new">GPT-6 Sol</span></td>
+            <td>$2 / $10</td>
+            <td>1M</td>
+            <td>Day 2; in Copilot + Codex</td>
+          </tr>
+          <tr class="highlight">
+            <td>OpenAI</td>
+            <td><span class="model-new">GPT-6 Luna</span></td>
+            <td>$0.10 / $0.50</td>
+            <td>1M</td>
+            <td>Day 2; undercuts DeepSeek on input</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-5.5</td>
+            <td>legacy</td>
+            <td>legacy</td>
+            <td><strong>Retiring Oct 14 (T-20 days)</strong></td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td class="deprecated">Sora 2</td>
+            <td class="deprecated">—</td>
+            <td class="deprecated">—</td>
+            <td><strong style="color: #DC2626;">SHUT DOWN Sep 24</strong></td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Fable 5.1</td>
+            <td>$10 / $50</td>
+            <td>1M</td>
+            <td>CRISPR discovery; IPO Nov 2026</td>
+          </tr>
+          <tr class="highlight">
+            <td>Anthropic</td>
+            <td><span class="model-new">Claude Opus 5.5</span></td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td>Day 2; GitHub CPO endorsed; 51% faster</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Sonnet 5</td>
+            <td>$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td>Stable</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td>Gemini 3.1 Pro</td>
+            <td>$1.25 / $5.00</td>
+            <td>1M</td>
+            <td>Breach Day 6; enterprise pay-as-you-go</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td>Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Stable; 2.1T params; SpaceX data</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td><strong>Grok 4.8</strong></td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td><strong>Day 11 unshipped; RL on Colossus 2</strong></td>
+          </tr>
+          <tr>
+            <td>Moonshot AI</td>
+            <td>Kimi K3</td>
+            <td>~$15 output</td>
+            <td>1M</td>
+            <td>#3 Intelligence Index; 93.4% SWE-bench; MIT</td>
+          </tr>
+          <tr>
+            <td>DeepSeek</td>
+            <td>V4.1 Flash</td>
+            <td>$0.15 / $0.60 off-peak</td>
+            <td>1M</td>
+            <td>Now more expensive than GPT-6 Luna on input</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Leaderboard watch</h3>
+      <div class="section-desc">LMArena, OpenRouter, SWE-Bench standings</div>
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Sep 13</span>
+        <h4>LMArena — Claude Opus 4.8 #1 overall. Opus 5.5 and GPT-6 Sol submissions not yet reflected. Expect update in 3–8 days.</h4>
+        <p>Claude Opus 4.8 at 1510+ Elo, ahead of Gemini 3.1 Pro and GPT-5.5 Pro. Claude Opus 4.8 leads coding-specific rankings at ~1582 Elo. Opus 5.5's GitHub CPO-endorsed agentic performance will likely generate strong coding-category Arena scores. Sol's "half as many mistakes as GPT-5.6 Sol" claim is tested against Arena's human-preference methodology when submitted.</p>
+        <div class="source">Source: <a href="https://www.swfte.com/lmarena" target="_blank">swfte.com LMArena Sep 13</a></div>
+      </div>
+      <div class="signal-card standing">
+        <span class="signal-badge standing">STANDING — Sep 22</span>
+        <h4>OpenRouter — DeepSeek 25.4% of weekly requests; all top-10 models under $0.84/MTok input. Luna pricing test begins.</h4>
+        <p>Z.ai GLM 5.3 Flash and DeepSeek V4.1 Flash each processing ~18T weekly tokens. GPT-6 Luna at $0.10/MTok is now the cheapest input price of any model tracked on OpenRouter — first data measuring its impact on DeepSeek's share expected next weekly cycle.</p>
+        <div class="source">Source: <a href="https://tokenmaxxing.com/openrouter-rankings" target="_blank">Tokenmaxxing</a> · <a href="https://www.teamday.ai/blog/top-ai-models-openrouter-2026" target="_blank">Teamday.ai</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hiring Tab -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Cross-cutting hiring &amp; resource signals</h3>
+      <div class="section-desc">Job board and organizational signals from all competitor categories</div>
+
+      <div class="signal-card new-signal">
+        <span class="signal-badge new">NEW CONTEXT — Sep 24</span>
+        <h4><span class="company-name">Anthropic</span> — 617+ roles (Sep 22 standing); biology lab discovery signals new hiring category: life sciences, bioinformatics, biotech BD</h4>
+        <p>The CRISPR enzyme discovery marks Anthropic's public debut as a life sciences research platform. The biology lab requires bioinformaticians, wetlab scientists, life sciences enterprise BD, and regulatory affairs hires — a category absent from Anthropic's hiring profile 6 months ago. 617+ roles from September 22 likely underrepresents the post-discovery hiring wave following press coverage and potential pharma/biotech partnership inquiries.</p>
+        <p>IPO November 2026 target means all hiring is being evaluated for prospectus narrative as well as operational need. Pre-IPO headcount composition will appear in the S-1.</p>
+        <div class="source">Source: <a href="https://jobera.com/employer/anthropic/" target="_blank">Jobera — Anthropic 617+ roles Sep 2026</a> · <a href="https://www.synbiobeta.com/read/anthropic-is-hiring-biologists-building-wet-labs-and-betting-big-on-drug-discovery" target="_blank">SynBioBeta</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI</span> — Sora deprecation frees video generation engineering team. Reallocation target unknown.</h4>
+        <p>Sora's full API shutdown implies reallocation of video generation engineering, infrastructure, and product functions. Most plausible destinations: Astra multimodal capabilities (GPT-6 Astra reportedly supports video understanding) or GPT-6 architecture training. A Sora 3 in stealth development would explain the clean API shutdown today.</p>
+        <div class="source">Inference from deprecation event; no explicit hiring data September 24.</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google</span> — $4M UN General Assembly AI education commitment implies policy and education-sector BD expansion</h4>
+        <p>Google.org's Digital Promise commitment targets AI education for K-12 and underserved communities. Government education AI contracts are a growing procurement category; Google is seeding first-mover advantage in regulated education AI deployments. Gemini Enterprise zero-dollar base subscription requires inside sales and customer success to convert.</p>
+        <div class="source">Source: Google.org announcement September 24, 2026.</div>
+      </div>
+
+      <div class="hiring-grid" style="margin-top: 16px;">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">617+ open roles. New science category opening (life sciences, bioinformatics, biotech BD). IPO comms team likely scaling. Computer use GA and Claude Code daily shipments signal active engineering expansion.</div>
+          <div class="trend trend-up">↑ Biology lab category now opening</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">Sora team reallocation implied by today's API shutdown. GPT-5.5 retirement planning and Sol/Luna rollout require product and engineering capacity. No new role count data September 24.</div>
+          <div class="trend">→ Team reallocation phase</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">SpaceX / Cursor</div>
+          <div class="detail">Day 41 post-acquisition organizational stabilization. 1.5T native model pre-training on 100K GPUs implies large ML infrastructure team already staffed within SpaceX. No new external hiring signals September 23–24.</div>
+          <div class="trend">→ Internal integration phase</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Cognition (Devin)</div>
+          <div class="detail">$48B valuation, $900M+ ARR with a small team. RSA-260 and SWE-2 releases signal elite engineering density. No new batch hiring signals September 23–24.</div>
+          <div class="trend">→ Stable, high-density team</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizon Watch Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable challengers</h3>
+      <div class="section-desc">Weekly scan for significant signals from near-term competitors</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Challenger</div>
+          <h4><span class="company-name">DeepSeek</span> — V4.1 Flash at 25.4% OpenRouter requests; now more expensive than GPT-6 Luna on input ($0.15 vs. $0.10/MTok)</h4>
+          <p>Day 2 of the closed-vs-open-source pricing test. GPT-6 Luna at $0.10/MTok is the first closed frontier model to undercut a major Chinese open-weight model on input price at scale. Key metric: does DeepSeek's 25.4% share hold over 2 weekly OpenRouter cycles? No new model signals September 23–24.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Challenger</div>
+          <h4><span class="company-name">Cognition (Devin/SWE-2)</span> — $48B valuation; SWE-2 50% FrontierCode at 64% below Fable; $900M+ ARR. No new signals September 23–24.</h4>
+          <p>SWE-2 cost story (64% cheaper than Fable, 81% fewer agent steps vs. SWE-1.7) is the most aggressive value-engineering in autonomous coding agents. $48B valuation (TechCrunch Sep 8) up from $47B. No new product signals this cycle.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Challenger</div>
+          <h4><span class="company-name">Mistral AI</span> — Shieldstral open-source; Microsoft EU data center deal. No new signals September 23–24.</h4>
+          <p>Luna's $0.10/MTok pricing pressure reduces cost-driven API migrations to Mistral. EU sovereignty moat and Shieldstral 3B multimodal safety classifier remain differentiation points. Mistral Large 3 (675B MoE, 41B active) remains the flagship. Stable.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Challenger</div>
+          <h4><span class="company-name">Meta AI (Muse)</span> — Day 16 US-only. iCloud incident Day 16 unresolved. No WhatsApp international expansion.</h4>
+          <p>Muse remains US-only with no WhatsApp international expansion (2B+ users potential). The iCloud photo exposure incident (Forbes September 9) is Day 16 with no public Meta response. WhatsApp global expansion remains the key escalation signal to watch.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Monthly horizon scan for structural market shifts</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Governance</div>
+          <h4>Antitrust Lawsuit — Day 6. UN General Assembly AI governance backdrop active.</h4>
+          <p>Sherman Act Section 1 class action (Buist v. Anthropic et al.) against OpenAI, Anthropic, SpaceXAI, and Google for alleged AI pacing coordination enters week 2. UN General Assembly September 23–24 AI governance sessions provide international regulatory backdrop. No new case developments September 24.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Model Roadmap</div>
+          <h4><span class="company-name">xAI / Grok</span> — Grok 4.8 (2.5T, C++ stack) Day 11 unshipped. Grok 4.9 (Astra/Fable class) and Grok 5 (10T params) in pipeline.</h4>
+          <p>Grok 4.7 (2.1T, SpaceX data) is the current model. Historical RL cadence suggests Grok 4.8 within 1–3 weeks. Grok 4.9 described as "probably Astra/Fable class" capability — imminent rivalry at the frontier tier. Grok 5 at 10T params would be the largest publicly deployed model by parameter count.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — IPO / Capital</div>
+          <h4><span class="company-name">Anthropic</span> — IPO November 2026; $2T valuation. CRISPR discovery strengthens Q3 narrative.</h4>
+          <p>WSJ, Forbes, and Investing.com confirm November target (slipped from October — wants Q3 data to justify $2T ask). Q3 narrative is now the strongest of any IPO quarter: Fable 5.1 + computer use GA + Opus 5.5 + CRISPR biology discovery. Retail pre-IPO money flooding in (Forbes September 23). $2T would be the largest tech IPO ask in history.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Defense / Regulation</div>
+          <h4>US Military AI Near-Miss — Day 6. UN General Assembly active. No new legislation.</h4>
+          <p>CNN exclusive September 18 about false AI intelligence nearly prompting military action against a Chinese ship enters week 2 of regulatory commentary. UN General Assembly AI governance discussions are the current policy venue. Anthropic's blocked missile guidance disclosures and Opus 5.5's 230-page system card are proactive regulatory positioning against this policy risk.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer + Sources -->
+  <div class="report-footer">
+    <p>Report generated by Competitive Intelligence Agent | OpenAI Strategy &amp; Operations | Classification: Internal Use Only</p>
+    <p style="margin-top: 8px;">Trend note vs. September 23: Two new confirmed signals: (1) Claude autonomously discovered a CRISPR-like enzyme system — 950 agents, 21 hours, 210M tokens (Anthropic.com, TechCrunch, Al Jazeera — confirmed September 23–24). (2) OpenAI Sora/Videos API fully deprecated September 24 — complete exit from AI video generation (OpenAI API docs, OpenAI Help Center — confirmed). Standing signals as noted throughout report.</p>
+    <button class="sources-toggle" onclick="toggleSources()">▶ Show all sources</button>
+    <div class="sources-list" id="sources-list">
+      <ul>
+        <li><a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank">Anthropic — Claude discovers a novel enzyme system with CRISPR-like repeats</a></li>
+        <li><a href="https://techcrunch.com/2026/09/23/anthropic-says-its-biology-lab-has-already-found-something-big/" target="_blank">TechCrunch — Anthropic says its biology lab has already found something big</a></li>
+        <li><a href="https://www.aljazeera.com/economy/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says" target="_blank">Al Jazeera — AI model Claude discovers CRISPR-like enzyme system</a></li>
+        <li><a href="https://thenextweb.com/news/anthropic-claude-enzyme-system-crispr-like-repeats" target="_blank">The Next Web — Anthropic says Claude found enzyme system with CRISPR-like repeats</a></li>
+        <li><a href="https://dataconomy.com/2026/09/24/anthropic-claude-crispr-enzyme-system-21-hours/" target="_blank">Dataconomy — Anthropic Says Claude Found CRISPR-like Enzyme System In 21 Hours</a></li>
+        <li><a href="https://www.unite.ai/anthropic-says-claude-discovered-a-new-enzyme-system-resembling-crispr/" target="_blank">Unite.AI — Anthropic Says Claude Discovered a New Enzyme System Resembling CRISPR</a></li>
+        <li><a href="https://www.technology.org/2026/09/24/claude-discovers-art-crispr-like-enzyme-system/" target="_blank">Technology.org — Claude Agents Find a CRISPR-Like Enzyme System</a></li>
+        <li><a href="https://explainx.ai/blog/claude-discovers-novel-enzyme-system-art-crispr-like-repeats-2026" target="_blank">explainx.ai — Claude Found a CRISPR-Like Enzyme System: 950 Agents, 21 Hrs</a></li>
+        <li><a href="https://www.engadget.com/2262087/anthropic-has-set-up-a-bio-research-lab-for-physical-experiments/" target="_blank">Engadget — Anthropic has set up a bio research lab for physical experiments</a></li>
+        <li><a href="https://siliconangle.com/2026/09/18/anthropic-opens-ai-powered-biology-research-lab/" target="_blank">SiliconANGLE — Anthropic opens AI-powered biology research lab</a></li>
+        <li><a href="https://www.synbiobeta.com/read/anthropic-is-hiring-biologists-building-wet-labs-and-betting-big-on-drug-discovery" target="_blank">SynBioBeta — Anthropic Is Hiring Biologists, Building Wet Labs</a></li>
+        <li><a href="https://developers.openai.com/api/docs/deprecations" target="_blank">OpenAI API — Deprecations (Videos API)</a></li>
+        <li><a href="https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation" target="_blank">OpenAI Help Center — What to know about the Sora discontinuation</a></li>
+        <li><a href="https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/" target="_blank">GitHub Changelog — Upcoming changes to Copilot policies and billing</a></li>
+        <li><a href="https://www.c-sharpcorner.com/article/preparing-for-the-github-copilot-unified-experience-coming-september-28" target="_blank">C-Sharp Corner — Preparing for GitHub Copilot Unified Experience Sep 28</a></li>
+        <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/microsoft-unifies-consumer-and-enterprise-copilot-in-push-for-single-ai-platform/" target="_blank">PYMNTS — Microsoft Unifies Consumer and Enterprise Copilot</a></li>
+        <li><a href="https://www.developersdigest.tech/blog/github-copilot-september-policy-billing-reset-2026" target="_blank">Developers Digest — GitHub Copilot's September Reset</a></li>
+        <li><a href="https://247wallst.com/investing/2026/09/23/google-says-gemini-hacked-three-companies-on-its-own-now-google-is-sending-mixed-signals-about-ai/" target="_blank">247 Wall St — Google Says Gemini Hacked 3 Companies on Its Own</a></li>
+        <li><a href="https://www.orcarouter.ai/blog/cognition-swe-2-release" target="_blank">OrcaRouter — Cognition SWE-2: Frontier Coding at 64% Off</a></li>
+        <li><a href="https://aicybr.com/blog/cognition-swe-2-coding-model-benchmarks-training" target="_blank">AiCybr — Cognition SWE-2: Benchmarks, Kimi K3 Base, RL Training</a></li>
+        <li><a href="https://techcrunch.com/2026/09/08/cognition-hits-48b-valuation-signaling-investors-believe-ai-coding-is-far-from-a-winner-take-all-market/" target="_blank">TechCrunch — Cognition hits $48B valuation</a></li>
+        <li><a href="https://cellcog.ai/blog/grok-4-8-release-date/" target="_blank">CellCog — Grok 4.8 Release Date: The 2.5T Model Musk Just Named</a></li>
+        <li><a href="https://www.mindstudio.ai/blog/xai-grok-roadmap-7-models-training-grok-5-10-trillion" target="_blank">MindStudio — xAI's Grok Roadmap: Grok 5 at 10 Trillion Parameters</a></li>
+        <li><a href="https://geotoolbox.ai/blog/grok-5" target="_blank">Geotoolbox — Grok 5: Release Date, Specs & What's Confirmed</a></li>
+        <li><a href="https://news.bloomberglaw.com/litigation/openai-anthropic-google-spacexai-hit-with-antitrust-lawsuit" target="_blank">Bloomberg Law — OpenAI, Anthropic, Google, SpaceXAI Hit With Antitrust Lawsuit</a></li>
+        <li><a href="https://qz.com/antitrust-lawsuit-anthropic-openai-google-spacexai-ai-slowdown-092026" target="_blank">QZ — Antitrust lawsuit targets Anthropic, OpenAI, Google, SpaceXAI</a></li>
+        <li><a href="https://www.forbes.com/sites/jonmarkman/2026/09/23/anthropic-ipo-slips-to-november-as-retail-money-floods-pre-ipo-funds/" target="_blank">Forbes — Anthropic IPO Slips To November</a></li>
+        <li><a href="https://jobera.com/employer/anthropic/" target="_blank">Jobera — Anthropic Careers 617+ Open Positions Sep 2026</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition" target="_blank">Bloomberg — SpaceX Completes $60 Billion Cursor Acquisition</a></li>
+        <li><a href="https://tokenmaxxing.com/openrouter-rankings" target="_blank">Tokenmaxxing — OpenRouter Rankings September 2026</a></li>
+        <li><a href="https://www.teamday.ai/blog/top-ai-models-openrouter-2026" target="_blank">Teamday.ai — OpenRouter Top Models Sep 2026</a></li>
+        <li><a href="https://siliconangle.com/2026/09/22/anthropic-releases-claude-opus-5-5-and-openai-counters-with-two-cheaper-gpt-6-models/" target="_blank">SiliconANGLE — Anthropic releases Claude Opus 5.5 and OpenAI counters with Sol and Luna (Sep 22)</a></li>
+        <li><a href="https://github.blog/changelog/2026-09-22-claude-opus-5-5-is-now-available-in-github-copilot/" target="_blank">GitHub Changelog — Claude Opus 5.5 is now available in GitHub Copilot (Sep 22)</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleSources() {
+  const list = document.getElementById('sources-list');
+  const btn = document.querySelector('.sources-toggle');
+  const isShown = list.classList.toggle('show');
+  btn.textContent = isShown ? '▼ Hide sources' : '▶ Show all sources';
+}
+</script>
+</body>
+</html>
