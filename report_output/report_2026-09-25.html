@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — September 25, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F0EEF8; border: 1px solid #DDD8F0; border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: #4A4070; line-height: 1.6; }
+.trend-note strong { color: #2D1F6E; }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-all { background: #F0F5E8; color: #4A6E3A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new { border-left: 3px solid #6B21A8; }
+.signal-card.standing { border-left: 3px solid var(--border); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .source a:hover { text-decoration: underline; }
+.signal-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; }
+.badge-new { background: #EDE8F5; color: #5B4A8A; }
+.badge-standing { background: #F5F4F0; color: #9C9A92; }
+
+.market-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+.market-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.market-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.market-table tr:last-child td { border-bottom: none; }
+.market-table td:first-child { font-weight: 600; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--font-mono); margin-top: 16px; }
+.pricing-table th { text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 6px 10px; border-bottom: 1px solid var(--border); }
+.pricing-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table .highlight { background: #FAFAF0; font-weight: 600; }
+.pricing-table .deprecated { opacity: 0.4; text-decoration: line-through; }
+.pricing-table .alert { color: #B45309; font-weight: 600; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; color: #15803D; }
+.trend-watch { font-weight: 600; color: #B45309; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card.elevated { border-left-color: #DC2626; }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.horizon-card .conf { font-size: 11px; font-family: var(--font-mono); color: var(--text-tertiary); margin-top: 8px; }
+
+.countdown-pill { display: inline-block; background: #1D1D1B; color: #FAFAF8; font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-left: 8px; letter-spacing: 0.5px; }
+.countdown-pill.urgent { background: #DC2626; }
+.countdown-pill.medium { background: #D97706; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .pricing-table { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>September 25, 2026</span>
+      <span class="dot"></span>
+      <span>Generated September 25, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v2.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend delta vs. September 24:</strong> Three new confirmed signals: (1) <strong>OpenAI DevDay September 29 (T-4 days)</strong> — GPT-6 Cyber preview + Managed Agents + 10+ products confirmed by Fortune, Gizmodo, Crypt0sNews. (2) <strong>Elon Musk September 24 X post</strong> — SpaceX Fable/GPT-6-level model in 2–3 months, "pole position" in 6 months, monthly releases, massive GPU expansion (Benzinga, Forbes.com.au). (3) <strong>Claude Code September 25 broad update</strong> — terminal/policy controls, MCP/agent reliability, Windows fixes (Releasebot, gradually.ai). Standing: GitHub Copilot unified T-3 days (Sept 28); Grok 4.8 Day 12 unshipped; Gemini breach Day 7; antitrust lawsuit Day 7; GPT-5.5 retiring Oct 14 T-19 days; Anthropic computer use GA Day 5; SpaceX/Cursor Day 42; Anthropic IPO Nov 2026; Opus 5.5 + Sol/Luna price war Day 3; CRISPR Day 2.
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">SpaceXAI / Anthropic</span> — Musk's "pole position in 6 months" claim (Cursor + Colossus 2 + SpaceX data) is the most credible new frontier challenger in 2026. Anthropic's CRISPR Day 2 coverage extends its "AI that does science" brand advantage with no ChatGPT equivalent.</div>
+        <div class="implication">DevDay T-4: OpenAI's own 10+ product launches may cannibalize ChatGPT differentiation if consumer agent products compete with Plus positioning.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">OpenAI / Anthropic / SpaceXAI</span> — GitHub Copilot unified T-3 days (Sept 28), DevDay Managed Agents T-4, Claude Code September 25 update, GPT-5.5 retiring T-19. Highest-velocity 20-day window in enterprise coding in 2026.</div>
+        <div class="implication">Enterprise IT teams are making Codex vs. Copilot vs. Claude Code procurement decisions this week — the DevDay window is a make-or-break moment for Q4 enterprise retention.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">OpenAI / SpaceXAI</span> — DevDay T-4: 10+ product/model launches will reset Q4 developer API positioning. SpaceX monthly model cadence (Fable/GPT-6 class in 2–3 months) introduces the fastest model improvement cycle seen from any challenger lab.</div>
+        <div class="implication">Claude Opus 5.5 leads Artificial Analysis Intelligence Index (57.6); Arena submissions for Opus 5.5 and Sol/Luna expected this weekend — the next leaderboard cycle is 2–3 days away.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">OpenAI</span> — DevDay September 29 (T-4 days): GPT-6 Cyber preview + Managed Agents platform + 10+ products. Sam Altman keynote, Fort Mason SF, 10am PT, livestreamed. Fortune: "10+ product launches." Cybersecurity is now a standalone OpenAI product line.</span>
+        <span class="tag tag-all">All</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">SpaceXAI / Elon Musk</span> — X post September 24: "Cautiously optimistic SpaceX will have a Fable/GPT-6 level model in 2–3 months." "If our second derivative remains strong, SpaceX will reach pole position in about 6 months." Monthly releases planned through year-end. Massive GPU expansion confirmed (Benzinga).</span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">GitHub / Anthropic / OpenAI</span> — GitHub Copilot unified experience T-3 days (September 28): Opus 5.5 (GitHub CPO-endorsed), GPT-6 Sol/Luna, and Astra variants all in model picker on day one. Enterprise IT teams in final procurement window. 72 hours until Copilot is unrecognizable.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt')">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex')">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api')">API & Models</button>
+    <button class="tab" onclick="showTab('hiring')">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon')">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging & positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products — September 25, 2026</div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">Anthropic</span> — "AI that does real science" brand claim extends into Day 2 with secondary international coverage + Life Sciences Verification Program enterprise CTA</h4>
+        <p>The Daily Star and additional international outlets published secondary CRISPR coverage September 25. Critically, the Life Sciences Verification Program (LSVP, launched September 17, now open to applications) provides the monetization path: two tiers — Standard Use (teams, drug discovery/research biology/clinical development, annual renewal) and High-risk Use (named projects, 6-month renewal). Dozens of orgs already onboarded in early access. The CRISPR + LSVP combination is a two-step brand architecture: (1) headline discovery; (2) enterprise CTA.</p>
+        <p>For PMMs: ChatGPT has no equivalent published scientific discovery or life sciences enterprise program. This is a category claim that takes months to answer, not days.</p>
+        <div class="source">Source: <a href="https://www.thedailystar.net/news/technology/news/claude-discovers-new-enzyme-system-anthropics-biology-lab-4282756" target="_blank">The Daily Star — Sep 25</a> · <a href="https://www.anthropic.com/news/life-sciences-verification-program" target="_blank">Anthropic LSVP</a> · <a href="https://www.hpcwire.com/aiwire/2026/09/21/anthropic-eases-ai-safeguards-for-verified-life-science-teams/" target="_blank">HPC Wire</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">OpenAI</span> — DevDay T-4: GPT-6 Cyber + Managed Agents + 10+ products. Consumer product updates expected but not yet disclosed. Strongest brand reset since Astra launch.</h4>
+        <p>Fortune (September 24) confirmed OpenAI will preview GPT-6 Cyber (4th cybersecurity model of 2026) and Managed Agents at DevDay September 29. Total: "10+ product launches." Consumer product specifics are not yet disclosed. The GPT-6 Cyber announcement will dominate mainstream press coverage heading into Q4.</p>
+        <p>For PMMs: (a) DevDay is T-4 days — all competitor comms teams are holding announcements until after September 29; (b) If consumer agent products launch at DevDay, they will compete directly with Anthropic's Cowork and Google's Gemini; (c) The "cybersecurity as a product line" framing mirrors Anthropic's Claude Security — this is a convergent strategic move by both labs.</p>
+        <div class="source">Source: <a href="https://fortune.com/2026/09/24/openai-launching-gpt-6-cyber-model-and-security-product-devday/" target="_blank">Fortune — Sep 24</a> · <a href="https://gizmodo.com/openai-may-announce-new-security-model-gpt-6-cyber-within-days-2000817143" target="_blank">Gizmodo</a> · <a href="https://www.crypt0snews.com/news/2026-09-25-openai-s-september-29-devday-brings-a-fourth-security-model-.html" target="_blank">Crypt0sNews — Sep 25</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">SpaceXAI / Elon Musk</span> — "Pole position in 6 months" is the most aggressive competitive claim by any CEO in Q3 2026. Mainstream press will amplify to ChatGPT consumer audience.</h4>
+        <p>Musk's September 24 X post covers all product lines including consumer. SpaceX's structural consumer moat: Grok reaches 200M+ X users via a single post announcement — distribution no other challenger has. SuperGrok subscription + Grok Imagine (video gen) already compete with ChatGPT Plus.</p>
+        <p>For PMMs: The consumer framing risk — if SpaceX ships a Fable-class model in December 2026 at competitive pricing with Musk's X announcement, it is the single largest consumer AI challenger moment since DeepSeek R1 in January 2026.</p>
+        <div class="source">Source: <a href="https://www.benzinga.com/markets/tech/26/09/61989367/elon-musk-says-spacex-could-have-gpt-6-level-ai-in-3-months-reach-pole-position-within-6-spacexai-plans-massive-gpu-expansion" target="_blank">Benzinga</a> · <a href="https://www.forbes.com.au/news/innovation/elon-musk-says-spacexs-ai-model-may-surpass-anthropic-and-openais-in-6-months/" target="_blank">Forbes.com.au</a> · <a href="https://x.com/elonmusk/status/2103151040858067289" target="_blank">@elonmusk X</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">Developer community signals from Hacker News, Reddit, and X — September 24–25</div>
+
+      <div class="signal-card">
+        <h4>Developer community — CRISPR Day 2 coverage, DevDay hype, Musk "pole position" circulating</h4>
+        <p><strong>HN:</strong> Musk "pole position" receiving developer discussion — "Grok 4.7 shipped on schedule; Cursor acquisition gives SpaceX real engineering data; I'm not dismissing this." r/ClaudeAI: "Anthropic's biology lab is the single most interesting thing happening in AI right now that isn't about coding." Developer Twitter: DevDay wishlist threads emerging ("what OpenAI needs to launch to matter").</p>
+        <p><strong>r/ChatGPT:</strong> Muted on DevDay — "I'll believe it when I see it" dominant tone for Musk claim. r/LocalLLaMA: "Three major AI coding events in 4 days — this is peak chaos week." Sora deprecation optics still cited in casual comparisons against Anthropic CRISPR narrative.</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches</h3>
+      <div class="section-desc">New capabilities from enterprise coding tools — September 25, 2026</div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">Anthropic (Claude Code)</span> — Broad September 25 update: terminal/policy controls, faster startup, MCP + background agent reliability, Windows fixes, <code>maxProseWidth</code> setting <span class="countdown-pill">v2.1.281+</span></h4>
+        <p>Key improvements shipped today: (a) <code>maxProseWidth</code> — caps prose width in wide terminals while tables/code keep full width; (b) faster startup and session resume; (c) reliability improvements across plugins, MCP, background agents, and remote control; (d) <code>allowClaudeInChromeWithManagedMcp</code> setting for enterprise Chrome + <code>managed-mcp.json</code> integration; (e) Windows Terminal ctrl+enter fix (corrected for pre-1.25 Terminal).</p>
+        <p>For Codex PMs: MCP/background agent reliability improvements directly address the enterprise production deployment concern — CIOs require 99%+ reliability, not 95%, for agentic coding in production. Continuous incremental releases maintain developer goodwill between major model launches.</p>
+        <div class="source">Source: <a href="https://releasebot.io/updates/anthropic/claude-code" target="_blank">Releasebot — Sep 25</a> · <a href="https://www.gradually.ai/en/changelogs/claude-code/" target="_blank">gradually.ai changelog</a> · <a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">OpenAI</span> — DevDay T-4: Managed Agents platform replaces Agent Builder (shutting Nov 30). Full agent infrastructure with customizable environments, skills, plugins. <span class="countdown-pill urgent">T-4 Days</span></h4>
+        <p>Agent Builder (launched October 2025) is shutting down November 30, 2026. Managed Agents — confirmed for DevDay preview September 29 — is the replacement: customizable environments, skills, plugins, unified deployment infrastructure. Source code analysis by RuntimeWire confirms Managed Agents infrastructure exists in OpenAI's codebase.</p>
+        <p>For Codex PMs: (a) Managed Agents is OpenAI's structural answer to Cursor/Claude Code/Cognition's agentic ecosystem — moving from "here's an API" to "here's a managed infrastructure for deploying agents at enterprise scale"; (b) The Agent Builder shutdown creates a 60-day enterprise migration window in Q4 — a potential competitor acquisition opportunity for Claude Code and Cursor; (c) This is the highest-stakes enterprise developer platform change OpenAI has made in 2026.</p>
+        <div class="source">Source: <a href="https://www.forbes.com/sites/jonmarkman/2026/09/21/openai-plans-to-introduce-managed-agents-at-devday-2026/" target="_blank">Forbes — Sep 21</a> · <a href="https://runtimewire.com/article/openai-managed-agents-devday-2026" target="_blank">RuntimeWire</a> · <a href="https://cryptobriefing.com/openai-managed-agents-devday-2026/" target="_blank">CryptoBriefing</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-badge badge-standing">Standing — T-3 Days</div>
+        <h4><span class="company-name">GitHub Copilot</span> — Unified experience September 28: Opus 5.5 (CPO-endorsed), GPT-6 Sol/Luna, Astra variants in model picker. Final 72-hour enterprise procurement window. <span class="countdown-pill urgent">T-3 Days</span></h4>
+        <p>No new Copilot product signals September 25. The unified experience merges Copilot Chat (web), Copilot Chat (mobile), and cloud agent. Default code review shifts from Lite → Balanced (more AI tokens per review). Chat retention extends to account lifetime. GitHub CPO Mario Rodriguez's Opus 5.5 endorsement ("solved more terminal tasks than Opus 5 in less than half the steps") will be cited in every enterprise developer benchmark conversation for weeks.</p>
+        <p>For Codex PMs: The enterprise IT procurement window closes in 72 hours. Competitor BD teams targeting Copilot accounts have until September 28 to land meetings.</p>
+        <div class="source">Source: <a href="https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/" target="_blank">GitHub Changelog</a> · <a href="https://www.c-sharpcorner.com/article/preparing-for-the-github-copilot-unified-experience-coming-september-28" target="_blank">C-Sharp Corner</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New Context — Sep 25</div>
+        <h4><span class="company-name">SpaceXAI / Cursor</span> — Musk "Fable/GPT-6 model in 2–3 months" directly eliminates Cursor's model-dependency vulnerability. Day 42 post-acquisition. <span class="countdown-pill medium">Day 42</span></h4>
+        <p>Today's Musk claim is directly relevant to Cursor: when SpaceX's custom 1.5T-parameter model ships (2–3 months), Cursor transitions from a third-party model aggregator to a vertically integrated IDE + proprietary model. This eliminates the single structural vulnerability in all current Cursor competitive analysis.</p>
+        <p>For Codex PMs: A Cursor with a SpaceX-native Fable-class model + $4B ARR enterprise pipeline + Musk's X distribution = the highest-resourced direct Codex competitor ever assembled. No enterprise Codex sale this quarter should assume Cursor's model dependency as a permanent weakness.</p>
+        <div class="source">Source: <a href="https://www.benzinga.com/markets/tech/26/09/61989367/elon-musk-says-spacex-could-have-gpt-6-level-ai-in-3-months-reach-pole-position-within-6-spacexai-plans-massive-gpu-expansion" target="_blank">Benzinga</a> · <a href="https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-cursor-acquisition" target="_blank">Bloomberg (acquisition close)</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>AI coding tools market snapshot — September 25</h3>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption</th>
+            <th>Key Development Sep 25</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Code (Anthropic)</td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td><strong>Broad Sep 25 update</strong>: MCP/agent reliability, terminal controls, Windows fixes; CRISPR Day 2 brand amplification; Computer use GA Day 5</td>
+          </tr>
+          <tr>
+            <td>Cursor (SpaceX)</td>
+            <td>64% Fortune 500 / $4B ARR</td>
+            <td><strong>Day 42</strong>; Musk "Fable-class model in 2–3 months" eliminates model-dependency vulnerability; GPU expansion confirmed</td>
+          </tr>
+          <tr>
+            <td>Devin Desktop / SWE-2 (Cognition)</td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td>SWE-2 stable (50% FrontierCode, 64% below Fable cost); <strong>Managed Agents (T-4 DevDay) is OpenAI's first platform-level response</strong></td>
+          </tr>
+          <tr>
+            <td>GitHub Copilot (Microsoft)</td>
+            <td>21% (↓ from 29% Jan 2026)</td>
+            <td><strong>T-3 days to Sep 28 unified</strong>; Opus 5.5 + Sol/Luna model picker; enterprise IT in final procurement window</td>
+          </tr>
+          <tr>
+            <td>Codex (OpenAI)</td>
+            <td>65% awareness</td>
+            <td><strong>GPT-5.5 retiring Oct 14 (T-19)</strong>; Managed Agents preview Sep 29; Sol/Luna in Codex Day 3; Astra Day 21</td>
+          </tr>
+          <tr>
+            <td>Gemini Code Assist (Google)</td>
+            <td>Growing (free individual tier)</td>
+            <td>Breach Day 7; no new product signals Sep 25</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="signal-card">
+        <h4>September 24–25: Claude Code reliability update praised; DevDay agent anticipation; Musk "pole position" debated</h4>
+        <p><strong>HN:</strong> Claude Code update — "The MCP reliability fixes are the right priority — agentic workflows in production need 99%+ reliability, not 95%." Managed Agents DevDay — "If OpenAI ships a Heroku-level agent deployment platform, that changes the calculus for enterprise agentic coding entirely." Musk "pole position" — "Cursor already runs Claude and GPT; if SpaceX ships its own Fable-class model through Cursor, that's vertically integrated. That's different."</p>
+        <p><strong>r/programming:</strong> "Three major things in AI coding in the next 4 days: Copilot unified (Sep 28), DevDay agents (Sep 29), and Musk's 2-month countdown. This is a legitimately chaotic week."</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>New model releases & pricing moves</h3>
+      <div class="section-desc">API platform signals — September 25, 2026</div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">OpenAI</span> — GPT-6 Cyber preview at DevDay September 29. 4th cybersecurity model of 2026. Automates security workflows + vulnerability patching. Cybersecurity as a standalone product line. <span class="countdown-pill urgent">T-4 Days</span></h4>
+        <p>GPT-6 Cyber confirms OpenAI's intent to build cybersecurity as a standalone product line with its own pricing, distribution, and enterprise relationship track. Full product launch expected within months of DevDay preview. Companion product gives OpenAI greater oversight of enterprise security deployments — addressing the exact regulatory scrutiny following the July unsanctioned cyberattack incident.</p>
+        <p>For BD/API: (a) GPT-6 Cyber directly competes with Anthropic's Claude Mythos (available in Claude Security) and Google's Gemini 3.8 Flash Cyber; (b) The "product line, not model" framing signals enterprise contract pricing, not per-token pricing, for security deployments; (c) Enterprise security teams will benchmark GPT-6 Cyber against Claude Mythos for the next 60 days.</p>
+        <div class="source">Source: <a href="https://fortune.com/2026/09/24/openai-launching-gpt-6-cyber-model-and-security-product-devday/" target="_blank">Fortune — Sep 24</a> · <a href="https://www.technology.org/2026/09/25/openai-gpt-6-cyber-preview-daybreak-devday/" target="_blank">Technology.org — Sep 25</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <div class="signal-badge badge-new">New — Sep 25</div>
+        <h4><span class="company-name">SpaceXAI</span> — Monthly frontier model releases through year-end; Fable/GPT-6-class model in 2–3 months; massive GPU expansion. Most aggressive model cadence claim in AI industry 2026.</h4>
+        <p>Monthly release cadence (if executed) compresses the competitive response window from quarterly to monthly — developer API switching costs drop when every 4–6 weeks brings a new model to evaluate. A SpaceX-native Fable-class model in the Grok API would arrive at SpaceX's aggressive pricing (current Grok 4.7: $2/$6 per MTok) — potentially undercutting Anthropic's Opus 5.5 ($4/$20) while matching its capability claim.</p>
+        <p>For BD/API: SpaceX's training data moat (Starlink, launch engineering, Cursor enterprise coding) is genuinely differentiated from any other lab. Confidence on timeline: MEDIUM (Musk has made similar claims before; Grok 4.7's on-schedule ship gives this more credibility than prior forecasts).</p>
+        <div class="source">Source: <a href="https://www.benzinga.com/markets/tech/26/09/61989367/elon-musk-says-spacex-could-have-gpt-6-level-ai-in-3-months-reach-pole-position-within-6-spacexai-plans-massive-gpu-expansion" target="_blank">Benzinga</a> · <a href="https://cryptobriefing.com/spacex-ai-model-gpt-6-level-musk/" target="_blank">CryptoBriefing</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <div class="signal-badge badge-standing">Standing — Day 3</div>
+        <h4><span class="company-name">OpenAI / Anthropic</span> — Price war Day 3. GPT-6 Luna ($0.10/MTok) vs. DeepSeek V4.1 Flash ($0.15/MTok off-peak) — structural open-source retention test active. Opus 5.5 leads Artificial Analysis Intelligence Index.</h4>
+        <p>No new pricing moves September 25. The structural test (closed frontier model cheaper than leading Chinese open-weight on input price) is Day 3. OpenRouter weekly data will not reflect until next cycle. Key leaderboard signal: Claude Opus 5.5 leads the Artificial Analysis Intelligence Index at 57.6, ahead of Fable 5.1 (53.4) and GPT-6 Astra (52.7). Arena text leaderboard: Claude Fable 5 #1 at 1505.7 Elo. Opus 5.5 and GPT-6 Sol/Luna Arena submissions expected this weekend (3–5 days from September 22 launch).</p>
+        <div class="source">Source: <a href="https://benchlm.ai/llm-leaderboard-history" target="_blank">BenchLM</a> · <a href="https://felloai.com/best-ai-models/" target="_blank">FelloAI</a> · <a href="https://tokenmaxxing.com/openrouter-rankings" target="_blank">Tokenmaxxing</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing & model landscape — September 25</h3>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>$/1M in / out</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>OpenAI</td>
+            <td>Astra (GPT-6)</td>
+            <td>$10 / $50</td>
+            <td>1.05M</td>
+            <td class="alert">Day 21 · GPT-6 Cyber preview DevDay T-4</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-6 Sol</td>
+            <td>$2 / $10</td>
+            <td>1M</td>
+            <td>Day 3 · Copilot + Codex · Arena pending</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-6 Luna</td>
+            <td>$0.10 / $0.50</td>
+            <td>1M</td>
+            <td>Day 3 · Undercuts DeepSeek V4.1 Flash on input</td>
+          </tr>
+          <tr class="deprecated">
+            <td>OpenAI</td>
+            <td>GPT-5.5</td>
+            <td>legacy</td>
+            <td>legacy</td>
+            <td class="alert">Retiring Oct 14 ChatGPT/Codex — T-19 days</td>
+          </tr>
+          <tr class="highlight">
+            <td>Anthropic</td>
+            <td>Claude Fable 5.1</td>
+            <td>$10 / $50</td>
+            <td>1M</td>
+            <td class="alert">CRISPR Day 2 · LSVP open · IPO Nov 2026</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Opus 5.5</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td class="alert">Day 3 · Intelligence Index #1 (57.6) · Arena pending</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Sonnet 5</td>
+            <td>$2 / $10</td>
+            <td>1M</td>
+            <td>Stable · PERMANENT pricing</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td>Gemini 3.1 Pro</td>
+            <td>$1.25 / $5.00</td>
+            <td>1M</td>
+            <td>Breach Day 7 · no new updates</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td>Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Stable · 2.1T params · SpaceX training data</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td>
+            <td>Grok 4.8</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td class="alert">Day 12 unshipped · Fable/GPT-6 class model in 2–3 months confirmed</td>
+          </tr>
+          <tr>
+            <td>Moonshot AI</td>
+            <td>Kimi K3</td>
+            <td>~$15 out</td>
+            <td>1M</td>
+            <td>#3 Intelligence Index · 93.4% SWE-bench · MIT</td>
+          </tr>
+          <tr>
+            <td>DeepSeek</td>
+            <td>V4.1 Flash</td>
+            <td>$0.15 / $0.60 off-pk</td>
+            <td>1M</td>
+            <td class="alert">25.4% OpenRouter · more expensive than Luna on input (Day 3 test)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Hiring Tab -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring & resource signals</h3>
+      <div class="section-desc">Job board activity and resource allocation signals — September 25, 2026</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">617+ open roles (September 22 standing). CRISPR discovery + LSVP creates imminent hiring wave in new categories: life sciences BD (biotech/pharma), bioinformatics reviewers, science communications, regulatory affairs for biosafety review. These roles did not exist in Anthropic's hiring profile 6 months ago.</div>
+          <div class="trend trend-up">↑ New life sciences category emerging post-CRISPR + LSVP launch</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">SpaceXAI / Cursor</div>
+          <div class="detail">GPU expansion + Fable/GPT-6 model timeline (2–3 months) implies immediate hiring surge: GPU cluster ops, distributed training, RLHF/post-training specialists, Cursor-model integration engineers. No formal announcement yet — implied by technical commitments.</div>
+          <div class="trend trend-watch">↑ Implied wave — watch SpaceXAI careers in next 2–4 weeks</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">No new job board signals September 25. DevDay execution is consuming peak cross-functional capacity: product, marketing, engineering, legal, partner teams all in launch lock for September 29. Not a hiring freeze signal — a peak utilization event.</div>
+          <div class="trend">→ DevDay lock — hiring signals expected post-September 29</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google (Gemini)</div>
+          <div class="detail">No new signals September 25. Google Cloud pay-as-you-go enterprise expansion and Gemini breach Day 7 are the standing hiring context. Education/government relations expansion signal from Google.org UN commitment standing.</div>
+          <div class="trend">→ Stable — breach narrative limiting enterprise expansion velocity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizon Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable challengers</h3>
+      <div class="horizon-grid">
+        <div class="horizon-card elevated">
+          <div class="tier-label">Tier 2 → Elevated Threat</div>
+          <h4><span class="company-name">SpaceXAI / Cursor</span> — "Pole position in 6 months" elevates SpaceX to near-Tier 1 threat for H1 2027 planning</h4>
+          <p>Musk's September 24 claim moves SpaceX's competitive threat timeline from "12 months" to "3–6 months." Unique structural moat: Colossus 2 compute + X/Grok distribution (200M+ users) + Cursor $4B ARR enterprise pipeline + SpaceX domain training data. No prior challenger has had this combination. Grok 4.8 (2.5T, C++ stack) Day 12 unshipped — expected 1–2 weeks based on RL cadence.</p>
+          <div class="conf">Confidence: HIGH on claim (Benzinga, Forbes.com.au — confirmed) · MEDIUM on timeline specifics</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2</div>
+          <h4><span class="company-name">DeepSeek</span> — 25.4% of OpenRouter; V4.1 Flash now more expensive than GPT-6 Luna on input. Day 3 price test.</h4>
+          <p>No new DeepSeek signals today. The structural test — can closed frontier model (Luna, $0.10/MTok) capture open-source share from DeepSeek ($0.15/MTok off-peak) — is Day 3. Next OpenRouter weekly data will be the first empirical read.</p>
+          <div class="conf">Confidence: HIGH on OpenRouter data (confirmed) · LOW on Day 3 adoption shift (no data yet)</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2</div>
+          <h4><span class="company-name">Mistral AI</span> — €3B raised at €21B valuation (Samsung-led, closed September 8). EU sovereignty moat hardening.</h4>
+          <p>Samsung-led Series D at €21B valuation — largest European tech fundraise ever. EU sovereignty, GDPR compliance, Shieldstral safety classifier, Apache 2.0 license remain differentiated moats vs. OpenAI and SpaceX. GPT-6 Luna at $0.10/MTok tests Mistral's cost-driven API migration thesis. No new signals September 25.</p>
+          <div class="conf">Confidence: HIGH (TechCrunch Sep 8, Bloomberg Sep 8 — confirmed)</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2</div>
+          <h4><span class="company-name">Cognition (Devin/SWE-2)</span> — $48B valuation · $900M+ ARR · SWE-2 rolling out. DevDay Managed Agents is first platform-level OpenAI response.</h4>
+          <p>SWE-2 (50% FrontierCode 1.1 at 64% below Fable cost, 58% fewer agent steps vs. SWE-1.7) is the leading commoditization strategy for autonomous coding agents. OpenAI's Managed Agents launch at DevDay (T-4 days) will be the first direct platform response Cognition has faced from OpenAI.</p>
+          <div class="conf">Confidence: HIGH on valuation/SWE-2 (TechCrunch Sep 8, OrcaRouter — confirmed)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Governance & future tech</h3>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Governance</div>
+          <h4><span class="company-name">Antitrust Lawsuit</span> — Sherman Act Section 1 class action Day 7. No new case developments.</h4>
+          <p>Buist v. Anthropic et al. (filed September 18) alleging AI "pacing collusion" post Amodei September 12 essay enters second week with no judicial actions. Names OpenAI, Anthropic, Google, SpaceXAI as defendants. Will appear as a material risk factor in Anthropic's November IPO S-1.</p>
+          <div class="conf">Confidence: HIGH (Bloomberg Law, ABC News, PBS — confirmed)</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — IPO</div>
+          <h4><span class="company-name">Anthropic IPO</span> — November 2026 · $2T valuation ask · $47B ARR · confidential S-1 filed June 1. Q3 narrative strongest of any IPO quarter.</h4>
+          <p>Anthropic's Q3 story heading into the public S-1: Fable 5.1 (Sep 1), computer use GA (Sep 20), Opus 5.5 (Sep 22), CRISPR discovery (Sep 24), LSVP (Sep 17), Claude Code daily updates, 617+ open roles. The $2T ask would be the highest tech IPO valuation in history. Antitrust lawsuit is a required risk-factor disclosure.</p>
+          <div class="conf">Confidence: HIGH (WSJ, Forbes, CNBC, Yahoo Finance — confirmed)</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Upcoming Event</div>
+          <h4><span class="company-name">OpenAI DevDay</span> — September 29 (T-4 days) · Fort Mason SF · 10am PT · Sam Altman keynote · livestreamed. <span class="countdown-pill urgent">T-4 Days</span></h4>
+          <p>Confirmed: GPT-6 Cyber, Managed Agents, 10+ total products. Unconfirmed (Fortune "10+ products"): consumer product updates, potential ChatGPT agent experience, enterprise API improvements. All competitor comms teams in standby mode. DevDay resets Q4 competitive narrative.</p>
+          <div class="conf">Confidence: HIGH on confirmed items (Fortune, Gizmodo — confirmed) · LOW on unannounced products</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Military / Regulatory</div>
+          <h4><span class="company-name">US Military AI Near-Miss</span> — Day 7. No new legislation. UN AI governance context fading.</h4>
+          <p>CNN September 18 exclusive about false AI intelligence nearly prompting military action. Entering second week under committee review. No new legislation or regulatory developments September 25.</p>
+          <div class="conf">Confidence: HIGH on incident (CNN — confirmed) · MEDIUM on regulatory timeline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>Report generated by Competitive Intelligence Agent | OpenAI Strategy & Operations | Classification: Internal Use Only</p>
+    <p style="margin-top: 4px;">Trend note: Three new signals September 25 — (1) OpenAI DevDay Sep 29 confirmed (GPT-6 Cyber + Managed Agents + 10+ products); (2) Musk SpaceX Fable/GPT-6 model in 2–3 months + pole position in 6 months; (3) Claude Code September 25 broad update. Standing: GitHub Copilot unified T-3 (Sep 28); Grok 4.8 Day 12; Gemini breach Day 7; antitrust lawsuit Day 7; GPT-5.5 retiring T-19; Anthropic computer use GA Day 5; SpaceX/Cursor Day 42; Anthropic IPO Nov 2026; price war Day 3; CRISPR Day 2.</p>
+    <button class="sources-toggle" onclick="toggleSources()">▸ Show all sources</button>
+    <div class="sources-list" id="sourcesList">
+      <div><strong>OpenAI DevDay September 29</strong></div>
+      <div><a href="https://fortune.com/2026/09/24/openai-launching-gpt-6-cyber-model-and-security-product-devday/" target="_blank">fortune.com — OpenAI to unveil GPT-6 Cyber at DevDay</a></div>
+      <div><a href="https://gizmodo.com/openai-may-announce-new-security-model-gpt-6-cyber-within-days-2000817143" target="_blank">gizmodo.com — OpenAI May Announce GPT-6 Cyber</a></div>
+      <div><a href="https://www.crypt0snews.com/news/2026-09-25-openai-s-september-29-devday-brings-a-fourth-security-model-.html" target="_blank">crypt0snews.com — DevDay Brings Fourth Security Model of 2026</a></div>
+      <div><a href="https://www.forbes.com/sites/jonmarkman/2026/09/21/openai-plans-to-introduce-managed-agents-at-devday-2026/" target="_blank">forbes.com — OpenAI Plans Managed Agents at DevDay</a></div>
+      <div><a href="https://runtimewire.com/article/openai-managed-agents-devday-2026" target="_blank">runtimewire.com — OpenAI Managed Agents Code Analysis</a></div>
+      <div><a href="https://cryptobriefing.com/openai-managed-agents-devday-2026/" target="_blank">cryptobriefing.com — OpenAI Managed Agents at DevDay</a></div>
+      <div><a href="https://openai.com/index/devday-2026/" target="_blank">openai.com — Announcing OpenAI DevDay 2026</a></div>
+      <br>
+      <div><strong>SpaceX / Elon Musk — Pole Position Claim</strong></div>
+      <div><a href="https://www.benzinga.com/markets/tech/26/09/61989367/elon-musk-says-spacex-could-have-gpt-6-level-ai-in-3-months-reach-pole-position-within-6-spacexai-plans-massive-gpu-expansion" target="_blank">benzinga.com — Musk: SpaceX GPT-6 Level in 3 Months, Pole Position in 6</a></div>
+      <div><a href="https://www.forbes.com.au/news/innovation/elon-musk-says-spacexs-ai-model-may-surpass-anthropic-and-openais-in-6-months/" target="_blank">forbes.com.au — Musk Says SpaceX AI May Surpass OpenAI in 6 Months</a></div>
+      <div><a href="https://cryptobriefing.com/spacex-ai-model-gpt-6-level-musk/" target="_blank">cryptobriefing.com — SpaceX Could Have GPT-6 Level AI Within Months</a></div>
+      <div><a href="https://x.com/elonmusk/status/2103151040858067289" target="_blank">x.com/@elonmusk — Source X post</a></div>
+      <br>
+      <div><strong>Claude Code September 25 Update</strong></div>
+      <div><a href="https://releasebot.io/updates/anthropic/claude-code" target="_blank">releasebot.io — Claude Code Updates September 2026</a></div>
+      <div><a href="https://www.gradually.ai/en/changelogs/claude-code/" target="_blank">gradually.ai — Claude Code Changelog</a></div>
+      <div><a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com — Official Claude Code Changelog</a></div>
+      <br>
+      <div><strong>Anthropic Life Sciences Verification Program</strong></div>
+      <div><a href="https://www.anthropic.com/news/life-sciences-verification-program" target="_blank">anthropic.com — Introducing LSVP</a></div>
+      <div><a href="https://www.hpcwire.com/aiwire/2026/09/21/anthropic-eases-ai-safeguards-for-verified-life-science-teams/" target="_blank">hpcwire.com — Anthropic Eases AI Safeguards for Life Science Teams</a></div>
+      <div><a href="https://endpoints.news/anthropic-starts-verification-program-for-using-mythos-in-biology/" target="_blank">endpoints.news — Anthropic Starts Verification Program for Mythos in Biology</a></div>
+      <br>
+      <div><strong>LMArena / Benchmarks</strong></div>
+      <div><a href="https://benchlm.ai/llm-leaderboard-history" target="_blank">benchlm.ai — LLM Leaderboard History September 2026</a></div>
+      <div><a href="https://felloai.com/best-ai-models/" target="_blank">felloai.com — Best AI Models September 2026</a></div>
+      <div><a href="https://modelgrep.com/leaderboard" target="_blank">modelgrep.com — LLM Leaderboard September 2026</a></div>
+      <br>
+      <div><strong>GitHub Copilot Unified Experience</strong></div>
+      <div><a href="https://github.blog/changelog/2026-08-28-upcoming-changes-to-github-copilot-policies-and-billing/" target="_blank">github.blog — Upcoming Copilot Policy Changes</a></div>
+      <div><a href="https://www.c-sharpcorner.com/article/preparing-for-the-github-copilot-unified-experience-coming-september-28" target="_blank">c-sharpcorner.com — Preparing for Copilot Unified Sep 28</a></div>
+      <br>
+      <div><strong>Mistral AI Funding</strong></div>
+      <div><a href="https://techcrunch.com/2026/09/08/mistral-raises-e3b-as-sovereign-ai-becomes-big-business/" target="_blank">techcrunch.com — Mistral Raises €3B</a></div>
+      <div><a href="https://www.bloomberg.com/news/articles/2026-09-08/mistral-ai-raises-at-21-billion-valuation-in-samsung-led-round" target="_blank">bloomberg.com — Mistral AI Boosts Valuation to €21B</a></div>
+      <br>
+      <div><strong>Antitrust Lawsuit</strong></div>
+      <div><a href="https://news.bloomberglaw.com/litigation/openai-anthropic-google-spacexai-hit-with-antitrust-lawsuit" target="_blank">bloomberglaw.com — OpenAI et al. Hit With Antitrust Lawsuit</a></div>
+      <div><a href="https://www.pbs.org/newshour/nation/lawsuit-says-anthropic-openai-spacexai-and-google-made-illegal-agreement-on-ai-slowdown" target="_blank">pbs.org — AI Slowdown Antitrust Lawsuit</a></div>
+      <br>
+      <div><strong>Anthropic IPO</strong></div>
+      <div><a href="https://www.forbes.com/sites/jonmarkman/2026/09/23/anthropic-ipo-slips-to-november-as-retail-money-floods-pre-ipo-funds/" target="_blank">forbes.com — Anthropic IPO Slips to November</a></div>
+      <div><a href="https://finance.yahoo.com/technology/ai/articles/anthropic-already-raised-130-billion-135300760.html" target="_blank">finance.yahoo.com — Anthropic $130B Raised Pre-IPO</a></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+function showTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleSources() {
+  const list = document.getElementById('sourcesList');
+  const btn = document.querySelector('.sources-toggle');
+  const isShow = list.classList.toggle('show');
+  btn.textContent = isShow ? '▾ Hide sources' : '▸ Show all sources';
+}
+</script>
+</body>
+</html>
