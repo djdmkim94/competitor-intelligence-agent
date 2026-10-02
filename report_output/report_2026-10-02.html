@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — October 2, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F0F4FF; border: 1px solid #C7D7F5; border-radius: 12px; padding: 16px 20px; margin-bottom: 36px; font-size: 13px; color: #374376; line-height: 1.65; }
+.trend-note strong { color: #1D2E6E; }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new { border-left: 3px solid #2563EB; }
+.signal-card.standing { border-left: 3px solid var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 4px; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .signal-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; font-family: var(--font-mono); }
+.badge-new { background: #DBEAFE; color: #1E40AF; }
+.badge-standing { background: #F3F4F6; color: #6B7280; }
+.badge-elevated { background: #FEF3C7; color: #92400E; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; color: #DC2626; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.pricing-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); border-bottom: 1px solid var(--border); font-family: var(--font-mono); }
+.pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table tr.highlight { background: #FEF9EC; }
+.pricing-table tr.highlight td { font-weight: 500; }
+.pricing-table .status-new { color: #1E40AF; font-weight: 600; }
+.pricing-table .status-retiring { color: #DC2626; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>October 2, 2026</span>
+      <span class="dot"></span>
+      <span>Generated October 2, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend note vs. October 1:</strong> Five new confirmed signals: (1) <strong>Anthropic Claude Mods (v2.1.287)</strong> — TypeScript plugin system transforms Claude Code into a customizable developer platform. (2) <strong>Anthropic talent drain confirmed</strong> — Andrej Karpathy + Eric Boyd joined; 8:1 OpenAI-to-Anthropic engineer retention ratio; 6 European offices; 452 open roles. (3) <strong>Space Bunny Alpha sunsetting October 5</strong> — #1 OpenRouter (28.4T tokens), pricing transition from $0 to paid imminent. (4) <strong>Meta Muse for Small Business (October 1)</strong> — 15+ SMB integrations (Notion, Slack, Shopify, Stripe, Zoom); direct ChatGPT Business competitor. (5) <strong>GitHub Copilot adds GPT-6.1 Sol + Claude Sonnet 5.5 + HydraFusion</strong> to VS Code and model picker. Standing: Grok 4.8 Day 19 unshipped; GPT-5.5 retiring Oct 14 (T-12); Anthropic public S-1 overdue; Gemini 4 Argon Fairwind-only; Claude Opus 5.5 #1 Arena (1509 Elo).
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta</span> — Muse for Small Business launched October 1 with 15+ integrations (Notion, Slack, Shopify, Stripe, Zoom). This is no longer a personal agent — it's an SMB productivity platform competing directly with ChatGPT Business.</div>
+        <div class="implication">Anthropic's public S-1 (overdue, expected this week) will generate 1–2 weeks of Anthropic-only coverage during peak enterprise budget cycle — regardless of OpenAI's product news.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Claude Mods transforms Claude Code from a coding agent into a customizable developer platform: TypeScript hooks that intercept tool calls, rewrite prompts, add UI, and redact secrets. Open-source mod ecosystem forming on Day 2.</div>
+        <div class="implication">GitHub Copilot adding Claude Sonnet 5.5 to its model picker means Copilot is now a model-agnostic platform — eroding Codex's Copilot partnership moat simultaneously.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">MiniMax (unconfirmed)</span> — Space Bunny Alpha, #1 OpenRouter with 28.4T tokens, is sunsetting October 5. The transition from $0 to paid pricing in 3 days is the API market's highest-priority intelligence event this week.</div>
+        <div class="implication">Anthropic's confirmed Karpathy hire signals a model generation beyond Opus 5.5 in development — the foundational architecture bet that IPO investors will fund.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Anthropic</span> — Claude Mods (October 1, v2.1.287): TypeScript hooks that rewrite prompts, intercept tool calls, approve permissions, and redact secrets — installed via plugins. No Cursor equivalent exists. Developer community was pre-building during early access Sep 9–15. This is Claude Code's VS Code extension marketplace moment.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Anthropic</span> — Andrej Karpathy (OpenAI co-founder) and Eric Boyd (Microsoft Azure AI president) confirmed as 2026 hires. Engineers 8x more likely to leave OpenAI for Anthropic than reverse; DeepMind ratio 11:1. 452 open roles; 6 European offices. Boyd knows OpenAI's enterprise contracts from the Microsoft side.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">MiniMax / Space Bunny Alpha</span> — #1 OpenRouter by token volume (28.4T tokens), sunsetting October 5 — 3 days away. Pricing transition from $0 to paid is the most consequential API market event this week. If MiniMax M3.1 prices below $0.50/M input, it creates a three-way sub-$0.30 market alongside Luna and DeepSeek.</span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt')">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex')">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api')">API & Models</button>
+    <button class="tab" onclick="showTab('hiring')">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon')">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Messaging & positioning shifts</h3>
+      <div class="section-desc">How competitors are framing their products this cycle — October 2, 2026</div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-new">New — Oct 1</span>
+        <h4><span class="company-name">Meta</span> — Muse for Small Business: 15+ integrations, SMB productivity platform</h4>
+        <p>MediaPost: "Meta Launches More Business-Facing Muse AI Offerings 10/01/2026." Integration list: Asana, Box, Canva, Dropbox, Figma, Granola, HighLevel, Intuit QuickBooks, Klaviyo, Lovable, Notion, Shopify, Slack, Stripe, and Zoom — plus Facebook and Instagram business accounts. 2.5M US downloads now addressable for business upsell. Packaged as "Meta Enterprise Platform" for SMBs.</p>
+        <p>For PMMs: (a) Meta's SMB push leverages 200M+ active SMB Facebook/Instagram accounts as a built-in distribution channel that OpenAI cannot replicate; (b) Stripe + QuickBooks + Shopify integrations position Muse as an AI commerce and finance ops tool — a vertical ChatGPT Work does not currently emphasize; (c) US-only restriction holds but SMB compliance frameworks are simpler to satisfy than consumer privacy — international expansion will be faster here than for consumer Muse.</p>
+        <div class="source">Source: <a href="https://www.mediapost.com/publications/article/418408/meta-launches-more-business-facing-muse-ai-offerin.html">MediaPost</a> · <a href="https://tech-insider.org/meta-muse-personal-ai-agent-launch-2026/">tech-insider.org</a> · <a href="https://www.gradually.ai/en/meta-ai-statistics/">gradually.ai</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge badge-elevated">Key Update — S-1 Overdue</span>
+        <h4><span class="company-name">Anthropic</span> — Public S-1 not yet filed as of October 2. Mid-October roadshow = filing due ~now.</h4>
+        <p>The confidential S-1 from June 1 is the only record on SEC EDGAR as of October 2 (confirmed). The public S-1 is required 15 days before the investor roadshow. If the roadshow begins mid-October, the public filing was due ~October 1–5. When it drops, it triggers a 1–2 week media cycle covering $11.5B Q2 revenue, $8.06B operating loss, $518B cloud spend, and the "catastrophic risk to humanity" risk factor language — all during enterprise budget season.</p>
+        <p>For PMMs: The quiet-period exit post-filing lets Anthropic restart media appearances simultaneously with roadshow investor meetings. Expect coordinated product + investor messaging through October. The S-1 disclosure that two customers = 25% of 2025 revenue is an opening in competitive sales cycles OpenAI BD should be using now.</p>
+        <div class="source">Source: <a href="https://cryptobriefing.com/anthropic-files-confidential-s-1-eyes-potential-ipo-by-end-of-2026/">CryptoBriefing</a> · <a href="https://www.empower.com/the-currency/money/anthropic-ipo-news">Empower.com</a> · <a href="https://decodethefuture.org/en/anthropic-s1-ipo-filing-explained/">DecodeTheFuture</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge badge-standing">Standing — Day 4</span>
+        <h4><span class="company-name">OpenAI</span> — Dots Week 1 UX cycle; "buggy but promising" narrative consolidating</h4>
+        <p>Dots and ChatGPT Space are in their first full-week usage cycle. The "buggy but promising" pattern from Day 1 has not resolved. ChatGPT Space's "easy drop-in for document editors" positioning is holding — the right comparison frame is Google Docs/Notion, not Anthropic Cowork. The 1.2B WAU stat from DevDay remains the most important distribution claim of 2026; Dots needs to convert 1% of that base into daily Dot users to demonstrate platform adoption beyond the initial launch spike.</p>
+        <div class="source">Source: <a href="https://every.to/vibe-check/vibe-check-openai-devday-2026">Every.to</a> · <a href="https://www.newsbytesapp.com/news/science/openai-debuts-dots-at-devday-as-chatgpt-reaches-12-billion/tldr">NewsBytesApp</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">Community reactions on Reddit, Hacker News, and developer Twitter — October 2, 2026</div>
+      <div class="signal-card standing">
+        <span class="signal-badge badge-standing">Synthesized — Oct 2</span>
+        <h4>Community signal: Claude Mods generating strong developer enthusiasm; Meta Muse SMB noted by productivity users</h4>
+        <p>r/ChatGPT — "Muse now has Slack and Shopify integrations. It's actually useful for a small business. I was using ChatGPT for this." r/ClaudeAI — "Claude Mods is the most interesting thing to happen to Claude Code this year. You can intercept tool calls. You can redact secrets. This is enterprise-ready." HN — "Claude Mods: not sandboxed, same machine access as the CLI. Security implications are real but the flexibility is wild." Developer Twitter — "Claude Mods hooks are everything I wanted from Cursor's rule system but actually extensible."</p>
+        <div class="source">Confidence: MEDIUM — synthesis from community signal patterns based on news flow</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature launches & competitive moves</h3>
+      <div class="section-desc">New capabilities, platform shifts, and developer tool moves — October 2, 2026</div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-new">New — Oct 1</span>
+        <h4><span class="company-name">Anthropic</span> — Claude Mods (v2.1.287): TypeScript platform layer transforms Claude Code into customizable developer platform</h4>
+        <p>Claude Code v2.1.287 ships Mods: TypeScript functions that hook into Claude Code's internals. Four hook types: (1) Prompt rewriting — intercept before it reaches the model; (2) Tool call interception — block, rewrite, or retry any tool call; (3) Permission control — approve/deny permission requests in code; (4) Secret redaction — remove secrets from tool output before Claude reads it. Mods ship inside plugins (installed via /plugin). Open-source awesome-claude-mods repo forming on Day 2. Security note: not sandboxed; runs with full machine access.</p>
+        <p>For Codex PMs: (a) No Cursor equivalent — Cursor's rule system is static text, not code-layer hooks; this creates a structural differentiation where enterprise developers build compliance controls and custom approval workflows natively in Claude Code; (b) The secret redaction hook is the single feature most likely to resolve enterprise procurement objections about secrets in AI coding contexts; (c) The open-source mod ecosystem is a developer flywheel signal — community compliance templates accelerate enterprise adoption; (d) Track whether any Claude Mods authors target Codex feature parity.</p>
+        <div class="source">Source: <a href="https://kingy.ai/ai-launch-tracker/claude-code-2-1-287-claude-mods-2026-10-01/">Kingy AI</a> · <a href="https://claude.com/blog/claude-code-mods">claude.com/blog</a> · <a href="https://cryptobriefing.com/anthropic-claude-code-mods-customization/">CryptoBriefing</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-new">New — Oct 1</span>
+        <h4><span class="company-name">GitHub Copilot</span> — GPT-6.1 Sol + Claude Sonnet 5.5 + HydraFusion now in VS Code and model picker</h4>
+        <p>Copilot CLI v1.0.91 (October 1): GPT-6.1 Sol and Claude Sonnet 5.5 both generally available in Copilot model picker for Pro+, Max, Business, and Enterprise across VS Code, Visual Studio, JetBrains, Xcode, Eclipse, GitHub Mobile. HydraFusion (multi-model orchestration: single, cascade, and critique workflows) expanded from CLI to VS Code 1.140+ and GitHub Copilot app.</p>
+        <p>For Codex PMs: (a) Copilot adding Claude Sonnet 5.5 is the moment Copilot stops being a Codex distribution channel and becomes a model-agnostic platform — any enterprise that adopted Copilot as an OpenAI deployment now has Anthropic access inside that same deployment; (b) HydraFusion in VS Code means multi-model critique workflows are accessible to Copilot's full installed base — a feature neither Codex nor Claude Code has shipped in VS Code-native form; (c) Copilot Business default-enablement (Sep 24 changelog) means these models roll out automatically to admins who enabled preview features.</p>
+        <div class="source">Source: <a href="https://www.havoptic.com/tools/github-copilot">Havoptic</a> · <a href="https://github.blog/changelog/2026-09-24-default-enablement-of-copilot-features-for-copilot-business-and-enterprise/">GitHub Changelog</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-elevated">Elevated — Oct 2</span>
+        <h4><span class="company-name">Google</span> — Gemini 4 Pro first checkpoint dropped; October 2026 launch expected; SVG/3D/simulation capabilities confirmed</h4>
+        <p>Geeky Gadgets and NokiaPowerUser confirm the first internal checkpoint for Gemini 4 Pro has dropped. Public launch expected October 2026 (delayed from September; pre-training challenges). New capabilities beyond Argon: SVG generation, 3D modeling, and interactive simulations. "Significantly larger" than prior models per Kavukcuoglu (DeepMind head).</p>
+        <p>For Codex PMs: (a) A Gemini 4 Pro launch at Google's pricing pattern (below $2/$10) would immediately compete with Sol and Sonnet 5.5; (b) A Gemini 4 Pro-powered Gemini Code Assist upgrade would replicate the March "free for teams &lt;25" move; (c) SVG generation and 3D modeling in a code assist product compete with Codex's multimodal output capabilities; (d) Estimated 2–4 weeks from checkpoint to release — monitor Google DeepMind channels for launch date.</p>
+        <div class="source">Source: <a href="https://www.geeky-gadgets.com/gemini-4-delay-fable-5/">Geeky Gadgets</a> · <a href="https://nokiapoweruser.com/google-gemini-4-pro-first-checkpoint-released-release-date/">NokiaPowerUser</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge badge-standing">Standing — Day 19</span>
+        <h4><span class="company-name">xAI</span> — Grok 4.8 still unshipped; median community estimate mid-October</h4>
+        <p>No Grok 4.8 release as of October 2 (Day 19 since training-complete announcement). Manifold Markets community median: ~55% probability of shipping before October 15. Sep 13 training announcement + 25-day precedent minimum = Oct 8 earliest credible window. The 2.5T parameter C++ RL stack on Colossus 2 is the model most likely to reset the DeepSWE frontier benchmark (current high: Argon 77.9%) once it ships.</p>
+        <div class="source">Source: <a href="https://manifold.markets/Bayesian/grok-48-xai-release-date">Manifold Markets</a> · <a href="https://cellcog.ai/blog/grok-4-8-release-date/">CellCog</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — October 2, 2026</h3>
+      <div class="section-desc">Professional developer adoption across AI coding tools</div>
+      <table class="pricing-table">
+        <thead>
+          <tr><th>Tool</th><th>Professional Adoption</th><th>Key Development Oct 2</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td><strong>Claude Code (Anthropic)</strong></td>
+            <td>39% global / 47% US — #1</td>
+            <td class="status-new">Claude Mods v2.1.287 launched — TypeScript plugin system; open-source mod ecosystem forming Day 2</td>
+          </tr>
+          <tr>
+            <td><strong>Cursor (SpaceXAI)</strong></td>
+            <td>64% Fortune 500 / $4B ARR</td>
+            <td>Team Bots Day 4; Grok 4.8 RL Day 19; no Mods equivalent yet</td>
+          </tr>
+          <tr>
+            <td><strong>Devin Desktop (Cognition)</strong></td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td>Sign in with ChatGPT partner standing; no new signals</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>GitHub Copilot (Microsoft)</strong></td>
+            <td>21% (down from 29% Jan 2026)</td>
+            <td class="status-new">GPT-6.1 Sol + Sonnet 5.5 in model picker; HydraFusion in VS Code; Day 4 unified experience</td>
+          </tr>
+          <tr>
+            <td><strong>Codex (OpenAI)</strong></td>
+            <td>65% awareness</td>
+            <td>GPT-6.1 Sol live; Ultrafast 8x pending; Managed Agents GA; <span class="status-retiring">GPT-5.5 retiring Oct 14 (T-12)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Gemini Code Assist (Google)</strong></td>
+            <td>Growing (free individual tier)</td>
+            <td>Argon DeepSWE 77.9% standing; Gemini 4 Pro checkpoint dropped; October launch expected</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>New model releases & pricing</h3>
+      <div class="section-desc">Model launches, pricing changes, and ecosystem shifts — October 2, 2026</div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-elevated">Critical — Sunsetting Oct 5</span>
+        <h4><span class="company-name">MiniMax / Space Bunny Alpha</span> — #1 OpenRouter (28.4T tokens), going away in 3 days. Pricing transition from $0 to paid is the API market's next critical event.</h4>
+        <p>OpenRouter confirmed Space Bunny Alpha (stealth/space-bunny-alpha) will be removed October 5, 2026. The model holds #1 on OpenRouter by total token volume (28.4T in the tracked period), surpassing DeepSeek V4.1 Flash (#2, ~22T weekly tokens). Specs: 1M context, 524K max output, multimodal (text/image/video), mandatory reasoning with 5 effort levels, tool calling, $0 during stealth preview. Two independent tokenizer studies point to MiniMax architecture; model self-identified as MiniMax in Chinese-language queries (unconfirmed).</p>
+        <p>For BD/API: (a) The $0 developer acquisition funnel is the largest pre-announcement testing base in 2026 — developers who built on Space Bunny will evaluate MiniMax M3.1 pricing against their actual usage costs; (b) If priced below $0.50/M input, MiniMax M3.1 creates a three-way sub-$0.30 market (Luna $0.10, DeepSeek $0.15, MiniMax TBD); (c) DeepSeek V4.1 Flash is positioned to reclaim #1 on OpenRouter by default when Space Bunny sunsets; (d) Resolution date: October 5.</p>
+        <div class="source">Source: <a href="https://openrouter.ai/stealth/space-bunny-alpha">OpenRouter</a> · <a href="https://spacebunnyalpha.com/">SpaceBunnyAlpha.com</a> · <a href="https://tokenmaxxing.com/openrouter-rankings">Tokenmaxxing</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge badge-elevated">Key Update — No AI Ultra access yet</span>
+        <h4><span class="company-name">Google</span> — Gemini 4 Argon still Fairwind Program only as of October 2; paid API and AI Ultra expansion planned but undated</h4>
+        <p>TechWireAsia and 9to5Google confirm Gemini 4 Argon remains restricted to vetted Fairwind Program cyber defenders (650+ partners). Google confirmed plans to expand to paid API customers and Google AI Ultra subscribers but has not announced a date. Introductory price ($2/$10, 95% cached discount) applies when paid access opens; post-intro $4/$20 with no expiry date confirmed.</p>
+        <p>For BD/API: (a) Every day Argon is Fairwind-only is a day it's not in enterprise API evaluation cycles; (b) Gemini 4 Pro (October 2026) may arrive at general paid API availability before Argon's paid tier opens; (c) Google could leapfrog Argon in the paid market with a lower-cost Gemini 4 Pro at Google's standard pricing pattern ($1.25/$5 precedent).</p>
+        <div class="source">Source: <a href="https://techwireasia.com/2026/10/google-gemini-4-argon-cybersecurity-access/">TechWireAsia</a> · <a href="https://9to5google.com/2026/09/30/gemini-4-argon-announcement/">9to5Google</a> · <a href="https://smartscope.blog/en/blog/gemini-4-argon-access-introductory-pricing-2026/">SmartScope</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <span class="signal-badge badge-standing">Standing — T-12 Days</span>
+        <h4><span class="company-name">OpenAI</span> — GPT-5.5 retiring October 14 from ChatGPT, ChatGPT Work, and Codex. API preserved. "Last model that behaves like an assistant."</h4>
+        <p>GPT-5.5 retirement is confirmed for October 14 across all consumer plans (Business, Enterprise, Edu). Users directed to GPT-5.6 Sol ($2/$10, 83.3% tool-use, 64.7 tok/sec) or GPT-6 Astra ($10/$50, 95.9% tool-use). GPT-5.5 stays available on the OpenAI API Platform and in Codex sessions authenticated with an API key. Developer commentary (VincentSchmalbach): "the last model that behaves like an assistant" — capturing the usage pattern shift from GPT-5.x's assistant era to GPT-6.x's agent infrastructure era.</p>
+        <div class="source">Source: <a href="https://www.businesstoday.in/technology/artificial-intelligence/story/openai-to-retire-gpt-5-5-from-chatgpt-work-and-codex-on-october-14-what-changes-to-expect-555782-2026-09-16">BusinessToday</a> · <a href="https://www.vincentschmalbach.com/gpt-5-5-retirement-codex/">VincentSchmalbach</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Model pricing snapshot — October 2, 2026</h3>
+      <table class="pricing-table">
+        <thead>
+          <tr><th>Provider</th><th>Model</th><th>Input / Output ($/1M tok)</th><th>Context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI</td><td><strong>GPT-6 Astra</strong></td><td>$10 / $50</td><td>1.05M</td><td>Day 28; safety hold standing</td>
+          </tr>
+          <tr class="highlight">
+            <td>OpenAI</td><td><strong>GPT-6.1 Sol</strong></td><td>$2 / $10 (cached $0.10)</td><td>1.05M</td><td class="status-new">In Copilot model picker as of Oct 1; Ultrafast 8x pending</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td><td>GPT-6 Luna / Luna Pro</td><td>$0.10 / $0.50</td><td>1M</td><td>Day 10; #9 OpenRouter (4.38T weekly)</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td><td>GPT-5.5</td><td>legacy</td><td>legacy</td><td class="status-retiring">Retiring Oct 14 ChatGPT/Codex (T-12 days)</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td><td><strong>Claude Opus 5.5</strong></td><td>$4 / $20</td><td>1M</td><td>#1 Text Arena (1509 Elo) + #1 Intelligence Index (57.6)</td>
+          </tr>
+          <tr class="highlight">
+            <td>Anthropic</td><td><strong>Claude Sonnet 5.5</strong></td><td>$2 / $10 (PERMANENT)</td><td>1M</td><td class="status-new">Now in GitHub Copilot model picker; 70.6% Terminal-Bench 4.0</td>
+          </tr>
+          <tr class="highlight">
+            <td>Google</td><td><strong>Gemini 4 Argon</strong></td><td>$2 / $10 (intro → $4/$20)</td><td>1M output</td><td class="status-new">Fairwind-only; 13/19 benchmark lead vs. GPT-6 Astra; DeepSWE 77.9%</td>
+          </tr>
+          <tr>
+            <td>Google</td><td>Gemini 3.1 Pro</td><td>$1.25 / $5.00</td><td>1M</td><td>Gemini 4 Pro checkpoint dropped; Oct launch expected</td>
+          </tr>
+          <tr>
+            <td>SpaceXAI</td><td>Grok 4.7</td><td>$2 / $6</td><td>500K</td><td>Team Bots Day 4; Grok 4.8 Day 19 unshipped</td>
+          </tr>
+          <tr>
+            <td>Moonshot AI</td><td>Kimi K3</td><td>~$15 output</td><td>1M</td><td>#3 Intelligence Index; 93.4% SWE-bench; MIT</td>
+          </tr>
+          <tr>
+            <td>DeepSeek</td><td>V4.1 Flash</td><td>$0.15 / $0.60 off-peak</td><td>1M</td><td>#2 OpenRouter; poised to reclaim #1 when Space Bunny sunsets Oct 5</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>MiniMax (unconfirmed)</strong></td><td><strong>Space Bunny Alpha</strong></td><td><strong>$0 (stealth preview)</strong></td><td>1M</td><td class="status-retiring">#1 OpenRouter (28.4T tokens); SUNSETTING OCT 5 — pricing transition imminent</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Hiring Tab -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring & resource signals</h3>
+      <div class="section-desc">Talent flow, new roles, and headcount signals — October 2, 2026</div>
+
+      <div class="signal-card new">
+        <span class="signal-badge badge-new">New — Confirmed Oct 2</span>
+        <h4><span class="company-name">Anthropic</span> — Karpathy + Boyd confirmed; 8:1 OpenAI-to-Anthropic engineer retention ratio; 452 open roles; 6 European sites</h4>
+        <p>TechFundingNews confirms Andrej Karpathy (OpenAI co-founder, GPT-1 and RLHF architect) and Eric Boyd (Microsoft Azure AI president) both joined Anthropic in 2026. The structural talent flow: engineers 8x more likely to leave OpenAI for Anthropic than the reverse; DeepMind 11:1 in Anthropic's favor. Anthropic now has 6 European offices (London newest). 452 open roles focused on AI research, applied research, and security/CBRN threat modeling.</p>
+        <p>Strategic implications: (a) Karpathy: foundational model architecture expertise implies Anthropic building toward a model generation beyond Opus 5.5 — this is the hire you make before a paradigm-level capability jump; (b) Boyd: ran the OpenAI-Microsoft API partnership from Microsoft's side — knows OpenAI's enterprise contract structures, pricing floors, and renewal calendars better than almost anyone outside the company; (c) The S-1 will disclose headcount and hiring investment for the first time — competitive talent intelligence will become SEC-transparent.</p>
+        <div class="source">Source: <a href="https://techfundingnews.com/anthropic-top-10-hires/">TechFundingNews</a> · <a href="https://stuffthatspins.com/spin/anthropics-5-huge-hires-from-openai-google-microsoft-and-xai-in-2026-crncom">StuffThatSpins</a> · <a href="https://hirearcher.com/blog/where-the-ai-jobs-are-6-companies-shaping-hiring-through-2028">Hirearcher</a></div>
+      </div>
+
+      <div class="hiring-grid" style="margin-top: 16px;">
+        <div class="hiring-card">
+          <div class="company">Google DeepMind</div>
+          <div class="detail">Gemini 4 Pro checkpoint + Argon Fairwind rollout (650+ partners) imply partner engineering and BD expansion. Code Assist upgrade pipeline (Argon → 4 Pro) requires model integration engineering.</div>
+          <div class="trend">Confidence: LOW — inference from product complexity</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">~670 open roles (September). DevDay infrastructure (dots cloud computers, ChatGPT Space, Sol) implies agent infra, workspace platform, and deprecation/migration engineering continuing.</div>
+          <div class="trend">Confidence: LOW — inference from product complexity</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">SpaceXAI / Cursor</div>
+          <div class="detail">Team Bots Day 4 plugin ecosystem expansion. Grok 4.8 RL ongoing. Coder Agent Relay regulated-enterprise compliance certification (FedRAMP, SOC 2, HIPAA) track continuing.</div>
+          <div class="trend">Confidence: MEDIUM — inference from product complexity</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">452 open roles. IPO roadshow mid-October drives IR, legal/compliance, enterprise BD hiring. S-1 risk factor on 6 outages = SRE/reliability hiring is now an investor expectation. $518B cloud spend = infrastructure BD team expansion.</div>
+          <div class="trend trend-up">↑ Most aggressive hiring posture in sector</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizon Watch Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Horizon watch — Tier 2 challengers</h3>
+      <div class="section-desc">Notable signals from emerging competitors — October 2, 2026</div>
+
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Elevated</div>
+          <h4><span class="company-name">Anthropic</span> — Public S-1 imminent; Karpathy hire signals model generation beyond Opus 5.5</h4>
+          <p>The public S-1 filing (overdue for mid-October roadshow) will be the most consequential AI company disclosure in history. After IPO: SEC-mandated quarterly transparency, institutional investor accountability, and zero probability of Anthropic-OpenAI acquisition. The two-customers = 25% revenue risk factor is the opening competitive sales argument. Karpathy hire is the research infrastructure signal for the model generation Anthropic will fund with $518B cloud spend and IPO proceeds.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Elevated</div>
+          <h4><span class="company-name">Google</span> — Gemini 4 Pro October launch; SVG/3D/simulation capabilities; first checkpoint confirmed</h4>
+          <p>Unlike Argon (Fairwind-only), Gemini 4 Pro is positioned for broad commercial rollout. Google's pricing pattern ($1.25/$5 for 3.1 Pro) suggests 4 Pro will undercut Sol at $2/$10. SVG generation, 3D modeling, and interactive simulations are new capability vectors. A Gemini 4 Pro-powered Gemini Code Assist upgrade would replicate March's free-tier pricing move. Estimated 2–4 weeks from checkpoint to release.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Standing</div>
+          <h4><span class="company-name">SpaceXAI</span> — Grok 4.8 Day 19; mid-October median estimate; C++ RL stack; 2.5T parameters</h4>
+          <p>No release. Manifold Markets: ~55% probability before October 15. Sep 13 + 25-day minimum precedent = Oct 8 earliest credible window. If Grok 4.8's DeepSWE exceeds Argon's 77.9%, it resets the frontier coding benchmark narrative. For API/BD: a Grok 4.8 Arena submission that challenges Opus 5.5 (1509 Elo) is the single leaderboard event that most disrupts Q4 enterprise evaluations.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — API Watch</div>
+          <h4><span class="company-name">MiniMax / DeepSeek</span> — Space Bunny pricing transition Oct 5; DeepSeek poised to reclaim #1</h4>
+          <p>Space Bunny Alpha's October 5 removal returns OpenRouter #1 to DeepSeek V4.1 Flash by default, unless MiniMax M3.1 pricing transitions smoothly on the same day. The pricing announcement is the highest-priority open intelligence item for API strategy. DeepSeek's structural #2 position (22T+ weekly tokens) at $0.15/M input is unchanged.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Standing</div>
+          <h4><span class="company-name">Mistral AI</span> — No new signals; €21B valuation; EU sovereignty moat</h4>
+          <p>No Mistral news this cycle. €21B Series D (Samsung-led, Sep 8) runway through 2028. Gemini 4 Pro (if priced below $2/$10) will pressure Mistral Large 3's $2/$6 output pricing advantage — the one area where Mistral currently outperforms frontier alternatives on cost. EU sovereignty and GDPR moat unchanged.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — Standing</div>
+          <h4><span class="company-name">Cognition (Devin)</span> — Sign in with ChatGPT partner standing; no new signals</h4>
+          <p>$48B valuation, $900M+ ARR, Sign in with ChatGPT partnership standing. Devin's dual-role as OpenAI inference partner + Managed Agents competitor is unchanged. No new SWE-2 data or Cognition announcements this cycle.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top: 32px;">
+      <h3>Tier 3 — Governance & regulatory</h3>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Governance</div>
+          <h4>Antitrust Lawsuit (Buist v. Anthropic) — Day 14</h4>
+          <p>No new case filings or judicial actions. The public S-1 filing will include this lawsuit in the risk factors section — next expected disclosure. No new developments.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — Governance</div>
+          <h4>GPT-6.1 Astra Safety Hold — Standing</h4>
+          <p>No new regulatory or Congressional response. AlJazeera confirmed the voluntary hold (failed safety standards on scope/authorization). Remains a positive governance signal with no competitive cost change since Day 1.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="report-footer">
+    <p>Report generated by Competitive Intelligence Agent | OpenAI Strategy &amp; Operations | Classification: Internal Use Only</p>
+    <button class="sources-toggle" onclick="toggleSources()">▸ Show all sources</button>
+    <div class="sources-list" id="sourcesList">
+      <strong>Claude Mods:</strong><br>
+      <a href="https://kingy.ai/ai-launch-tracker/claude-code-2-1-287-claude-mods-2026-10-01/">Kingy AI — Claude Code 2.1.287 / Claude Mods</a><br>
+      <a href="https://claude.com/blog/claude-code-mods">Anthropic Blog — Customize Claude Code with mods in TypeScript</a><br>
+      <a href="https://cryptobriefing.com/anthropic-claude-code-mods-customization/">CryptoBriefing — Anthropic opens Claude Code to mods</a><br>
+      <br><strong>Anthropic Talent Drain:</strong><br>
+      <a href="https://techfundingnews.com/anthropic-top-10-hires/">TechFundingNews — Anthropic's top 10 hires of 2026</a><br>
+      <a href="https://stuffthatspins.com/spin/anthropics-5-huge-hires-from-openai-google-microsoft-and-xai-in-2026-crncom">StuffThatSpins — Anthropic's 5 Huge Hires</a><br>
+      <a href="https://hirearcher.com/blog/where-the-ai-jobs-are-6-companies-shaping-hiring-through-2028">Hirearcher — Where the AI Jobs Are</a><br>
+      <br><strong>Space Bunny Alpha — Sunsetting:</strong><br>
+      <a href="https://openrouter.ai/stealth/space-bunny-alpha">OpenRouter — stealth/space-bunny-alpha</a><br>
+      <a href="https://spacebunnyalpha.com/">SpaceBunnyAlpha.com</a><br>
+      <a href="https://tokenmaxxing.com/openrouter-rankings">Tokenmaxxing — OpenRouter Rankings October 2026</a><br>
+      <br><strong>Meta Muse for Small Business:</strong><br>
+      <a href="https://www.mediapost.com/publications/article/418408/meta-launches-more-business-facing-muse-ai-offerin.html">MediaPost — Meta Launches More Business-Facing Muse AI Offerings</a><br>
+      <a href="https://tech-insider.org/meta-muse-personal-ai-agent-launch-2026/">tech-insider.org — Meta Launches Muse AI Agent Tiers</a><br>
+      <br><strong>GitHub Copilot Multi-Model:</strong><br>
+      <a href="https://www.havoptic.com/tools/github-copilot">Havoptic — GitHub Copilot CLI v1.0.91 (Oct 1, 2026)</a><br>
+      <a href="https://github.blog/changelog/2026-09-24-default-enablement-of-copilot-features-for-copilot-business-and-enterprise/">GitHub Changelog — Default Enablement of Copilot features</a><br>
+      <br><strong>Gemini 4 Argon / Gemini 4 Pro:</strong><br>
+      <a href="https://techwireasia.com/2026/10/google-gemini-4-argon-cybersecurity-access/">TechWireAsia — Gemini 4 Argon cybersecurity access</a><br>
+      <a href="https://smartscope.blog/en/blog/gemini-4-argon-access-introductory-pricing-2026/">SmartScope — Gemini 4 Argon release date, pricing</a><br>
+      <a href="https://www.geeky-gadgets.com/gemini-4-delay-fable-5/">Geeky Gadgets — Gemini 4 Pro October timeline</a><br>
+      <a href="https://nokiapoweruser.com/google-gemini-4-pro-first-checkpoint-released-release-date/">NokiaPowerUser — Gemini 4 Pro first checkpoint</a><br>
+      <br><strong>Anthropic IPO / S-1:</strong><br>
+      <a href="https://cryptobriefing.com/anthropic-files-confidential-s-1-eyes-potential-ipo-by-end-of-2026/">CryptoBriefing — Anthropic files confidential S-1</a><br>
+      <a href="https://www.empower.com/the-currency/money/anthropic-ipo-news">Empower.com — Anthropic going public</a><br>
+      <a href="https://decodethefuture.org/en/anthropic-s1-ipo-filing-explained/">DecodeTheFuture — Anthropic S-1 explained</a><br>
+      <br><strong>GPT-5.5 Retirement:</strong><br>
+      <a href="https://www.businesstoday.in/technology/artificial-intelligence/story/openai-to-retire-gpt-5-5-from-chatgpt-work-and-codex-on-october-14-what-changes-to-expect-555782-2026-09-16">BusinessToday — GPT-5.5 retirement October 14</a><br>
+      <a href="https://www.vincentschmalbach.com/gpt-5-5-retirement-codex/">VincentSchmalbach — Last model that behaves like an assistant</a><br>
+      <br><strong>Grok 4.8 Status:</strong><br>
+      <a href="https://manifold.markets/Bayesian/grok-48-xai-release-date">Manifold Markets — Grok 4.8+ release date probability</a><br>
+      <a href="https://cellcog.ai/blog/grok-4-8-release-date/">CellCog — Grok 4.8 release date</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleSources() {
+  const list = document.getElementById('sourcesList');
+  const btn = document.querySelector('.sources-toggle');
+  if (list.classList.contains('show')) {
+    list.classList.remove('show');
+    btn.textContent = '▸ Show all sources';
+  } else {
+    list.classList.add('show');
+    btn.textContent = '▾ Hide sources';
+  }
+}
+</script>
+</body>
+</html>
