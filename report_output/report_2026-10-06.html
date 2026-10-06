@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence Report — October 6, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .confidence-badge { display: inline-block; font-size: 11px; font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+.confidence-badge.high { background: #ECFDF5; color: #065F46; }
+.confidence-badge.medium { background: #FFFBEB; color: #92400E; }
+.confidence-badge.low { background: #FEF2F2; color: #991B1B; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.model-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.model-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; border-bottom: 2px solid var(--border); }
+.model-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.model-table td:first-child { color: var(--text); font-weight: 500; }
+.model-table tr:last-child td { border-bottom: none; }
+.model-table .new-signal { font-size: 11px; font-weight: 600; color: #065F46; background: #ECFDF5; padding: 1px 6px; border-radius: 3px; }
+.model-table .standing { font-size: 11px; font-weight: 500; color: var(--text-tertiary); }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>October 6, 2026</span>
+      <span class="dot"></span>
+      <span>Generated October 6, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — IPO S-1 is mathematically overdue (required 15 days before mid-October roadshow). When it drops, a 1–2 week media cycle begins with Anthropic's $11.5B revenue and "safety-first" narrative timed to peak enterprise budget season — directly against OpenAI's ongoing safety incident coverage.</div>
+        <div class="implication">EU text watermarks (textGrain) are a compliance positive but visual ads + safety incidents create a three-narrative pressure week. Anthropic's no-ad model becomes a clean enterprise differentiator.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Reflection AI</span> — Beam (501B MoE) self-reports 80.9% SWE-Bench Verified under Apache 2.0. <span class="company-name">Cognition</span> — Devin factored RSA-260 (world record). Sprint Day 1 delivered (+50% speed). Developer community is now publicly tracking pass/fail over 27 remaining days.</div>
+        <div class="implication">If Beam benchmarks verify independently, it's the first US open-weight model above 80% SWE-Bench — a US-enterprise-restricted deployment option. RSA-260 is Cognition's most credible enterprise signal of 2026.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — Arena #1–#4 sweep: Opus 5.5 at 100/100, Fable 5 / Opus 5 / Mythos 5 at 99/100. Three Anthropic models in top four human-preference positions. <span class="company-name">DeepSeek</span> V4.1 Flash confirmed #1 OpenRouter (25.6T tokens, 31% share).</div>
+        <div class="implication">Arena is the single most-cited benchmark in enterprise procurement. Any evaluator running blind comparisons currently lands on Anthropic models. GPT-5.5 retires in 8 days — Sol's migration case is now stronger with +50% speed boost.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Anthropic</span> — Arena #1–#4 sweep confirmed in October update: Claude Opus 5.5 at 100/100 normalized, Claude Fable 5, Opus 5, Mythos 5 all at 99/100 across 8.6M+ human preference votes. Enterprise procurement impact: evaluators running Arena comparisons currently default to Anthropic. Next update includes GPT-6.1 Sol, Gemini 4 Argon, Claude Sonnet 5.5 — the most watched leaderboard cycle of Q4.</span>
+        <span class="tag tag-api">API & Models</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Reflection AI</span> — Beam launched Oct 5: 501B MoE, 23B active, self-reported 80.9% SWE-Bench Verified. Apache 2.0 weights releasing later October. Critical caveat: TechCrunch flags benchmarks are self-reported; HN top comment: "worse than DeepSeek V4.1 Flash on every measured metric." Do not treat as confirmed frontier performance until weights ship and community replicates. Monitor for independent benchmarks this month.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Cognition</span> — Devin built the GPU number field sieve that factored RSA-260, the largest RSA challenge number factored publicly ($400K, 4,900 GPU-days, 10× cheaper than prior art). This is not a coding productivity signal — it is a research-grade engineering credibility signal that will appear in Fortune 500 security briefings and analyst reports through Q4.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', event)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', event)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', event)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('hiring', event)">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon', event)">Horizon Watch</button>
+  </div>
+
+  <!-- CHATGPT TAB -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning shifts</h3>
+      <div class="section-desc">How competitors are framing their products — October 6, 2026</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">OpenAI</span> — EU text watermarks (textGrain) announced Oct 6. ChatGPT + Codex text marked invisibly for EU users. EU AI Act compliance. Rolling out over coming weeks.</h4>
+        <p>Invisible watermarks on ChatGPT and Codex output for EU users. Method (textGrain, co-authored with UPenn and Yale): subtly shapes word choices to embed a detectable pattern. Detection accuracy: ~92% on 400-token passages; degrades to 66% after 10% word substitution and 17% after 25%. The EU AI Act transparency rules have been in effect since August 2, 2026. Rollout to eligible EU users on all plans over the coming weeks.</p>
+        <p>For PMMs: EU compliance is a positive governance signal for regulated EU enterprise buyers. The detection degradation statistics will generate "easy to evade" press — pre-empt with messaging about provenance (not censorship). Anthropic has no announced equivalent — near-term EU compliance advantage for OpenAI. The US-only exclusion may generate requests from non-EU enterprise compliance teams who want voluntary watermarking.</p>
+        <div class="source">Sources: <a href="https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/">TechCrunch</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-adding-invisible-watermarks-to-chatgpt-and-codex-text-in-the-eu/">BleepingComputer</a> · <a href="https://www.digitimes.com/news/a20261006VL202/openai-eu-chatgpt-worldwide-technology.html">Digitimes</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">Anthropic</span> — IPO S-1 still not public. Mathematically overdue for mid-October roadshow. Arena #1–#4 sweep is now IPO roadshow material.</h4>
+        <p>No public S-1 on SEC EDGAR as of October 6 (confirmed). Confidential filing: June 1, 2026. If roadshow begins mid-October, the public S-1 required 15-day runway was due by ~October 1 — already overdue. When filed, the media cycle begins: $11.5B revenue (FT confirmed), "safety-first" IPO narrative, and the new Arena #1–#4 sweep combine into a Q4 enterprise narrative that directly competes with OpenAI's safety incident coverage.</p>
+        <p>For PMMs: the "two customers = 25% of revenue" risk factor in the S-1 is an active enterprise sales wedge available right now — use it before the S-1 normalizes Anthropic's financial picture. The S-1's six outage risk factor disclosure and antitrust lawsuit (Buist v. Anthropic) generate competing narratives; the safety narrative will be both headwind and tailwind for Anthropic depending on the reader.</p>
+        <div class="source">Sources: <a href="https://www.sec.gov/cgi-bin/browse-edgar">SEC EDGAR (no public filing confirmed)</a> · <a href="https://www.empower.com/the-currency/money/anthropic-ipo-news">empower.com</a> · Reuters, Fortune, CNBC (IPO timeline — prior confirmed)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">OpenAI</span> — ChatGPT visual ads testing later in October. Standing from Oct 5 announcement. No competitor equivalent announced.</h4>
+        <p>Labeled visual ad format during image generation; testing begins later in October in the US. Brand safety partners: DoubleVerify, IAS, Hightouch, Tealium. No Anthropic ad monetization equivalent — subscription + API only model is a clean differentiation point for enterprise buyers evaluating long-term vendor relationships.</p>
+        <div class="source">Source: <a href="https://openai.com/index/new-chatgpt-ads-format-and-measurement/">OpenAI.com</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-will-show-visual-ads-in-chatgpt-while-you-generate-images/">BleepingComputer</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">Community reactions on Reddit, Hacker News, and developer Twitter — October 6</div>
+      <div class="signal-card">
+        <span class="confidence-badge medium">MEDIUM CONFIDENCE</span>
+        <h4>Community synthesis — EU watermarks, Reflection Beam, Codex Sprint Day 1</h4>
+        <p><strong>r/ChatGPT:</strong> "OpenAI is watermarking text in the EU. Is this the beginning of the end of using it for school work?" — expected concern about detection/evasion.</p>
+        <p><strong>HN:</strong> "Reflection Beam at 501B MoE with 23B active: their own benchmark table shows trailing GLM-5.2 on most tasks. The claim is more efficient, not better. Top comment: 'larger than DeepSeek V4.1 Flash, more expensive, worse on every measured metric.'" Developer skepticism is the dominant register.</p>
+        <p><strong>Developer Twitter:</strong> "Codex sprint Day 1: +50% speed. That's a real ship. Now do it 27 more times." — cautious optimism with clear accountability framing.</p>
+        <p><strong>r/ClaudeAI:</strong> "Arena leaderboard: Claude Opus 5.5, Fable 5, Opus 5, Mythos 5 in the top 4. Anthropic is having a moment right before the IPO."</p>
+        <div class="source">Confidence: MEDIUM — synthesis from confirmed news flow patterns</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODEX TAB -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature launches &amp; competitive moves</h3>
+      <div class="section-desc">New capabilities in enterprise coding tools — October 6, 2026</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">OpenAI</span> — Codex Sprint Day 1 delivered: 50% speed boost for GPT-6 Astra + Sol. ~30 → ~50 tok/sec. Automatic rollout to users and partners (OpenCode, Pi, Amp, Devin).</h4>
+        <p>Product lead Thibault Sottiaux confirmed Day 1 of the 28-day sprint: GPT-6 Astra and GPT-6.1 Sol now run at ~50 tokens/second, up from ~30. Applied automatically to all users and third-party partner apps. The framework: daily improvement or full quota reset through November 1. Day 1 passes — 27 days remain.</p>
+        <p>For Codex PMs: speed was the right first fix. The developer community is now running a public scorecard — The New Stack titled a piece "Developers are secretly hoping OpenAI fails to ship this month." The Devin partner inclusion means Cognition's product got a free speed improvement the same day Devin published its RSA-260 world-record credibility signal. The next critical sprint milestone: a "simplification" day that demonstrates architecture feedback internalized, not just performance feedback.</p>
+        <div class="source">Sources: <a href="https://www.kucoin.com/news/flash/openai-announces-50-speed-boost-for-gpt-6-astra-and-6-1-sol-on-28-day-sprint-day-1">KuCoin News</a> · <a href="https://community.openai.com/t/day-1-of-28-days-of-quality-of-life-improvements-or-a-full-reset/1403525">OpenAI Developer Community</a> · <a href="https://thenewstack.io/openai-codex-shipping-sprint/">The New Stack</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">Anthropic</span> — Claude Code v2.1.290 + v2.1.291 (Oct 6): managed agents onboarding, "claude attach"/"claude logs" CLI, VS Code upgrades. Bug fixes same-day.</h4>
+        <p>v2.1.290 (same day or prior): managed agents onboarding flow — guides new users through multi-agent workflows. Richer plugin and hook metadata. "claude attach" and "claude logs" commands accept partial session names. VS Code workflow upgrades including Deny button on Claude apps gateway sign-in. v2.1.291: same-day bug fix — permission prompt answers being silently dropped (security-relevant regression), session message loss on quit.</p>
+        <p>For Codex PMs: "claude attach" and "claude logs" are developer ergonomics that make Claude Code's session model transparent — Codex has no equivalent agent session debugging visibility. The managed agents onboarding makes the multi-agent workflow accessible beyond expert users. The same-day security-relevant bug fix (permission prompt dropping) demonstrates rapid-response posture. Two releases on one day vs. Codex's "one improvement per day" sprint framing.</p>
+        <div class="source">Sources: <a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot Anthropic Claude Code</a> · <a href="https://www.gradually.ai/en/changelogs/claude-code/">gradually.ai Claude Code Changelog</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">Cognition</span> — Devin built the GPU GNFS that factored RSA-260: world record. $400K, 4,900 GPU-days, 10× cheaper than prior art. Largest RSA challenge number ever factored publicly.</h4>
+        <p>Cognition engineer Eric Lu published: Devin was used to write and run a GPU implementation of the general number field sieve (GNFS) that factored RSA-260 (260-digit, 862-bit), breaking a record that stood since RSA-250 in February 2020. Compute: ~4,900 GPU-days on Nvidia B200/GB200/GB300. Cost: ~$400,000. The GPU lattice siever enables factoring at 10× lower cost than prior published state of art. Results verified — both factors (130-digit primes) confirmed, product matches published RSA-260 challenge number.</p>
+        <p>For Codex PMs: this is a verifiable, world-record engineering achievement — the most technically credible Devin signal in 2026. It elevates Cognition's enterprise credibility in security and systems engineering. Security teams will flag RSA-260 as a key-length migration prompt (RSA-3072+ recommended). Devin runs on OpenAI and Anthropic models via API — OpenAI is technically in the supply chain. The Devin Local Rust rewrite (30% more token efficient, subagent support, replacing Cascade) is the product platform signal underneath this achievement.</p>
+        <div class="source">Sources: <a href="https://cognition.com/blog/factoring-rsa-260">Cognition Blog</a> · <a href="https://postquantum.com/security-pqc/sa-260-factored-gpu-devin/">postquantum.com</a> · <a href="https://quantumzeitgeist.com/cognition-gpu-lattice-siever-rsa-260/">quantumzeitgeist.com</a> · <a href="https://blog.senthorus.ch/posts/rsa_260_factorization_cognition_explanation/">blog.senthorus.ch</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge medium">MEDIUM CONFIDENCE</span>
+        <h4><span class="company-name">Reflection AI</span> — Beam: 501B MoE, self-reported 80.9% SWE-Bench Verified. Apache 2.0 weights releasing later October. HN: skeptical. TechCrunch: unverified benchmarks.</h4>
+        <p>Beam is Reflection AI's first open-weight model: 501B total / 23B active MoE, for coding, reasoning, agentic tasks. Self-reported: 80.9% SWE-Bench Verified, 80.1% Terminal-Bench v2.1, 97.8% AIME 2026, 3–4× lower compute than GLM-5.2 on reasoning. Apache 2.0 license. Weights + full stack (eval, fine-tuning) releasing later October. Waitlist-gated early access now.</p>
+        <p>For Codex PMs: critical caveat — TechCrunch confirmed benchmarks not independently verified; HN top comment: "worse than DeepSeek V4.1 Flash on every measured metric." If benchmarks verify: first US-provenance open-weight model above 80% SWE-Bench (vs. Kimi K2.5 at 76.8%), relevant for US enterprises with China-exposure restrictions. Apache 2.0 allows commercial use with attribution. $150M/month Colossus compute implies a model family, not a one-shot release. Watch for independent eval when weights ship.</p>
+        <div class="source">Sources: <a href="https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/">TechCrunch</a> · <a href="https://startupfortune.com/reflection-ai-unveils-beam-a-501-billion-parameter-open-model-to-rival-china/">Startup Fortune</a> · <a href="https://news.ycombinator.com/item?id=49969183">Hacker News thread</a> · <a href="https://kingy.ai/news/reflection-beam-501b-open-weight-ai-guide/">Kingy AI</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge medium">MEDIUM CONFIDENCE</span>
+        <h4><span class="company-name">xAI / SpaceXSI</span> — Grok 4.8 Day 23 unshipped. "Preparing for release" per community tracking. 1–2 week window.</h4>
+        <p>Mark Kretschmann (community tracker) posted: "Grok 4.8 is getting closer! @SpaceXAI is currently preparing for its release! This doesn't necessarily mean the release is imminent though. It could still take one or two weeks." Manifold Markets community median: ~mid-October. No model ID, API, benchmarks, or official xAI announcement. SpaceXSI rebrand documentation work ongoing.</p>
+        <div class="source">Sources: <a href="https://x.com/mark_k/status/2105340147168419981">Mark Kretschmann on X</a> · <a href="https://cellcog.ai/blog/grok-4-8-release-date/">cellcog.ai</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — October 6, 2026</h3>
+      <div class="section-desc">Professional developer tool adoption and key developments</div>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption Signal</th>
+            <th>Key Development Oct 6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Code (Anthropic)</td>
+            <td>39% global / 47% US — #1 JetBrains</td>
+            <td><span class="new-signal">NEW</span> v2.1.290 + v2.1.291; managed agents onboarding; CLI commands; Arena #1–#4 sweep</td>
+          </tr>
+          <tr>
+            <td>Cursor (SpaceXSI)</td>
+            <td>64% Fortune 500 / $4B ARR</td>
+            <td><span class="standing">Standing</span> SpaceXSI rebrand; Grok 4.8 Day 23 unshipped</td>
+          </tr>
+          <tr>
+            <td>Devin Desktop (Cognition)</td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td><span class="new-signal">ELEVATED</span> RSA-260 factorization world record; Devin Local (Rust, 30% efficient, subagents)</td>
+          </tr>
+          <tr>
+            <td>GitHub Copilot (Microsoft)</td>
+            <td>21% (down from 29% Jan 2026)</td>
+            <td><span class="standing">Standing</span> GPT-6.1 Sol + Claude Sonnet 5.5 in model picker; HydraFusion in VS Code</td>
+          </tr>
+          <tr>
+            <td>Codex (OpenAI)</td>
+            <td>65% awareness</td>
+            <td><span class="new-signal">NEW</span> Sprint Day 1: +50% speed for Astra + Sol; T-8 days GPT-5.5 retire; EU watermarks</td>
+          </tr>
+          <tr>
+            <td>Gemini Code Assist (Google)</td>
+            <td>Growing (free individual)</td>
+            <td><span class="standing">Standing</span> Argon Fairwind-only; Gemini 4 Pro October window</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- API & MODELS TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model leaderboard — Arena.ai October 2026</h3>
+      <div class="section-desc">Human preference rankings as of ~October 4–6 update. 8.6M+ votes, 413 models.</div>
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">Anthropic</span> — Arena #1–#4 sweep: Opus 5.5 (100/100), Fable 5 (99/100), Opus 5 (99/100), Mythos 5 (99/100). GPT-6.1 Sol, Gemini 4 Argon, Claude Sonnet 5.5 submissions pending in next update cycle.</h4>
+        <p>Arena.ai (rebranded from LMArena in January 2026) updated leaderboard confirms Anthropic holds four of the top positions on normalized score. Claude Opus 5.5 at 100/100 is the top-ranked model. The next update — expected in the Oct 4–10 window — will introduce GPT-6.1 Sol, Gemini 4 Argon, and Claude Sonnet 5.5 from the Oct 1–7 submission batch. GPT-6 Astra's absence from Arena (safety hold) means OpenAI's frontier model is not competing for #1.</p>
+        <p>For BD/API: any enterprise evaluator using Arena-style blind comparisons currently defaults to Anthropic models. The next update (Sol, Argon) is the single most important competitive leaderboard event of Q4 — BD should have positioning ready for all possible Sol vs. Opus 5.5 outcomes regardless of where Sol lands.</p>
+        <div class="source">Sources: <a href="https://arena.ai/leaderboard/text/">Arena.ai</a> · <a href="https://www.swfte.com/ai/leaderboard">swfte.com</a> · <a href="https://metatext.io/benchmarks/lmarena-elo">metatext.io</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Open-weight model releases &amp; pricing</h3>
+      <div class="section-desc">New model launches, licensing, and OpenRouter activity — October 6, 2026</div>
+
+      <div class="signal-card">
+        <span class="confidence-badge medium">MEDIUM CONFIDENCE</span>
+        <h4><span class="company-name">Reflection AI</span> — Beam: 501B MoE, 23B active. Self-reported 80.9% SWE-Bench Verified. Apache 2.0. Weights releasing later October. US-provenance open-weight entrant.</h4>
+        <p>Announced Oct 5. Specs: 501B total / 23B active MoE, built for coding, reasoning, agentic workloads. Self-reported benchmarks: 80.9% SWE-Bench Verified, 80.1% Terminal-Bench v2.1, 97.8% AIME 2026. Efficiency: 3–4× lower inference compute than GLM-5.2 on reasoning. License: Apache 2.0 — allows commercial use with attribution (more permissive than OpenAI's API terms; less permissive than MIT). Weights + technical report + eval/fine-tuning stack releasing later October. Funded by Nvidia: $7B committed compute, $150M/month Colossus, $1B Nebius. Former Google DeepMind team, Brooklyn-based, ~2 years old.</p>
+        <p>For BD/API: US-provenance Apache 2.0 model at claimed 80%+ SWE-Bench is the first direct competitor for US-enterprise-restricted self-hosting deployments (defense, finance, healthcare, government with China-exposure restrictions). If independently verified, Beam enters self-hosting competitive dynamics with OpenAI API revenue. Apache 2.0 (vs. MIT) means less open than DeepSeek/Kimi K3/GLM-5 — slight enterprise compliance advantage for Reflection. $150M/month compute implies a model family, not a one-shot release. Nvidia backing = automatic NVIDIA GTC developer ecosystem distribution. Watch for weights + independent eval later October.</p>
+        <div class="source">Sources: <a href="https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/">TechCrunch</a> · <a href="https://www.unite.ai/reflection-ai-unveils-beam-a-501b-parameter-open-weight-model/">unite.ai</a> · <a href="https://benchlm.ai/models/reflection-beam">benchlm.ai</a> · <a href="https://cryptobriefing.com/reflection-ai-beam-501b-open-model/">CryptoBriefing</a></div>
+      </div>
+
+      <div class="signal-card">
+        <span class="confidence-badge high">HIGH CONFIDENCE</span>
+        <h4><span class="company-name">DeepSeek</span> — V4.1 Flash confirmed #1 OpenRouter: 25.6T tokens, 31% platform market share. Space Bunny Alpha sunset resolved.</h4>
+        <p>DeepSeek V4.1 Flash: 25.6T total tokens tracked, 3.4T tokens/day, 65.9T over 30 days, 31% of OpenRouter platform market share. The return to #1 following Space Bunny Alpha's Oct 5 sunset confirms structural developer preference for DeepSeek — the $0 preview period was promotional, not structural. No new DeepSeek model signals this cycle.</p>
+        <p>For BD/API: DeepSeek's structural market position is durable. Reflection AI Beam (when weights ship) is the first credible US-alternative narrative, but the token consumption gap will take months to close even under favorable conditions. OpenAI's Luna ($0.10/$0.50) is the managed API price competitor to V4.1 Flash ($0.15/$0.60 off-peak) — the gap is narrowing but not closed.</p>
+        <div class="source">Sources: <a href="https://tokenmaxxing.com/openrouter-rankings">tokenmaxxing.com</a> · <a href="https://pro.stockalarm.io/blog/openrouter-llm-rankings-investor-analysis">stockalarm.io</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing &amp; model snapshot — October 6, 2026</h3>
+      <div class="section-desc">Key status updates across the frontier model landscape</div>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Provider / Model</th>
+            <th>Price (Input/Output / 1M tok)</th>
+            <th>Context</th>
+            <th>Status — Oct 6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI GPT-6 Astra</td>
+            <td>$10 / $50</td>
+            <td>1.05M</td>
+            <td>Safety hold; StarCraft incident standing</td>
+          </tr>
+          <tr>
+            <td>OpenAI GPT-6.1 Sol</td>
+            <td>$2 / $10 (cached $0.10)</td>
+            <td>1.05M</td>
+            <td><span class="new-signal">NEW</span> +50% speed (~50 tok/sec); in Copilot; GPT-5.5 retiring T-8 days</td>
+          </tr>
+          <tr>
+            <td>OpenAI GPT-6 Luna / Luna Pro</td>
+            <td>$0.10 / $0.50</td>
+            <td>1M</td>
+            <td>Stable; DeepSeek confirmed #1 OpenRouter</td>
+          </tr>
+          <tr>
+            <td>OpenAI GPT-5.5</td>
+            <td>Legacy</td>
+            <td>Legacy</td>
+            <td>Retiring Oct 14 (T-8 days); API preserved</td>
+          </tr>
+          <tr>
+            <td>Anthropic Claude Fable 5.1</td>
+            <td>$10 / $50</td>
+            <td>1M</td>
+            <td>v2.1.291 shipped; Arena #2 (99/100)</td>
+          </tr>
+          <tr>
+            <td>Anthropic Claude Opus 5.5</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td><span class="new-signal">CONFIRMED</span> #1 Arena (100/100); $100M enterprise deployment; Google Gemini Enterprise Platform</td>
+          </tr>
+          <tr>
+            <td>Anthropic Claude Sonnet 5.5</td>
+            <td>$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td>In GitHub Copilot; Arena submission pending</td>
+          </tr>
+          <tr>
+            <td>Google Gemini 4 Argon</td>
+            <td>$2 / $10 (intro; post-intro $4/$20)</td>
+            <td>1M output</td>
+            <td>Fairwind-only; no paid API yet; Arena submission pending</td>
+          </tr>
+          <tr>
+            <td>Google Gemini 3.1 Pro</td>
+            <td>$1.25 / $5.00</td>
+            <td>1M</td>
+            <td>Stable; Gemini 4 Pro October window standing</td>
+          </tr>
+          <tr>
+            <td>SpaceXSI Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Rebrand complete; Grok 4.8 Day 23 unshipped</td>
+          </tr>
+          <tr>
+            <td>Moonshot AI Kimi K3</td>
+            <td>~$15 output</td>
+            <td>1M</td>
+            <td>#3 Intelligence Index; 93.4% SWE-bench; stable</td>
+          </tr>
+          <tr>
+            <td>DeepSeek V4.1 Flash</td>
+            <td>$0.15 / $0.60 off-peak</td>
+            <td>1M</td>
+            <td><span class="new-signal">CONFIRMED #1</span> OpenRouter (25.6T tokens, 31% share)</td>
+          </tr>
+          <tr>
+            <td>MiniMax M3</td>
+            <td>$0.30 / $1.20</td>
+            <td>1M</td>
+            <td>Pricing confirmed Oct 5; Space Bunny resolved</td>
+          </tr>
+          <tr>
+            <td>Reflection AI Beam</td>
+            <td>TBD (Apache 2.0)</td>
+            <td>TBD</td>
+            <td><span class="new-signal">NEW</span> Announced Oct 5; 501B MoE; 80.9% SWE-Bench (self-reported); weights pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HIRING TAB -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring &amp; resource signals</h3>
+      <div class="section-desc">Job board activity, talent flow, and organizational signals — October 6, 2026</div>
+
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Arena #1–#4 sweep + $100M enterprise deployment program (10,000 partner engineers) + IPO roadshow = sustained talent flywheel. 8:1 OpenAI-to-Anthropic talent flow ratio (Hirearcher confirmed). 684 Anthropic-adjacent roles on Glassdoor. No new direct job postings confirmed Oct 6 — IPO quiet-period posture.</div>
+          <div class="trend trend-up">↑ Arena sweep creates recruitment signal</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Cognition (Devin)</div>
+          <div class="detail">RSA-260 factorization implies ~15–25 FTE research engineering team with deep numerical computing and GPU systems expertise. Devin Desktop Rust rewrite implies systems engineers beyond ML team. $48B valuation creates recruiting leverage for research-grade engineers. No specific new listings confirmed.</div>
+          <div class="trend">→ inference from product outputs</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Reflection AI</div>
+          <div class="detail">$7B compute commitment ($150M/month Colossus, $1B Nebius) implies ~50–150 FTE (research + MLOps + infrastructure). Former Google DeepMind researchers origin. No public listings confirmed Oct 6 — model launch posture (waitlist-gated early access).</div>
+          <div class="trend">→ inference from compute scale</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">Codex 28-day sprint implies focused engineering sprint team in focus mode. textGrain (EU AI Act watermarking) implies active policy/compliance engineering + academic research partnership (UPenn, Yale). ~670 open roles (confirmed September). No new job board data Oct 6.</div>
+          <div class="trend">→ inference from product outputs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORIZON TAB -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Rising challengers — Tier 2</h3>
+      <div class="section-desc">Notable competitive signals requiring sustained attention</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Elevated · US Open-Weight</div>
+          <h4><span class="company-name">Reflection AI (Beam)</span> — First US open-weight model at frontier scale. Apache 2.0. US-provenance narrative. Weights later October.</h4>
+          <p>Self-reported 80.9% SWE-Bench Verified (HN skeptical; TechCrunch: unverified). If independently confirmed when weights ship in Apache 2.0, this is the model US regulated enterprises have been waiting for: domestic provenance, permissive license, Nvidia-backed distribution. The investor/enterprise narrative is real even if benchmarks are challenged. Monitor for independent eval through October 20.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Standing · IPO Imminent</div>
+          <h4><span class="company-name">Anthropic</span> — S-1 public filing overdue. Arena sweep fuels roadshow. $11.5B revenue, $2T target valuation.</h4>
+          <p>No public S-1 on SEC EDGAR as of Oct 6. Mathematically overdue for mid-October roadshow. Arena #1–#4 sweep becomes IPO roadshow material. "Two customers = 25% revenue" risk factor is the active enterprise sales wedge — use before S-1 normalizes Anthropic's financial picture. Post-IPO: Anthropic becomes SEC-transparent with quarterly earnings pressure, institutionalizing its competitive posture.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Standing · Benchmark Challenger</div>
+          <h4><span class="company-name">Google (Gemini 4 Pro)</span> — October window, no confirmed date. SVG/3D modeling + paid API access are the inflection points.</h4>
+          <p>Checkpoint confirmed Oct 2. October 2026 remains the projection (no Google confirmation). When it ships: free Gemini Code Assist upgrade expected; SVG generation, 3D modeling, and interactive simulation capabilities for Code Assist; paid API access ends Argon's Fairwind-only restriction. GPT-5.5 retirement (Oct 14) and Gemini 4 Pro arrival are the two remaining near-term competitive inflection points for Codex.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Standing · Model Pending</div>
+          <h4><span class="company-name">SpaceXSI (Grok 4.8)</span> — Day 23 unshipped. "Preparing for release" per community. 1–2 week window.</h4>
+          <p>Kretschmann tweet confirms SpaceXAI is "preparing for release" but "could still take one or two weeks." If Grok 4.8's DeepSWE score exceeds Argon's 77.9%, it resets the frontier coding benchmark narrative. SpaceXSI rebrand documentation friction ongoing in enterprise contracts. Manifold Markets median: ~mid-October.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h3>Future tech &amp; governance — Tier 3</h3>
+      <div class="section-desc">Emerging technologies and policy developments</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4><span class="company-name">OpenAI / EU AI Act</span> — textGrain sets first commercial text watermarking precedent at consumer scale.</h4>
+          <p>OpenAI is the first major AI company to deploy EU AI Act text watermarks in production. The 92%→17% detection degradation under synonym substitution establishes the technical limits of text-only watermarking. Anthropic, Google, and xAI will face the same compliance requirement. OpenAI's public technical report (with UPenn + Yale) becomes the reference implementation regulators and competitors study. US market exclusion creates a regulatory arbitrage window EU lawmakers may address.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Cryptographic Risk</div>
+          <h4><span class="company-name">Cognition / Devin</span> — RSA-260 factorization. AI agents now capable of world-record cryptographic attacks. Key migration urgency elevated.</h4>
+          <p>The RSA-260 factorization at $400K and 4,900 GPU-days by a Devin-built implementation signals the falling cost curve for RSA factorization. RSA-3072+ recommended for new deployments; organizations with long-lived RSA-2048 keys should accelerate migration. AI agent-led cryptographic attacks are no longer hypothetical — they are documented at world-record scale.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Policy</div>
+          <h4>Trump "Super Intelligence Force" / SpaceXSI rebrand — Federal procurement terminology shift ongoing.</h4>
+          <p>Executive order directing federal agencies to use "super intelligence" instead of "artificial intelligence" in official communications. SpaceXSI rebrand is the first commercial entity to adopt the new terminology. Federal RFPs will begin using SI language — AI vendors need to update federal sales materials and government relations filings. Enterprise contract documentation friction continues across Cursor/SpaceXSI deployments.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Legal</div>
+          <h4>Antitrust Lawsuit (Buist v. Anthropic et al.) — Day 18. No new filings.</h4>
+          <p>No new case developments. Anthropic's public S-1 (expected imminently) will include this lawsuit in risk factors. No new case developments or judicial actions confirmed Oct 6.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent. All signals are sourced from publicly available information. Confidence scores reflect source corroboration (HIGH = 3+ independent sources or primary source; MEDIUM = 2 sources or single credible outlet; LOW = single source or inference), not strategic certainty. For internal use only — OpenAI Strategy &amp; Operations.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <a href="https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/">TechCrunch — Reflection AI Beam</a><br>
+      <a href="https://startupfortune.com/reflection-ai-unveils-beam-a-501-billion-parameter-open-model-to-rival-china/">Startup Fortune — Reflection Beam</a><br>
+      <a href="https://www.unite.ai/reflection-ai-unveils-beam-a-501b-parameter-open-weight-model/">unite.ai — Reflection Beam</a><br>
+      <a href="https://kingy.ai/news/reflection-beam-501b-open-weight-ai-guide/">Kingy AI — Beam specs &amp; benchmarks</a><br>
+      <a href="https://benchlm.ai/models/reflection-beam">benchlm.ai — Beam benchmark sources</a><br>
+      <a href="https://cryptobriefing.com/reflection-ai-beam-501b-open-model/">CryptoBriefing — Reflection Beam</a><br>
+      <a href="https://news.ycombinator.com/item?id=49969183">Hacker News — Beam discussion</a><br>
+      <a href="https://www.kucoin.com/news/flash/openai-announces-50-speed-boost-for-gpt-6-astra-and-6-1-sol-on-28-day-sprint-day-1">KuCoin News — Codex Sprint Day 1</a><br>
+      <a href="https://community.openai.com/t/day-1-of-28-days-of-quality-of-life-improvements-or-a-full-reset/1403525">OpenAI Developer Community — Sprint Day 1</a><br>
+      <a href="https://thenewstack.io/openai-codex-shipping-sprint/">The New Stack — Codex sprint community reaction</a><br>
+      <a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot — Claude Code October 2026</a><br>
+      <a href="https://www.gradually.ai/en/changelogs/claude-code/">gradually.ai — Claude Code Changelog</a><br>
+      <a href="https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/">TechCrunch — OpenAI EU text watermarks</a><br>
+      <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-adding-invisible-watermarks-to-chatgpt-and-codex-text-in-the-eu/">BleepingComputer — textGrain</a><br>
+      <a href="https://www.digitimes.com/news/a20261006VL202/openai-eu-chatgpt-worldwide-technology.html">Digitimes — OpenAI EU AI Act</a><br>
+      <a href="https://techbriefly.com/2026/10/06/openai-eu-ai-text-code-invisible-watermarks/">TechBriefly — textGrain watermarks</a><br>
+      <a href="https://cognition.com/blog/factoring-rsa-260">Cognition Blog — RSA-260</a><br>
+      <a href="https://postquantum.com/security-pqc/sa-260-factored-gpu-devin/">postquantum.com — RSA-260 with Devin</a><br>
+      <a href="https://quantumzeitgeist.com/cognition-gpu-lattice-siever-rsa-260/">quantumzeitgeist.com — GPU lattice siever</a><br>
+      <a href="https://blog.senthorus.ch/posts/rsa_260_factorization_cognition_explanation/">blog.senthorus.ch — RSA-260 technical explanation</a><br>
+      <a href="https://arena.ai/leaderboard/text/">Arena.ai — Text leaderboard</a><br>
+      <a href="https://www.swfte.com/ai/leaderboard">swfte.com — AI model leaderboard Oct 2026</a><br>
+      <a href="https://tokenmaxxing.com/openrouter-rankings">tokenmaxxing.com — OpenRouter rankings Oct 2026</a><br>
+      <a href="https://pro.stockalarm.io/blog/openrouter-llm-rankings-investor-analysis">stockalarm.io — OpenRouter analysis</a><br>
+      <a href="https://x.com/mark_k/status/2105340147168419981">Mark Kretschmann on X — Grok 4.8 status</a><br>
+      <a href="https://cellcog.ai/blog/grok-4-8-release-date/">cellcog.ai — Grok 4.8 release date</a><br>
+      <a href="https://www.sec.gov/cgi-bin/browse-edgar">SEC EDGAR — Anthropic public S-1 search</a><br>
+      <a href="https://www.businesstoday.in/technology/artificial-intelligence/story/openai-to-retire-gpt-5-5-from-chatgpt-work-and-codex-on-october-14-what-changes-to-expect-555782-2026-09-16">BusinessToday — GPT-5.5 retirement Oct 14</a><br>
+      <a href="https://www.geeky-gadgets.com/gemini-4-pro-release-date/">Geeky Gadgets — Gemini 4 Pro October 2026</a><br>
+      <a href="https://runtimewire.com/article/reflection-ai-beam-open-weight-model-2">runtimewire.com — Reflection Beam</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, event) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
