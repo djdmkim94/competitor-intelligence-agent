@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — Daily Update October 8, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F5F4F0; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 20px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-multi { background: #E8F5EC; color: #2D6A4F; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card ul { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 6px 0 8px 16px; }
+.signal-card ul li { margin-bottom: 4px; }
+.signal-card .confidence-badge { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.3px; padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; }
+.confidence-badge.conf-high { background: #E8F5EC; color: #2D6A4F; }
+.confidence-badge.conf-medium { background: #FEF9E7; color: #8B6914; }
+.confidence-badge.conf-low { background: #FEF2F2; color: #991B1B; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .new-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #DC2626; color: white; padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+.signal-card .standing-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; background: var(--surface-alt); color: var(--text-tertiary); padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 8px 0 12px; font-family: var(--font-mono); }
+.pricing-table th { text-align: left; padding: 6px 12px; background: var(--surface-alt); color: var(--text-secondary); font-weight: 600; border-bottom: 1px solid var(--border); }
+.pricing-table td { padding: 6px 12px; border-bottom: 1px solid var(--border-light); color: var(--text); }
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table tr.highlight td { background: rgba(29,29,27,0.03); font-weight: 600; }
+.pricing-table .new-row td { background: rgba(220,38,38,0.04); }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+.trend-up { font-weight: 600; }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence</div>
+    <h1>Daily Intelligence Update</h1>
+    <div class="meta">
+      <span>October 8, 2026</span>
+      <span class="dot"></span>
+      <span>Generated October 8, 2026</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend note vs. October 7:</strong> Five new confirmed signals this cycle. (1) <strong>Anthropic launched Claude Haiku 5.5</strong> — $0.10/$0.50/M tokens (under 100K), directly matching GPT-6 Luna pricing; 90% price cut vs Haiku 4.5; 1M context; AWS/GCP/Azure day-one. (2) <strong>Google announced "universal" Gemini workplace agent</strong> at Gemini at Work 2026 — persistent agents with own Gmail/calendar/Drive storage; runs Gemini AND Claude (OpenAI not listed). (3) <strong>OpenAI Codex Sprint Day 3</strong> — GPT-6 + Intelligent UI shipped for ChatGPT; Codex/Work users explicitly excluded. (4) <strong>OpenAI fired 3 safety researchers</strong> — Wang, Korbak, Balesni (WSJ). (5) <strong>Meta and Microsoft restricting employee Claude use</strong> — Microsoft spend cut &gt;1/3; Meta Claude Code users 60K → 30K; MetaCode 30K+ users. Standing update: Mistral Large 4 license now reported as CUSTOM (not Apache 2.0 as reported Oct 7 — discrepancy; treat as pending).
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Google</span> — "Universal" Gemini workplace agent launched at Gemini at Work 2026. Persistent agents with own Gmail/calendar/Drive identity. Runs Gemini and Claude — OpenAI not in the model stack.</div>
+        <div class="implication">Google's "colleague, not a tool" positioning is a structural shift. Simultaneous OpenAI safety researcher firings create a brand-risk cycle entering the enterprise procurement week.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">OpenAI / Anthropic</span> — Sprint Day 3 delivered GPT-6 + Intelligent UI to ChatGPT — but Codex/Work users are explicitly excluded. Haiku 5.5 at $0.10/$0.50 matches GPT-6 Luna pricing with 1M context. GPT-5.5 retiring T-6 days.</div>
+        <div class="implication">Three-day sprint pattern: consumer ChatGPT received a dramatic UX upgrade while Codex waits. Haiku 5.5 eliminates the cost wedge OpenAI BD used for Luna enterprise conversations.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic / Google</span> — Haiku 5.5 price-matches GPT-6 Luna at $0.10/$0.50 (under 100K tokens). Google's universal workplace agent runs Claude, not OpenAI — a direct enterprise API revenue gap in one of the world's largest cloud distribution channels.</div>
+        <div class="implication">Two tier-1 competitors made major enterprise AI moves on the same day. Mistral Large 4 license now reported as custom (not Apache 2.0) — clarification pending before Oct 27 weight release.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Anthropic</span> — Haiku 5.5 launched at $0.10/$0.50 per million tokens (under 100K) — exactly matching GPT-6 Luna. 90% cheaper than Haiku 4.5. 1M context. Day-one availability on AWS, GCP, and Azure. OSWorld benchmark: 72.4% (vs 15.7% for Haiku 4.5). Batch API halves to $0.05/$0.25. Timed ~3 weeks before the likely Anthropic IPO roadshow.</span>
+        <span class="tag tag-api">API &amp; Models</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Google</span> — "Universal" Gemini workplace agent unveiled at Gemini at Work 2026. Persistent agents with own email address, calendar, and Drive storage — a digital employee, not a chatbot. Framing: "objectives, not instructions." Supported model families: Gemini and Claude. OpenAI is not listed as a supported model family. Gems sunset November 2026 (enterprise: March 2027).</span>
+        <span class="tag tag-multi">ChatGPT + API</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">OpenAI</span> — Three safety researchers fired: Jasmine Wang, Tomek Korbak, Mikita Balesni (WSJ). A fourth, David Robinson, reportedly left. Alleged: shared material with an outside AI safety group. Second brand-risk cycle in three days (Oct 6: internal culture HN story, 486 pts). Coincides with GPT-6 Astra safety hold period.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', event)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', event)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', event)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('horizon', event)">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their products — Oct 8, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google</span> — Gemini at Work 2026: "Objectives, not instructions" <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>At the Gemini at Work 2026 event, Google Cloud CEO Thomas Kurian unveiled a "universal agent for work" — a persistent AI agent with its own Gmail address, calendar, and Google Drive storage. The message: this is a team member, not a chatbot. "Objectives, not instructions" is written for CMOs and CHROs, not developers — a clear shift from technical claims ("1M context window") to outcome-driven positioning ("it handles the whole project"). Google Gems is replaced by "Skills"; personal Gems sunset November 2026.</p>
+        <ul>
+          <li>The "colleague" framing is a higher-value positioning than ChatGPT's current "productivity" message — OpenAI's PMMs should prepare a direct counter-narrative.</li>
+          <li>The agent supports Gemini and Claude model families (OpenAI not listed) — co-branding Anthropic in the same enterprise channel where OpenAI competes for API revenue is a PMM exposure point requiring talking points.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace">Bloomberg</a> · <a href="https://9to5google.com/2026/10/08/gemini-agent-google-cloud/">9to5Google</a> · <a href="https://venturebeat.com/orchestration/google-cloud-unveils-persistent-gemini-agents-for-long-running-tasks-and-they-get-their-own-gmail-calendar-and-drive-storage">VentureBeat</a> · <a href="https://cloud.google.com/blog/products/ai-machine-learning/welcome-to-gemini-at-work-2026">Google Cloud Blog</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Haiku 5.5: "90% cheaper" headline dominates pricing cycle <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>Anthropic's Haiku 5.5 messaging is a dual signal: "fastest, most efficient in the Claude 5.5 family" positions it for cost-sensitive production workloads; "90% cheaper than Haiku 4.5" is a quantified claim that will dominate any head-to-head cost comparison with GPT-6 Luna in the next analyst cycle. Sonnet 5.5 caching charge reduction (launched same day) compounds the cost narrative.</p>
+        <ul>
+          <li>The $0.10/$0.50 price match to GPT-6 Luna eliminates the pricing wedge OpenAI BD was using for Luna conversations — PMMs need a new differentiator narrative.</li>
+          <li>Counter-narrative opportunity: Haiku 5.5 hits a 5× billing cliff at 100K tokens; long agentic sessions cross this threshold, making Luna's flat pricing structurally cheaper for enterprise workloads.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://venturebeat.com/technology/anthropic-launches-claude-haiku-5-5-with-90-api-price-reduction-matching-gpt-6-luna">VentureBeat</a> · <a href="https://www.androidauthority.com/claude-haiku-5-5-launched-3720550/">Android Authority</a> · <a href="https://aws.amazon.com/blogs/machine-learning/introducing-claude-haiku-5-5-on-aws/">AWS ML Blog</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI</span> — Safety researcher firings land as HN top story <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH (firings confirmed) · MEDIUM (brand impact)</span>
+        <p>WSJ reported that OpenAI fired Jasmine Wang, Tomek Korbak, and Mikita Balesni for allegedly sharing material with an outside AI safety group. OpenAI's characterization: "violated our policies on accessing and handling sensitive company information." This is the second HN top story about OpenAI's internal culture in three days (Oct 6: resignation letter with 486 pts/808 comments).</p>
+        <ul>
+          <li>The "leaking to an outside AI safety group" framing cuts two ways — could be read as employees who believed safety risks weren't being addressed, which is the more damaging narrative if the outside group goes public.</li>
+          <li>For enterprise procurement: two consecutive days of OpenAI internal culture stories on HN reach enterprise decision-makers via their weekly AI digest reads; the narrative cycle is compounding.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://www.foxbusiness.com/technology/openai-fires-3-safety-researchers-accused-sharing-confidential-company-information-report">Fox Business</a> · <a href="https://gizmodo.com/openai-ousts-three-safety-researchers-for-allegedly-mishandling-sensitive-information-2000820515">Gizmodo</a> · <a href="https://www.androidheadlines.com/2026/10/openai-fires-safety-researchers-data-leaks.html">AndroidHeadlines</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Meta / Microsoft</span> — Internal Claude restrictions confirmed <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>The Information reported (Oct 5, confirmed through multiple outlets through Oct 8): Microsoft cut internal per-employee AI spending from $100K to $10K annual limits, reducing total internal Anthropic forecast by more than one-third. Meta's internal Claude Code usage dropped from ~60,000 to ~30,000 employees; MetaCode (30K+ users) and Muse Code (6K+ testers) are filling the gap.</p>
+        <ul>
+          <li>Both cuts are framed as cost controls and internal consolidation — NOT dissatisfaction with Claude quality; enterprise customer spending on Anthropic API continues to grow.</li>
+          <li>For Anthropic's IPO narrative: the "two customers = 25% revenue" concentration risk factor becomes more pointed if Meta and Microsoft simultaneously reduce internal usage during the roadshow — investor Q&amp;A will probe this.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://www.kucoin.com/news/flash/meta-and-microsoft-cut-employee-use-of-anthropic-s-claude-amid-cost-controls">KuCoin</a> · <a href="https://finance.yahoo.com/technology/ai/articles/meta-microsoft-reportedly-trim-anthropic-230612967.html">Yahoo Finance</a> · <a href="https://aiweekly.co/alerts/meta-microsoft-scale-back-staff-use-of-anthropics-claude">aiweekly.co</a> · <a href="https://cybersecuritynews.com/meta-microsoft-claude-ai/">Cybersecurity News</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">HN and developer community reactions — Oct 8, 2026</div>
+      <div class="signal-card">
+        <h4><span class="company-name">Hacker News</span> — Top stories Oct 8: Meta/Microsoft Claude cuts, Sprint Day 3, Haiku 5.5, safety firings <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-medium">Confidence: MEDIUM</span>
+        <p>OrangeBot HN digest (Oct 8) confirmed top-tier stories: Meta/Microsoft Claude restrictions, Docker Agent (top 4), GPT-6 + Intelligent UI (position 5), Claude Haiku 5.5 (position 6), safety researcher firings. Developer sentiment synthesis:</p>
+        <ul>
+          <li>Meta/Microsoft Claude cuts are framed in developer community as "even big tech prefers building internal tools" — not a quality critique; framing does not damage Claude Code developer confidence.</li>
+          <li>GPT-6 Intelligent UI receiving positive consumer coverage with Codex exclusion caveat: "ChatGPT just became an app platform — but Codex devs still waiting." Haiku 5.5 discussion: "Anthropic is now GPT-6 Luna pricing with 1M context."</li>
+        </ul>
+        <div class="source">Source: <a href="https://orangebot.ai/hacker-news-top-stories">OrangeBot HN digest, Oct 8, 2026</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">654 open roles (Oct 5–6 data). S-1 still not on EDGAR as of Oct 8. Haiku 5.5 + Sonnet caching launches today consistent with pre-IPO product velocity story. No new marketing-specific postings confirmed this cycle.</div>
+          <div class="trend">→ IPO quiet-period posture; Oct 22 S-1 filing deadline</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">Gemini at Work 2026 event implies significant enterprise agent engineering investment. No specific new marketing/growth job listings confirmed for Oct 8.</div>
+          <div class="trend">→ inference from product output only</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches &amp; Codex sprint status</h3>
+      <div class="section-desc">New capabilities from coding tools and sprint day 3 update — Oct 8, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">OpenAI</span> — Codex Sprint Day 3: GPT-6 + Intelligent UI — Codex/Work users NOT included <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>Day 3 of the 28-day Codex sprint: (a) GPT-6 Sol for Plus/Pro/Business/Enterprise ChatGPT users; GPT-6 Luna for Free/Go; (b) Intelligent UI — ChatGPT responses now render as interactive graphics, buttons, forms, charts, and diagrams via a streamable component library. AlphaSignal: "turns replies into interactive apps for 1.2B users." Critical caveat per official forum post: the models powering Codex and Work are NOT changing with this release; Intelligent UI is a ChatGPT consumer feature only.</p>
+        <ul>
+          <li>Sprint delivery to date: Day 1 (+50% speed), Day 2 (free auto-review), Day 3 (ChatGPT upgrade — Codex explicitly excluded). Three days in, the sprint has primarily improved ChatGPT — the Codex narrative debt is now three days deep; 25 days remain.</li>
+          <li>The Intelligent UI is technically significant (ChatGPT as an app platform) but represents a platform upgrade for consumers, not a coding tool improvement — PMs should flag this pattern to leadership before it becomes "the sprint is for ChatGPT, not Codex."</li>
+        </ul>
+        <div class="source">Sources: <a href="https://community.openai.com/t/gpt-6-and-intelligent-ui-for-everyone-day-3-of-28-days-of-quality-of-life-improvements-and-or-a-full-reset/1403525">OpenAI Dev Community</a> · <a href="https://www.ghacks.net/2026/10/08/openai-brings-gpt-6-to-all-chatgpt-users-adding-intelligent-ui-with-interactive-answers/">gHacks</a> · <a href="https://www.macrumors.com/2026/10/07/chatgpt-intelligent-ui/">MacRumors</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Haiku 5.5: Price-matches GPT-6 Luna. 72.4% OSWorld. 1M context. <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>Haiku 5.5 enters the coding tools market as the cheapest frontier-grade model at this context window from a major closed-source lab. $0.10/$0.50 per million tokens (under 100K) = GPT-6 Luna pricing. OSWorld 72.4% (vs 15.7% for Haiku 4.5) suggests meaningful capability for agentic coding sub-tasks, not just summarization. Available day-one on AWS Bedrock, Google Cloud Vertex AI, and Microsoft Azure AI Foundry.</p>
+        <ul>
+          <li>Haiku 5.5 is the natural subagent tier model for Codex workflow orchestration — enterprise customers comparing Codex vs. Claude Code subagent costs now see near-identical pricing ($0.10 Haiku 5.5 = $0.10 GPT-6 Luna) with Anthropic's 1M context.</li>
+          <li>The 100K billing cliff (pricing jumps 5×) is the structural differentiator — enterprise Codex workflows with large multi-file context may favor Luna's flat pricing over Haiku 5.5's variable structure. BD should model this for current accounts.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://venturebeat.com/technology/anthropic-launches-claude-haiku-5-5-with-90-api-price-reduction-matching-gpt-6-luna">VentureBeat</a> · <a href="https://aws.amazon.com/blogs/machine-learning/introducing-claude-haiku-5-5-on-aws/">AWS ML Blog</a> · <a href="https://www.datacamp.com/blog/claude-haiku-5-5">DataCamp</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">GitHub Copilot</span> — Oct 19 deprecation wave: T-11 days <span class="standing-badge">Standing</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>No change from Oct 7. The October 19 deprecation wave removes GPT-5.5, GPT-5.4, GPT-5.4 mini, GPT-5 mini, and Grok 4.5 from the Copilot model picker. Recommended replacements: GPT-5.6 Sol/Luna, Gemini 3.8 Flash, Grok 4.6. Sequence: GPT-5.5 retires from ChatGPT/Work/Codex Oct 14 (T-6), then Copilot model picker removes it Oct 19 — two retirement events in six days.</p>
+        <div class="source">Source: GitHub Changelog (confirmed prior cycle)</div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Cognition</span> — Devin memory/dreaming (Oct 5) — standing, no new Oct 8 signals <span class="standing-badge">Standing</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH (feature confirmed)</span>
+        <p>Cognition's cross-session memory and daily async indexing ("dreaming") feature announced Oct 5 remains unmatched by a directly equivalent feature in Codex or Claude Code. No new Cognition signals today.</p>
+        <div class="source">Source: Prior cycle (confirmed Oct 5)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — Oct 8, 2026</h3>
+      <div class="section-desc">Professional developer adoption and key developments</div>
+      <table class="pricing-table">
+        <tr><th>Tool</th><th>Adoption Signal</th><th>Key Development — Oct 8</th></tr>
+        <tr><td>Claude Code (Anthropic)</td><td>39% global / 47% US — #1 (JetBrains)</td><td>Haiku 5.5 launched — subagent cost compression; no Claude Code version update confirmed</td></tr>
+        <tr><td>Cursor (SpaceXSI)</td><td>64% Fortune 500 / $2B ARR</td><td>No new signals; Grok 4.8 Day 25 unshipped</td></tr>
+        <tr><td>Devin Desktop (Cognition)</td><td>$48B valuation / $900M+ ARR</td><td>Memory/dreaming (Oct 5) standing; no new Oct 8 signal</td></tr>
+        <tr><td>GitHub Copilot (Microsoft)</td><td>21% (↓ from 29% Jan 2026)</td><td>Oct 19 deprecation wave T-11; Haiku 5.5 now available as Copilot-adjacent API option</td></tr>
+        <tr class="highlight"><td>Codex (OpenAI)</td><td>65% awareness</td><td>Sprint Day 3: GPT-6 + Intelligent UI shipped — Codex/Work EXCLUDED; GPT-5.5 T-6</td></tr>
+        <tr><td>Gemini Code Assist (Google)</td><td>Growing (free individual)</td><td>Workplace agent uses Gemini + Claude; no Code Assist update; Argon Fairwind-only</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — engineering &amp; product</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Cursor (SpaceXSI)</div>
+          <div class="detail">200-person APAC hiring plan standing (from Oct 7). $808K–$1.1M+ SWE compensation range. No new Oct 8 signals.</div>
+          <div class="trend">→ standing from Oct 7</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">Persistent Gemini workplace agent architecture (own email/calendar/Drive, cross-device session resume, sub-agent orchestration) implies significant Google Cloud enterprise AI engineering investment. No specific job listings confirmed Oct 8.</div>
+          <div class="trend">→ inference from product scope</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases &amp; pricing</h3>
+      <div class="section-desc">New model launches, capability updates, and pricing changes — Oct 8, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Anthropic</span> — Claude Haiku 5.5: Direct price-match to GPT-6 Luna. All hyperscalers day one. <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH</span>
+        <p>Haiku 5.5 pricing confirmed across multiple sources:</p>
+        <table class="pricing-table">
+          <tr><th>Model</th><th>Input ($/1M)</th><th>Output ($/1M)</th><th>Context</th><th>Note</th></tr>
+          <tr class="new-row"><td>Claude Haiku 5.5</td><td>$0.10 (&lt;100K)</td><td>$0.50 (&lt;100K)</td><td>1M</td><td>Matches GPT-6 Luna exactly</td></tr>
+          <tr class="new-row"><td>Claude Haiku 5.5</td><td>$0.50 (&gt;100K)</td><td>$2.50 (&gt;100K)</td><td>—</td><td>5× billing cliff for long agentic sessions</td></tr>
+          <tr><td>GPT-6 Luna</td><td>$0.10</td><td>$0.50</td><td>1M</td><td>NOW MATCHED by Haiku 5.5</td></tr>
+          <tr><td>Claude Sonnet 5.5</td><td>$2/$10</td><td>(PERMANENT)</td><td>1M</td><td>Caching charges reduced Oct 8</td></tr>
+          <tr><td>Claude Opus 5.5</td><td>$4/$20</td><td>—</td><td>1M</td><td>SWE-Bench #1 (97.00%)</td></tr>
+        </table>
+        <ul>
+          <li>At $0.10/$0.50 (under 100K), Haiku 5.5 has eliminated the cost gap between the two budget-tier models — the differentiator narrows to performance, reliability, and enterprise ecosystem depth.</li>
+          <li>Day-one hyperscaler availability (AWS/GCP/Azure) means enterprise customers already procuring through these channels can switch to Haiku 5.5 without new contracts — low-friction migration path for any account currently on GPT-6 Luna.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://venturebeat.com/technology/anthropic-launches-claude-haiku-5-5-with-90-api-price-reduction-matching-gpt-6-luna">VentureBeat</a> · <a href="https://www.androidauthority.com/claude-haiku-5-5-launched-3720550/">Android Authority</a> · <a href="https://aws.amazon.com/blogs/machine-learning/introducing-claude-haiku-5-5-on-aws/">AWS ML Blog</a> · <a href="https://finance.yahoo.com/technology/article/anthropic-reveals-haiku-55-model-as-ai-pricing-war-intensifies-180000423.html">Yahoo Finance</a> · <a href="https://www.datacamp.com/blog/claude-haiku-5-5">DataCamp</a></div>
+      </div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Mistral AI</span> — Large 4 license: CUSTOM, not Apache 2.0 (discrepancy from Oct 7) <span class="new-badge">Updated</span></h4>
+        <span class="confidence-badge conf-medium">Confidence: HIGH (Oct 27 date) · MEDIUM (license — conflicting sources)</span>
+        <p>New source reporting (letsdatascience.com, pasqualepillitteri.it) indicates Mistral plans to release Mistral Large 4 weights under a CUSTOM license rather than Apache 2.0. The Oct 7 report cited Apache 2.0. This is material: Apache 2.0 allows commercial use and redistribution without restriction; a custom license may impose deployment, modification, or redistribution limits. Oct 27 weight release date holding (forklog.com). Context window discrepancy: one source says 512K, another 1M.</p>
+        <ul>
+          <li>If license is custom/restrictive, Mistral Large 4's competitive threat to OpenAI API revenue from enterprise self-hosting is meaningfully reduced — enterprise self-hosters needing commercial deployment rights will need to check terms before migration.</li>
+          <li>Correction to Oct 7 report: treat Mistral Large 4 license as custom/pending until official license text is published on Oct 27.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://letsdatascience.com/news/mistral-debuts-large-4-open-weight-model-preview-cbf9e0b5">letsdatascience.com</a> · <a href="https://forklog.com/en/?p=104850">forklog.com</a> · <a href="https://thenewstack.io/?p=22839432">The New Stack</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Partnership &amp; distribution signals</h3>
+      <div class="section-desc">Ecosystem integrations and enterprise channel moves — Oct 8, 2026</div>
+
+      <div class="signal-card">
+        <h4><span class="company-name">Google</span> — Universal Gemini workplace agent runs Claude, not OpenAI — enterprise API revenue gap <span class="new-badge">New</span></h4>
+        <span class="confidence-badge conf-high">Confidence: HIGH (announcement) · MEDIUM (API routing volumes)</span>
+        <p>Google Cloud's universal workplace agent explicitly lists Gemini and Claude as its supported model families. OpenAI models are not mentioned. This means Google's enterprise agent channel is routing production API traffic to Anthropic, not OpenAI — a material enterprise API revenue gap in one of the world's largest cloud distribution channels (3B+ Workspace users).</p>
+        <ul>
+          <li>Google's willingness to include Claude (not OpenAI) in its enterprise agent product suggests an Anthropic–Google partnership arrangement that effectively pre-empts OpenAI from competing for Google Cloud enterprise agent workloads at the model level.</li>
+          <li>For OpenAI BD: begin enterprise conversations emphasizing Codex integration, GPT-6 Sol's Arena position (#2, 1521 Elo), and OpenAI API feature depth (fine-tuning, function calling, Realtime API) as differentiators that Claude-in-Google-agent cannot offer.</li>
+        </ul>
+        <div class="source">Sources: <a href="https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace">Bloomberg</a> · <a href="https://cloud.google.com/blog/products/ai-machine-learning/welcome-to-gemini-at-work-2026">Google Cloud Blog</a> · <a href="https://www.constellationr.com/insights/news/google-cloud-launches-gemini-agent-work-across-enterprise-systems">Constellation Research</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Leaderboard update — Oct 8, 2026</h3>
+      <div class="section-desc">Arena, OpenRouter, SWE-Bench snapshot</div>
+      <table class="pricing-table">
+        <tr><th>Provider</th><th>Model</th><th>Input/Output ($/1M)</th><th>Context</th><th>Status</th></tr>
+        <tr><td>OpenAI</td><td>GPT-6 Astra</td><td>$10/$50</td><td>1.05M</td><td>Safety hold continuing</td></tr>
+        <tr><td>OpenAI</td><td>GPT-6.1 Sol</td><td>$2/$10</td><td>1.05M</td><td>Sprint Day 3: Intelligent UI (ChatGPT only); Codex excluded</td></tr>
+        <tr class="highlight"><td>OpenAI</td><td>GPT-6 Luna</td><td>$0.10/$0.50</td><td>1M</td><td>NOW MATCHED by Haiku 5.5</td></tr>
+        <tr><td>OpenAI</td><td>GPT-5.5</td><td>legacy</td><td>legacy</td><td>Retiring Oct 14 (T-6 days)</td></tr>
+        <tr class="new-row"><td>Anthropic</td><td>Claude Haiku 5.5</td><td>$0.10/$0.50 (&lt;100K) / $0.50/$2.50 (&gt;100K)</td><td>1M</td><td>NEW — Matches GPT-6 Luna; 90% cheaper than Haiku 4.5</td></tr>
+        <tr><td>Anthropic</td><td>Claude Opus 5.5</td><td>$4/$20</td><td>1M</td><td>Arena ~#4 (1503.7); SWE-Bench #1 (97.00%); IPO S-1 pending</td></tr>
+        <tr><td>Anthropic</td><td>Claude Sonnet 5.5</td><td>$2/$10</td><td>1M</td><td>Caching charges reduced Oct 8</td></tr>
+        <tr><td>Google</td><td>Gemini 4 Argon</td><td>$2/$10 intro / $4/$20 std</td><td>1M output</td><td>#1 Arena (1525 Elo); Fairwind-only; workplace agent uses Gemini + Claude</td></tr>
+        <tr><td>SpaceXSI</td><td>Grok 4.7</td><td>$2/$6</td><td>500K</td><td>Grok 4.8 Day 25 unshipped</td></tr>
+        <tr><td>Mistral AI</td><td>Large 4</td><td>TBD</td><td>512K–1M (conflicting)</td><td>Weights Oct 27; license: CUSTOM (not Apache 2.0 — updated)</td></tr>
+        <tr><td>Space Bunny Alpha</td><td>Unknown (likely MiniMax)</td><td>$0 (preview)</td><td>1M</td><td>#1 OpenRouter by token volume; identity unrevealed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Horizon Watch Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Rising challengers</h3>
+      <div class="section-desc">Notable signals from Tier 2 competitors requiring leadership radar</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · IPO Watch</div>
+          <h4><span class="company-name">Anthropic</span> — S-1 must appear on EDGAR by Oct 22–24 for Nov 9 roadshow</h4>
+          <p>Haiku 5.5 + Sonnet caching launches today strengthen the pre-IPO product velocity narrative alongside: Claude for Startups (Oct 6), Cyber Verification Program (Oct 6–7), Claude Code v2.1.292 (Oct 6). EDGAR remains silent as of Oct 8 (Forkast, Oct 4 analysis confirmed). Oct 22–24 is the last S-1 filing window for a Nov 9 roadshow start. When filed: Meta/Microsoft internal usage cuts will appear as a risk factor; the Claude diary → law enforcement event will appear in risk factors; Haiku 5.5 launch metrics will bolster the growth narrative.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · EU · Oct 27</div>
+          <h4><span class="company-name">Mistral AI</span> — Large 4 weights Oct 27 — license clarification the critical pending update</h4>
+          <p>Mistral Large 4 (1.05T params, 49B active MoE, 1.6B vision encoder) weight release target October 27. License now reported as custom rather than Apache 2.0 — enterprise self-hosters cannot assess deployment rights until the license text is published. Context window conflict: 512K vs. 1M in competing sources. The "strongest open-weight model outside China" claim remains unverified; independent evaluation cannot begin until weights ship.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · China · Oct 27?</div>
+          <h4><span class="company-name">Moonshot AI (Kimi K3.1)</span> — Rumored before end of October. No official announcement.</h4>
+          <p>No new signals Oct 8. Sep 19 leak: three reasoning intensity levels (Low/High/Max), 1M context, Agent mode, Swarm multi-agent, computer use focus. Expected before end of October — potentially simultaneous with Mistral Large 4 weights (Oct 27). The three-way open-weight comparison window (Mistral Large 4 vs. Kimi K3.1 vs. Reflection Beam) in late October is the critical developer sentiment event for Q4 open-weight API competitive positioning.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · New Entrant</div>
+          <h4><span class="company-name">Reflection AI (Beam)</span> — HN skepticism standing; weights "later October" unconfirmed</h4>
+          <p>No updates Oct 8. HN skepticism thread (541 pts, "Reflection's Flop?" narrative) remains active. Benchmarks are self-reported and unverified; the HN community narrative has degraded from cautious optimism to active skepticism. License may be custom (same discrepancy as Mistral Large 4). Possible three-way late-October comparison with Mistral and Kimi weights.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Emerging trends and strategic governance signals</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4><span class="company-name">OpenAI</span> — Safety researcher firings during GPT-6 Astra safety hold period</h4>
+          <p>The timing of the safety researcher firings (Wang, Korbak, Balesni) coincides with the ongoing GPT-6 Astra safety hold — OpenAI is resolving its most significant safety regression event while simultaneously reducing safety research team capacity by at least four members. Whether the researchers were involved in Astra safety evaluation has not been confirmed. This event will be cited in EU AI Act enforcement context and NYC Council AI agent safety testimony follow-up (Oct 5 testimony).</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Infrastructure</div>
+          <h4><span class="company-name">Google</span> — Constellation Energy nuclear deal (3,590 MW) — structural compute advantage</h4>
+          <p>Google's 3,590 MW Constellation Energy nuclear commitment (11 reactors) remains the largest non-fossil AI compute infrastructure commitment confirmed in 2026. No new updates Oct 8. The universal workplace agent launched today is the first product that directly demonstrates the long-term return on this compute infrastructure bet.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Mystery</div>
+          <h4><span class="company-name">Space Bunny Alpha</span> — #1 OpenRouter, identity still unknown (MiniMax likely)</h4>
+          <p>Space Bunny Alpha remains #1 on OpenRouter by token volume, still free, still anonymous (appeared Sep 23). Three tokenizer tests point to MiniMax M3 / M3.1-Flash-Preview. If the pattern from prior stealth models (Ox Alpha = GLM-5.3-Flash) holds, identity reveal coincides with a pricing transition. No reveal as of Oct 8.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4><span class="company-name">US Government</span> — "Super Intelligence Force" 120-day mandate active. T-~110 days.</h4>
+          <p>No new executive orders or agency guidance Oct 8. 120-day mandate implies a February 2027 deliverable. SpaceXSI rename still not executed on official accounts/domains. Impact timeline for OpenAI enterprise posture: Q1 2027.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>Generated by the OpenAI Competitive Intelligence Agent v1.0 · October 8, 2026 · All signals sourced from publicly available information · Confidence scores reflect source corroboration, not strategic certainty · Internal use only · Prepared for OpenAI Strategy &amp; Operations</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <strong>Anthropic Claude Haiku 5.5</strong><br>
+      <a href="https://venturebeat.com/technology/anthropic-launches-claude-haiku-5-5-with-90-api-price-reduction-matching-gpt-6-luna">venturebeat.com — Anthropic launches Claude Haiku 5.5 with 90% API price reduction</a><br>
+      <a href="https://www.androidauthority.com/claude-haiku-5-5-launched-3720550/">androidauthority.com — Claude Haiku 5.5: fastest, most affordable Anthropic model</a><br>
+      <a href="https://aws.amazon.com/blogs/machine-learning/introducing-claude-haiku-5-5-on-aws/">aws.amazon.com — Introducing Claude Haiku 5.5 on AWS</a><br>
+      <a href="https://finance.yahoo.com/technology/article/anthropic-reveals-haiku-55-model-as-ai-pricing-war-intensifies-180000423.html">finance.yahoo.com — Anthropic reveals Haiku 5.5 as AI pricing war intensifies</a><br>
+      <a href="https://www.datacamp.com/blog/claude-haiku-5-5">datacamp.com — Claude Haiku 5.5: Features, Benchmarks, and Pricing</a><br>
+      <a href="https://www.theneuron.ai/news/haiku-5-5-claude-most-practical-launch/">theneuron.ai — Claude Haiku 5.5: Pricing, Benchmarks and Agent Costs</a><br>
+      <br>
+      <strong>Google Universal Gemini Workplace Agent</strong><br>
+      <a href="https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace">bloomberg.com — Google Launches 'Universal' Gemini AI Agent for Workplace</a><br>
+      <a href="https://9to5google.com/2026/10/08/gemini-agent-google-cloud/">9to5google.com — Google Cloud announces 'Gemini agent' as 'universal agent for work'</a><br>
+      <a href="https://venturebeat.com/orchestration/google-cloud-unveils-persistent-gemini-agents-for-long-running-tasks-and-they-get-their-own-gmail-calendar-and-drive-storage">venturebeat.com — Google Cloud unveils persistent Gemini Agents</a><br>
+      <a href="https://cloud.google.com/blog/products/ai-machine-learning/welcome-to-gemini-at-work-2026">cloud.google.com — Gemini at Work 2026: Introducing Gemini agent</a><br>
+      <a href="https://www.constellationr.com/insights/news/google-cloud-launches-gemini-agent-work-across-enterprise-systems">constellationr.com — Google Cloud launches Gemini agent</a><br>
+      <br>
+      <strong>OpenAI Codex Sprint Day 3 / GPT-6 + Intelligent UI</strong><br>
+      <a href="https://community.openai.com/t/gpt-6-and-intelligent-ui-for-everyone-day-3-of-28-days-of-quality-of-life-improvements-and-or-a-full-reset/1403525">community.openai.com — Day 3: GPT-6 and Intelligent UI for everyone</a><br>
+      <a href="https://www.ghacks.net/2026/10/08/openai-brings-gpt-6-to-all-chatgpt-users-adding-intelligent-ui-with-interactive-answers/">ghacks.net — OpenAI Brings GPT-6 to All ChatGPT Users</a><br>
+      <a href="https://www.macrumors.com/2026/10/07/chatgpt-intelligent-ui/">macrumors.com — ChatGPT Gets GPT-6 and New Intelligent UI</a><br>
+      <br>
+      <strong>OpenAI Safety Researcher Firings</strong><br>
+      <a href="https://www.foxbusiness.com/technology/openai-fires-3-safety-researchers-accused-sharing-confidential-company-information-report">foxbusiness.com — OpenAI fires safety team members over confidential information leak</a><br>
+      <a href="https://gizmodo.com/openai-ousts-three-safety-researchers-for-allegedly-mishandling-sensitive-information-2000820515">gizmodo.com — OpenAI Ousts Three Safety Researchers</a><br>
+      <a href="https://www.androidheadlines.com/2026/10/openai-fires-safety-researchers-data-leaks.html">androidheadlines.com — OpenAI Fires Three Safety Researchers for Confidential Leaks</a><br>
+      <br>
+      <strong>Meta and Microsoft Restricting Claude Use</strong><br>
+      <a href="https://www.kucoin.com/news/flash/meta-and-microsoft-cut-employee-use-of-anthropic-s-claude-amid-cost-controls">kucoin.com — Meta and Microsoft Restrict Employee Use of Anthropic's Claude</a><br>
+      <a href="https://finance.yahoo.com/technology/ai/articles/meta-microsoft-reportedly-trim-anthropic-230612967.html">finance.yahoo.com — Meta And Microsoft Reportedly Trim Anthropic Reliance</a><br>
+      <a href="https://aiweekly.co/alerts/meta-microsoft-scale-back-staff-use-of-anthropics-claude">aiweekly.co — Meta, Microsoft Scale Back Staff Use of Claude</a><br>
+      <a href="https://cybersecuritynews.com/meta-microsoft-claude-ai/">cybersecuritynews.com — Meta and Microsoft are Actively Cutting Employee Use of Claude AI</a><br>
+      <br>
+      <strong>Mistral Large 4 License Clarification</strong><br>
+      <a href="https://letsdatascience.com/news/mistral-debuts-large-4-open-weight-model-preview-cbf9e0b5">letsdatascience.com — Mistral Opens Public Preview of Large 4</a><br>
+      <a href="https://forklog.com/en/?p=104850">forklog.com — Mistral Large 4 weights release Oct 27</a><br>
+      <br>
+      <strong>Anthropic IPO / Space Bunny Alpha / Sentiment</strong><br>
+      <a href="https://forkast.news/?p=131253">forkast.news — Anthropic IPO slipped to November</a><br>
+      <a href="https://cellcog.ai/blog/what-is-space-bunny-alpha/">cellcog.ai — Space Bunny Alpha: The Stealth Model and the MiniMax Clues</a><br>
+      <a href="https://orangebot.ai/hacker-news-top-stories">orangebot.ai — Hacker News Top Stories October 8, 2026</a><br>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, event) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
