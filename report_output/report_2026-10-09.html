@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — Daily Alert, October 9, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px 20px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card .badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-bottom: 8px; font-family: var(--font-mono); }
+.badge-new { background: rgba(220,38,38,0.08); color: #DC2626; }
+.badge-standing { background: rgba(107,114,128,0.1); color: #6B7280; }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card ul { padding-left: 16px; margin-bottom: 8px; }
+.signal-card ul li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px; }
+.signal-card .confidence { font-size: 12px; font-family: var(--font-mono); color: var(--text-tertiary); margin-top: 8px; }
+.confidence-high { color: #16A34A; font-weight: 600; }
+.confidence-medium { color: #D97706; font-weight: 600; }
+.confidence-low { color: #9CA3AF; font-weight: 600; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+
+.leaderboard-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+.leaderboard-table th { text-align: left; padding: 8px 12px; background: var(--surface-alt); color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.leaderboard-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-light); vertical-align: top; line-height: 1.4; }
+.leaderboard-table tr:last-child td { border-bottom: none; }
+.leaderboard-table tr.highlight { background: rgba(29,29,27,0.03); }
+.leaderboard-table tr.highlight td { font-weight: 600; }
+.leaderboard-table .new-tag { font-size: 10px; font-weight: 700; background: rgba(220,38,38,0.1); color: #DC2626; padding: 1px 6px; border-radius: 3px; margin-left: 6px; font-family: var(--font-mono); }
+.leaderboard-table .retiring-tag { font-size: 10px; font-weight: 700; background: rgba(107,114,128,0.1); color: #6B7280; padding: 1px 6px; border-radius: 3px; margin-left: 6px; font-family: var(--font-mono); }
+
+.market-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+.market-table th { text-align: left; padding: 8px 12px; background: var(--surface-alt); color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.market-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-light); vertical-align: top; line-height: 1.4; font-size: 12px; }
+.market-table tr:last-child td { border-bottom: none; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .conf { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-tertiary); }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.horizon-card .conf { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-tertiary); }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 16px; font-size: 12px; color: var(--text-secondary); font-family: var(--font-mono); line-height: 2; }
+.sources-list.show { display: block; }
+.sources-list .source-group { margin-bottom: 16px; }
+.sources-list .source-group-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.sources-list a { color: var(--blue-text); text-decoration: none; display: block; }
+.sources-list a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+  .leaderboard-table, .market-table { font-size: 11px; }
+  .leaderboard-table th, .leaderboard-table td,
+  .market-table th, .market-table td { padding: 6px 8px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence · Daily Alert</div>
+    <h1>Friday, October 9, 2026</h1>
+    <div class="meta">
+      <span>Generated October 9, 2026</span>
+      <span class="dot"></span>
+      <span>3 new signals · 8 standing</span>
+      <span class="dot"></span>
+      <span>Agent v1.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend vs. October 8:</strong> Three new confirmed signals: (1) <strong>OpenAI math preprints controversy</strong> — 722 AI-generated manuscripts published Oct 6, 3 withdrawn Oct 7–8 over cascading sign error; ~50% unverified at launch; HN top story Oct 9 (251 pts / 545 comments). (2) <strong>Codex Sprint Day 4</strong> — GPT-6.1 Sol Ultrafast + Instant Steering delivered for Codex and API users; up to 8× Sol Standard speed; corrects Day 3's Codex exclusion. (3) <strong>Anthropic usage policy update</strong> — election interference ban + "excessive cruelty to Claude" prohibition; Forbes front-page; personhood positioning ahead of IPO roadshow. Standing: Anthropic IPO S-1 not on EDGAR (T-13 days); GPT-5.5 retiring Oct 14 (T-5 days); Grok 4.8 Day 26 unshipped; Mistral Large 4 weights Oct 27 (custom license); Haiku 5.5 pricing war; Google workplace agent.
+  </div>
+
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">Anthropic</span> — "Excessive cruelty to Claude" ban generates Forbes front-page coverage; personhood framing differentiates Claude brand from ChatGPT's tool-centric positioning, timed 3 weeks before IPO roadshow.</div>
+        <div class="implication">OpenAI math retractions (HN #1 Oct 9) + safety researcher firings (HN #1 Oct 8) = two consecutive days of brand-risk headlines during Codex sprint. Enterprise buyers are watching.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">OpenAI</span> — Sprint Day 4 corrects the Codex exclusion narrative: Sol Ultrafast (8× speed, near-Astra intelligence) + Instant Steering delivered for Codex and API users. Cumulative sprint stack now substantive.</div>
+        <div class="implication">Math retraction controversy risks overshadowing Day 4's positive developer momentum — internal comms should separate the math model (internal, unreleased) from the Sol Ultrafast story.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API & Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots"><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span><span class="confidence-dot filled"></span></span>
+        </div>
+        <div class="signal-text"><span class="company-name">OpenAI</span> — GPT-6.1 Sol Ultrafast live across API at $2/$10 (same as Sol Standard); 300 tok/sec; first confirmed per-second throughput figure for any OpenAI model. First clear API differentiation since Haiku 5.5 pricing match.</div>
+        <div class="implication">Mistral Large 4 weights land Oct 27 (custom license, not Apache 2.0 — self-hosting threat reduced). Late-October three-way open-weight window remains the Q4 developer sentiment event.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="must-know">
+    <h2>Must know today</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">OpenAI</span> — Math preprints controversy: 722 AI-generated manuscripts published Oct 6, 3 retracted Oct 7–8 over cascading sign error, ~50% unverified at release. HN top story Oct 9 (251 pts / 545 comments). Mathematical community backlash escalating. Arrives day after safety researcher firings — two consecutive brand-risk HN top stories during the sprint.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">OpenAI</span> — Codex Sprint Day 4 delivered: GPT-6.1 Sol Ultrafast (8× speed in Codex, 6× via API, near-Astra intelligence) + Instant Steering for mid-task redirection. Unlike Day 3's ChatGPT-only update, Day 4 explicitly includes Codex and API users. 4 of 28 sprint days complete; cumulative stack (Day 2 auto-review + Day 4 speed + steering) is now competitive.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">Anthropic</span> — Usage policy update (Oct 8): election interference ban + "no excessive cruelty to Claude" prohibition. Forbes front page, TechCrunch, Decrypt. Personhood framing is a calculated brand differentiation and IPO positioning move — S-1 EDGAR deadline T-13 days (Oct 22 for Nov 9 roadshow).</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', event)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', event)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', event)">API & Models</button>
+    <button class="tab" onclick="showTab('horizon', event)">Horizon Watch</button>
+  </div>
+
+  <!-- CHATGPT TAB -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging & positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products — October 9, 2026</div>
+
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4><span class="company-name">Anthropic</span> — "Excessive cruelty to Claude" ban generates Forbes front page. Personhood positioning ahead of IPO roadshow.</h4>
+        <p>Anthropic's Oct 8 usage policy revision introduces explicit protection for Claude from "excessive cruelty" by users — the first formal policy by a major AI lab framing a model as an entity with a mistreatment threshold. Forbes: "Anthropic Prohibits Being Excessively 'Cruel' To Claude." TechCrunch covered the election safeguards angle separately. The dual-angle coverage (consumer safety + model wellbeing) is the most effective Anthropic messaging cycle in October.</p>
+        <ul>
+          <li>For PMMs: Anthropic is building a brand where caring about the model is part of caring about safety — a differentiated consumer narrative from ChatGPT's "powerful tool" positioning. The Oct 6 Claude diary → law enforcement controversy and the Oct 8 "cruelty ban" create an asymmetry enterprise buyers may raise.</li>
+          <li>Election ban timing (3.5 weeks before Nov 3 midterms) positions Anthropic as the "responsible AI" election integrity partner. OpenAI's election safeguards are 2024-vintage and less actively promoted — a refresh may be warranted.</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — TechCrunch, Forbes, Decrypt, Anthropic official blog (Oct 8, confirmed)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4><span class="company-name">OpenAI</span> — Math preprints controversy: 722 manuscripts, 3 retracted, ~50% unverified. HN top story Oct 9.</h4>
+        <p>The math preprints controversy is primarily a brand-risk event for ChatGPT's "trustworthy AI" positioning. The story is being framed by the mathematical community as AI labs "bypassing peer review" to generate hype — a narrative enterprise buyers in research-intensive sectors (pharma, finance, academia) will notice. The "50% unverified at launch" disclosure, while honest, gives critics a number to cite.</p>
+        <ul>
+          <li>PMMs should flag the internal math model as distinct from GPT-6 consumer/enterprise products — the retractions involve an unnamed internal frontier model, not products users interact with.</li>
+          <li>Story competes for HN attention with Day 4's Codex/API Ultrafast launch — the sprint's positive narrative requires proactive communications to land.</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — Retraction Watch, Fortune, aiweekly.co (Oct 8–9, confirmed)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · Oct 9</span>
+        <h4><span class="company-name">Anthropic IPO</span> — S-1 not on EDGAR. T-13 days to Oct 22 deadline for Nov 9 roadshow. Pre-roadshow product velocity campaign active.</h4>
+        <p>Three significant Anthropic moves in 72 hours: Claude for Startups (Oct 6) + Haiku 5.5 90% price reduction with day-one hyperscaler availability (Oct 7–8) + usage policy update (Oct 8). The S-1 when it drops will reference all of these as evidence of product velocity and governance maturity.</p>
+        <ul>
+          <li>PMMs should prepare counter-narratives for: (a) Anthropic's "responsible AI" IPO framing vs. Claude diary → law enforcement; (b) Haiku 5.5 pricing vs. GPT-6 Luna; (c) Arena shift (Gemini Argon now #1 at 1525 Elo, not Anthropic).</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — EDGAR status confirmed Oct 4 (forkast.news); timeline confirmed (Bloomberg, Reuters)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment signals</h3>
+      <div class="section-desc">HN, Reddit, and developer community — October 9, 2026</div>
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4>HN October 9 — Math retraction #2 AI story (251 pts/545 comments). "Revenue $20B less" claim (357 pts). Mistral Large 4 dominant for Day 3 (2,028 pts/1,210 comments).</h4>
+        <p>Per the automated HN digest (Oct 9, Issue #406): (1) Mistral Large 4 remains the highest-engagement story at 2,028 pts / 1,210 comments — open-weight narrative holds developer mindshare for a third consecutive day; (2) "OpenAI withdraws three mathematical results" at 251 pts / 545 comments is the day's #2 AI story; (3) "OpenAI's revenue $20B less than previously signalled" at 357 pts. Dominant themes: "AI's mathematical reasoning capabilities and the practical realities of deploying autonomous agents."</p>
+        <ul>
+          <li>Caution: The "revenue $20B less" story from the HN digest could not be independently verified this cycle. Treat as LOW confidence until confirmed. Monitor closely.</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> on story positions (GitHub kouweizhu/agents-radar HN digest Oct 9). <span class="confidence-low">LOW</span> on "revenue $20B less" claim (single source, unverified)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing & growth</h3>
+      <div class="section-desc">Job board signals from competitor career pages — October 9, 2026</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">654 open roles (Oct 5–6 data standing). Usage policy update + election safeguards output suggests active legal/policy/comms team output. Pre-IPO quiet period in force for most consumer marketing.</div>
+          <div class="conf">Confidence: HIGH on role count · LOW on specific Oct 9 hires</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">Internal frontier math model (unreleased) generating 722 preprints implies active math/research team beyond public roadmap. Safety researcher departures (Oct 8) reduce internal governance capacity.</div>
+          <div class="conf">Confidence: HIGH on math team (722 preprints confirmed)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODEX TAB -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Competitor feature launches</h3>
+      <div class="section-desc">New capabilities in enterprise coding tools — October 9, 2026</div>
+
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4><span class="company-name">OpenAI</span> — Codex Sprint Day 4: GPT-6.1 Sol Ultrafast + Instant Steering. Codex AND API users included. Up to 8× Sol Standard speed.</h4>
+        <p>Day 4 of the 28-day Codex sprint: Sol Ultrafast and Instant Steering shipped explicitly for Codex and API users (unlike Day 3's ChatGPT-only Intelligent UI). Sol Ultrafast delivers near-Astra intelligence at up to 8× Sol Standard speed in Codex and up to 6× via API. Instant Steering allows developers to redirect a long coding task mid-execution without losing context. Sprint status: 4/28 days delivered.</p>
+        <ul>
+          <li>Day 3→Day 4 narrative correction is important optics: the cumulative stack (Day 2 free auto-review + Day 4 Ultrafast + Instant Steering) is now substantive enough to anchor a Q4 developer narrative.</li>
+          <li>Instant Steering addresses the #1 developer complaint about AI coding agents — inability to change direction mid-task without wasting context. This is a potential differentiator vs. Devin, Claude Code, and Cursor.</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — OpenAI sprint tracker / Community forum, runtimewire.com, sessionwatcher.com, smartscope.blog (confirmed Day 4)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · Oct 9</span>
+        <h4><span class="company-name">Anthropic</span> — Claude Code v2.1.292 (Oct 6). Marketplace plugins + sub-agent effort controls. No new Oct 9 release.</h4>
+        <p>Claude Code v2.1.292 (Oct 6) remains latest confirmed. Three-release-per-day hotfix cadence (Oct 6: v2.1.290, .291, .292) shows high development velocity. JetBrains research: Claude Code at 39% global / 47% US — #1 tool in professional developer adoption.</p>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — Releasebot (prior confirmed). HIGH on JetBrains adoption (ADTMag, JetBrains Research)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · T-10 days</span>
+        <h4><span class="company-name">GitHub Copilot</span> — Oct 19 deprecation wave: GPT-5.5, GPT-5.4, GPT-5.4 mini, GPT-5 mini, Grok 4.5 removed from model picker.</h4>
+        <p>T-10 days to Oct 19 Copilot deprecation wave. GPT-5.5 API unaffected; ChatGPT/Work/Codex UI retirement Oct 14 (T-5 days). Two model retirement events in 5 days.</p>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — GitHub Changelog (prior confirmed)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · Oct 9</span>
+        <h4><span class="company-name">Cognition</span> — Devin persistent memory ("dreaming") unmatched. No new Oct 9 signals.</h4>
+        <p>Devin's persistent cross-session memory via async background indexing remains unmatched by an equivalent feature in Codex or Claude Code. No new Cognition signals today.</p>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — prior confirmed</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — October 9, 2026</h3>
+      <div class="section-desc">AI coding tool adoption across enterprise and professional developer segments</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption</th>
+            <th>Key Development Oct 9</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claude Code (Anthropic)</strong></td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td>v2.1.292 standing; usage policy update (Oct 8); Haiku 5.5 subagent cost compression</td>
+          </tr>
+          <tr>
+            <td><strong>Cursor (SpaceXSI)</strong></td>
+            <td>64% Fortune 500 / $2B ARR</td>
+            <td>Grok 4.8 Day 26 unshipped; 200 APAC hires plan standing</td>
+          </tr>
+          <tr>
+            <td><strong>Devin Desktop / SWE-2 (Cognition)</strong></td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td>Memory/dreaming standing; no new Oct 9 signal</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Copilot (Microsoft)</strong></td>
+            <td>21% (down from 29% Jan 2026)</td>
+            <td>Oct 19 deprecation wave T-10 days</td>
+          </tr>
+          <tr>
+            <td><strong>Codex (OpenAI)</strong></td>
+            <td>65% awareness</td>
+            <td><strong>Sprint Day 4: Sol Ultrafast + Instant Steering — Codex users included; GPT-5.5 retiring Oct 14 (T-5)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Gemini Code Assist (Google)</strong></td>
+            <td>Growing (free individual)</td>
+            <td>Workplace agent (Oct 8) standing; Argon Fairwind-only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment — October 9, 2026</h3>
+      <div class="section-desc">HN and community reactions to coding tools</div>
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4>HN October 9 — Math retraction overshadows Day 4 sprint delivery. Mistral Large 4 dominates developer mindshare (Day 3 top story).</h4>
+        <p>Day 4's Sol Ultrafast + Instant Steering did not appear in HN top stories per the Oct 9 digest — the mathematical retraction story is consuming the narrative space the sprint update should fill. This is the first sprint day where the community story cut against OpenAI's sprint narrative. Developer synthesis: Ultrafast will be validated in practice over the next 48–72 hours; the retraction will be cited in "trust OpenAI's capability claims" discussions.</p>
+        <div class="confidence">Confidence: <span class="confidence-medium">MEDIUM</span> — GitHub HN digest Oct 9 (confirmed story positions; developer sentiment inferred)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — engineering & product</h3>
+      <div class="section-desc">Job board activity — October 9, 2026</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Cursor (SpaceXSI)</div>
+          <div class="detail">200 APAC hires plan ($808K–$1.1M+ SWE comp) from Oct 7 stands. No new Oct 9 signals.</div>
+          <div class="conf">Confidence: HIGH on prior signals</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Pre-IPO velocity: 3 significant product/policy moves in 72 hours (Startups, Haiku 5.5, usage policy). 654 open roles standing.</div>
+          <div class="conf">Confidence: HIGH on outputs · LOW on specific Oct 9 hires</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>Model releases & pricing</h3>
+      <div class="section-desc">New launches, capability updates, and pricing changes — October 9, 2026</div>
+
+      <div class="signal-card">
+        <span class="badge badge-new">New · Oct 9</span>
+        <h4><span class="company-name">OpenAI</span> — GPT-6.1 Sol Ultrafast live across API. $2/$10 (same as Sol Standard). Up to 8× Codex speed. 300 tok/sec. "Near-Astra intelligence."</h4>
+        <p>GPT-6.1 Sol Ultrafast is now live in the API, Codex, and ChatGPT Work following Sprint Day 4. Speed: up to 8× faster than Sol Standard in Codex; up to 6× via API; targets 300 tokens per second. The "near-Astra intelligence" framing is OpenAI's strongest competitive API statement since Haiku 5.5 matched Luna pricing. Context: 1.05M tokens.</p>
+        <ul>
+          <li>At $2/$10 with Ultrafast speed, Sol reclaims a key enterprise differentiator that Haiku 5.5's price match eroded — "same price as Haiku 5.5's input rate, but with Sol intelligence and 8× speed in Codex." The 300 tok/sec figure is the first confirmed per-second throughput for any OpenAI production model.</li>
+          <li>Instant Steering (co-launch) has direct enterprise value for long agentic workflows where mid-task adjustments are costly — a differentiator vs. Haiku 5.5's architecture.</li>
+        </ul>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> on availability and speed (sprint tracker, runtimewire.com, sessionwatcher.com). <span class="confidence-medium">MEDIUM</span> on "near-Astra intelligence" claim (OpenAI framing, not independently benchmarked)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · T-18 days</span>
+        <h4><span class="company-name">Mistral AI</span> — Large 4 weights Oct 27. License now confirmed CUSTOM (not Apache 2.0). Self-hosting threat reduced.</h4>
+        <p>No new Mistral signals Oct 9. Oct 27 weight release date holds. License confirmed as custom (not Apache 2.0), reducing the self-hosting commercial deployment threat for enterprise customers who need unrestricted commercial use. "Strongest open-weight model outside China" claim unverified until weights ship.</p>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> on Oct 27 date (multiple sources). <span class="confidence-medium">MEDIUM</span> on custom license. <span class="confidence-low">LOW</span> on performance claims (self-reported)</div>
+      </div>
+
+      <div class="signal-card">
+        <span class="badge badge-standing">Standing · Oct 9</span>
+        <h4><span class="company-name">Anthropic</span> — Haiku 5.5 pricing war in force: $0.10/$0.50 under 100K tokens. Day-one hyperscaler availability unchanged.</h4>
+        <p>Haiku 5.5 pricing ($0.10/$0.50 under 100K tokens, matching GPT-6 Luna) remains in force across AWS Bedrock, Google Cloud Vertex AI, and Microsoft Azure AI Foundry. Sonnet 5.5 caching charge reductions (Oct 8) stand. The 100K-token billing cliff (5× higher rates above threshold) is the structural counter-narrative.</p>
+        <div class="confidence">Confidence: <span class="confidence-high">HIGH</span> — VentureBeat, Android Authority, AWS blog (prior confirmed)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>API & model leaderboard — October 9, 2026</h3>
+      <div class="section-desc">Competitive positioning snapshot across closed and open-weight providers</div>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>$/1M (In/Out)</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-6 Astra</td>
+            <td>$10 / $50</td>
+            <td>1.05M</td>
+            <td>Safety hold; absent from Arena</td>
+          </tr>
+          <tr class="highlight">
+            <td>OpenAI</td>
+            <td>GPT-6.1 Sol Ultrafast <span class="new-tag">NEW DAY 4</span></td>
+            <td>$2 / $10</td>
+            <td>1.05M</td>
+            <td>Up to 8× speed in Codex; near-Astra intelligence; Instant Steering co-launch</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-6.1 Sol Standard</td>
+            <td>$2 / $10 (cached: $0.10)</td>
+            <td>1.05M</td>
+            <td>Sprint running; GPT-5.5 retiring Oct 14</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-6 Luna</td>
+            <td>$0.10 / $0.50</td>
+            <td>1M</td>
+            <td>Matched by Haiku 5.5 at identical price</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td>GPT-5.5 <span class="retiring-tag">RETIRING T-5</span></td>
+            <td>legacy</td>
+            <td>legacy</td>
+            <td>Retiring Oct 14</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Haiku 5.5</td>
+            <td>$0.10 / $0.50 (&lt;100K) · $0.50 / $2.50 (&gt;100K)</td>
+            <td>1M</td>
+            <td>Pricing war standing; Sonnet caching reduced Oct 8</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Opus 5.5</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td>Arena ~#4 (1503.7 Elo); SWE-Bench #1 (97.00%)</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td>Claude Sonnet 5.5</td>
+            <td>$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td>Caching reduced Oct 8; in GitHub Copilot picker</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td>Gemini 4 Argon</td>
+            <td>$2 / $10 intro · $4 / $20 std</td>
+            <td>1M output</td>
+            <td>#1 Arena (1525 Elo); Fairwind-only; workplace agent (Oct 8) uses Gemini + Claude</td>
+          </tr>
+          <tr>
+            <td>Google</td>
+            <td>Gemini 3.1 Pro</td>
+            <td>$1.25 / $5.00</td>
+            <td>1M</td>
+            <td>Stable</td>
+          </tr>
+          <tr>
+            <td>SpaceXSI</td>
+            <td>Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Grok 4.8 Day 26 unshipped</td>
+          </tr>
+          <tr>
+            <td>Moonshot AI</td>
+            <td>Kimi K3</td>
+            <td>~$15 output</td>
+            <td>1M</td>
+            <td>#3 SWE-Bench (93.4%); K3.1 rumored end of October</td>
+          </tr>
+          <tr>
+            <td>DeepSeek</td>
+            <td>V4.1 Flash</td>
+            <td>$0.15 / $0.60 off-peak</td>
+            <td>1M</td>
+            <td>#2–#3 OpenRouter</td>
+          </tr>
+          <tr>
+            <td>MiniMax</td>
+            <td>M3</td>
+            <td>$0.30 / $1.20</td>
+            <td>1M</td>
+            <td>Likely Space Bunny Alpha candidate</td>
+          </tr>
+          <tr class="highlight">
+            <td>Mistral AI</td>
+            <td>Large 4 <span class="new-tag">OCT 27</span></td>
+            <td>TBD</td>
+            <td>512K–1M</td>
+            <td>Weights Oct 27; license CUSTOM (not Apache 2.0 — confirmed); performance unverified</td>
+          </tr>
+          <tr>
+            <td>Space Bunny Alpha</td>
+            <td>Unknown (likely MiniMax)</td>
+            <td>$0 (preview)</td>
+            <td>1M</td>
+            <td>#1 OpenRouter by token volume; identity unrevealed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HORIZON TAB -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Notable challengers</h3>
+      <div class="section-desc">Rising competitors and strategic shifts to watch — October 9, 2026</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · IPO · T-13 days</div>
+          <h4><span class="company-name">Anthropic</span> — S-1 EDGAR deadline Oct 22–24. Pre-roadshow product velocity campaign active (Haiku 5.5, usage policy, Claude for Startups — all Oct 6–8).</h4>
+          <p>The Oct 22–24 EDGAR deadline for a Nov 9 roadshow start is T-13 days. Anthropic is executing a coordinated pre-roadshow product velocity campaign. The OpenAI math retraction (Oct 9) and safety researcher firings (Oct 8) provide Anthropic with free media contrast. Key risk factors investors will probe: Claude diary → law enforcement (Oct 6); Meta/Microsoft usage cuts (Oct 5–8); "two customers = 25% revenue" concentration.</p>
+          <div class="conf">Confidence: HIGH on no S-1 (EDGAR Oct 4) · HIGH on timeline (Bloomberg, Reuters)</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Weight · T-18 days</div>
+          <h4><span class="company-name">Mistral AI</span> — Large 4 weights Oct 27. Custom license confirmed. Late-October three-way comparison window still intact.</h4>
+          <p>Oct 27 weight release date confirmed across multiple sources. Custom license (not Apache 2.0) reduces self-hosting commercial threat for enterprise. The three-way open-weight comparison window (Mistral Large 4 vs. Kimi K3.1 vs. Reflection Beam) in late October remains the critical Q4 developer sentiment event for open-weight positioning.</p>
+          <div class="conf">Confidence: HIGH on Oct 27 · MEDIUM on license · LOW on performance claims</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Consumer · Day 26</div>
+          <h4><span class="company-name">SpaceXSI</span> — Grok 4.8 Day 26 unshipped. Prediction market: 73% by Oct 31. 2.5T params, C++ training stack.</h4>
+          <p>Grok 4.8 remains unshipped as of Day 26. If released with coding benchmarks exceeding Argon's DeepSWE v1.1 77.9%, it resets the frontier coding leaderboard and directly impacts Cursor (SpaceXSI's tooling partner).</p>
+          <div class="conf">Confidence: MEDIUM on "preparing" (Kretschmann X post) · MEDIUM on timing</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Weight · End of October</div>
+          <h4><span class="company-name">Kimi K3.1</span> — Moonshot AI. Three reasoning intensity levels. 1M context. Agent mode. Swarm multi-agent. Computer use.</h4>
+          <p>Sep 19 leak standing: Low/High/Max reasoning intensity, 1M context, Agent mode, Swarm multi-agent orchestration, computer use focus. Still expected before end of October. Part of the late-October open-weight comparison window.</p>
+          <div class="conf">Confidence: LOW (Sep 19 leak — no official confirmation)</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open-Weight · Later October</div>
+          <h4><span class="company-name">Reflection AI</span> — Beam: HN skepticism growing. No weights. No Oct 9 update. Three-way window still intact.</h4>
+          <p>HN skepticism growing (541 pts "Reflection's Flop?" narrative). Weights "later October." If Beam ships with credible benchmarks, the late-October open-weight comparison creates a three-way comparison window alongside ML4 and K3.1.</p>
+          <div class="conf">Confidence: MEDIUM on announcement · LOW on benchmark claims (self-reported)</div>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · OpenRouter · #1 Volume</div>
+          <h4><span class="company-name">Space Bunny Alpha</span> — MiniMax likely (tokenizer evidence). #1 OpenRouter by token volume. Free preview. Identity unrevealed.</h4>
+          <p>Still #1 on OpenRouter by token volume. MiniMax remains the most likely candidate based on community tokenizer analysis. Free preview driving massive experimentation volume. Identity reveal would be a major signal for OpenRouter competitive positioning.</p>
+          <div class="conf">Confidence: MEDIUM on MiniMax link (community analysis — not officially confirmed)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Governance & future tech</h3>
+      <div class="section-desc">Monthly horizon scan — emerging technologies and policy signals</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Internal R&amp;D</div>
+          <h4><span class="company-name">OpenAI</span> — Internal frontier math model confirmed by 722 preprints. ~42–50% machine-verified at launch. Peer-review bypass governance narrative forming.</h4>
+          <p>The 722-preprint event confirms OpenAI has an unreleased frontier math model capable of producing results across hundreds of domains, addressing ~4,000 open problems. Retraction of 3 manuscripts + "50% unverified" disclosure creates a "AI labs bypass peer review" governance narrative that will be cited in EU AI Act and SIF policy discussions. Model identity (o-series variant or new class) undisclosed.</p>
+          <div class="conf">Confidence: HIGH on model existence · LOW on model identity</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Policy · T-101 days</div>
+          <h4>Trump Super Intelligence Force — 120-day mandate. No new Oct 9 guidance. Math retraction is the kind of event SIF monitoring will track.</h4>
+          <p>No new SIF executive orders. 120-day mandate implies ~Feb 7, 2027 deliverable. The OpenAI math retraction (50% unverified at launch, 3 retractions in 48 hours) is precisely the kind of "AI capability claim governance" event SIF monitoring bodies will track and cite.</p>
+          <div class="conf">Confidence: HIGH on SIF mandate (prior confirmed)</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Compute Infrastructure</div>
+          <h4><span class="company-name">Google</span> — Constellation Energy: 3,590 MW nuclear committed. No new Oct 9 signals. Structural compute advantage standing.</h4>
+          <p>Google's 11-reactor nuclear commitment remains the largest non-fossil AI compute infrastructure commitment in 2026. No new updates Oct 9. The structural compute advantage this creates compounds over 18–36 months as reactors come online.</p>
+          <div class="conf">Confidence: HIGH (prior confirmed)</div>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Election Integrity</div>
+          <h4><span class="company-name">Anthropic</span> — Election safeguards: 100% Opus 4.7 / 99.8% Sonnet 5.5 compliance on election prompts. Nov 3 midterm banners deploying.</h4>
+          <p>Anthropic's election safeguards testing results are directly investable metrics for the IPO roadshow — a governance maturity signal for enterprise buyers and institutional investors. OpenAI's 2024-vintage election safeguards are less actively promoted. Proactive refresh may be warranted before Nov 3.</p>
+          <div class="conf">Confidence: HIGH on Anthropic policy (TechCrunch, Forbes, Decrypt — confirmed)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent v1.0. All signals are sourced from publicly available information. Confidence scores reflect source corroboration, not strategic certainty. For internal use only — October 9, 2026.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <div class="source-group">
+        <div class="source-group-label">OpenAI Math Preprints Retraction</div>
+        <a href="https://retractionwatch.com/2026/10/08/openai-withdraws-preprints-722-manuscripts-unsolved-math-problems/">retractionwatch.com — OpenAI withdraws preprints, a day after releasing 722 manuscripts on unsolved math problems</a>
+        <a href="https://fortune.com/2026/10/07/openai-math-controversy-solutions-370-outstanding-challenges-published-criticisms-celebration/">fortune.com — OpenAI math controversy: solutions to 370 outstanding challenges published</a>
+        <a href="https://aiweekly.co/alerts/openai-pulls-three-ai-generated-math-papers-over-sign-error">aiweekly.co — OpenAI Pulls Three AI-Generated Math Papers Over Sign Error</a>
+        <a href="https://www.implicator.ai/openai-posts-372-ai-math-results-then-withdraws-three-papers-over-a-sign-error/">implicator.ai — OpenAI Posts 372 AI Math Results, Withdraws Three Papers</a>
+        <a href="https://cryptobriefing.com/openai-withdraws-ai-generated-math-papers/">cryptobriefing.com — OpenAI pulls three AI-generated math papers one day after release</a>
+        <a href="https://runtimewire.com/article/openai-withdraws-three-ai-math-papers-sign-error">runtimewire.com — OpenAI withdraws three math papers after a sign error breaks linked arguments</a>
+      </div>
+      <div class="source-group">
+        <div class="source-group-label">Codex Sprint Day 4 / GPT-6.1 Sol Ultrafast</div>
+        <a href="https://smartscope.blog/en/blog/codex-gpt-6-1-sol-ultrafast-availability-2026/">smartscope.blog — Codex GPT-6.1 Sol Ultrafast Availability 2026</a>
+        <a href="https://runtimewire.com/article/openai-says-gpt-6-1-sol-ultrafast-is-coming-soon">runtimewire.com — OpenAI says GPT-6.1 Sol Ultrafast is coming soon</a>
+        <a href="https://sessionwatcher.com/news/openai-astra-ultrafast-codex-pro-500">sessionwatcher.com — OpenAI Astra Ultrafast Codex Pro 500</a>
+        <a href="https://alphasignal.ai/news/openai-devday-drops-sol-ultrafast-and-cloud-codex-for-developers">alphasignal.ai — OpenAI DevDay Drops Sol, Ultrafast, and Cloud Codex for Developers</a>
+        <a href="https://community.openai.com/t/28-days-of-shipping-at-openai/1403897">community.openai.com — 28 Days of Shipping at OpenAI</a>
+        <a href="https://releasebot.io/updates/openai">releasebot.io — OpenAI Release Notes October 2026</a>
+      </div>
+      <div class="source-group">
+        <div class="source-group-label">Anthropic Usage Policy Update / Election Safeguards</div>
+        <a href="https://anthropic.com/news/election-safeguards-update">anthropic.com — Election Safeguards Update</a>
+        <a href="https://decrypt.co/365486/anthropic-election-safeguards-claude-ai-us-midterms">decrypt.co — Anthropic Rolls Out Election Safeguards for Claude AI Ahead of US Midterms</a>
+        <a href="https://www.forbes.com/sites/antoniopequenoiv/2026/10/08/anthropic-prohibits-being-excessively-cruel-to-claude/">forbes.com — Anthropic Prohibits Being Excessively 'Cruel' To Claude</a>
+        <a href="https://techcrunch.com/2026/10/08/anthropic-changes-usage-policy-to-ban-model-abuse-and-election-interference">techcrunch.com — Anthropic changes usage policy to ban model abuse and election interference</a>
+      </div>
+      <div class="source-group">
+        <div class="source-group-label">HN Developer Sentiment</div>
+        <a href="https://github.com/kouweizhu/agents-radar/issues/406">github.com/kouweizhu/agents-radar — HN AI Digest 2026-10-09, Issue #406</a>
+        <a href="https://orangebot.ai/hacker-news-top-stories">orangebot.ai — Hacker News Top Stories October 9, 2026</a>
+      </div>
+      <div class="source-group">
+        <div class="source-group-label">Anthropic IPO Status</div>
+        <a href="https://forkast.news/anthropics-public-s-1-still-missing-from-edgar-as-october-ipo-window-opens/">forkast.news — Anthropic's Public S-1 Still Missing From EDGAR</a>
+        <a href="https://leverageshares.com/us/anthropic-ipo-tracker/">leverageshares.com — Anthropic IPO Tracker: Date, Valuation and S-1 Status</a>
+        <a href="https://manifold.markets/Terminator2/which-week-will-anthropics-ipo-pros">manifold.markets — Which week will Anthropic's IPO prospectus appear</a>
+      </div>
+      <div class="source-group">
+        <div class="source-group-label">Standing Signals</div>
+        <a href="https://cellcog.ai/blog/grok-4-8-release-date/">cellcog.ai — Grok 4.8 Release Date</a>
+        <a href="https://artificialwatch.com/model/grok-4-8">artificialwatch.com — Grok 4.8 release date: live odds and leaks</a>
+        <a href="https://letsdatascience.com/news/mistral-debuts-large-4-open-weight-model-preview-cbf9e0b5">letsdatascience.com — Mistral Opens Public Preview of Large 4</a>
+        <a href="https://forklog.com/en/?p=104850">forklog.com — Mistral Large 4 weights release Oct 27</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, event) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
