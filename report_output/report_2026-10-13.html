@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — October 13, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: #F5F4F0; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin-bottom: 32px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 14px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 13px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-multi { background: #E8F5EE; color: #3A7A55; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new { border-left: 3px solid #1E40AF; }
+.signal-card.standing { border-left: 3px solid var(--border); }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 10px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .source a:hover { text-decoration: underline; }
+.signal-card .confidence-badge { display: inline-block; font-size: 11px; font-family: var(--font-mono); font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+.conf-high { background: #EEF9EE; color: #2D7A2D; }
+.conf-medium { background: #FFF8E8; color: #8B6E1A; }
+.conf-low { background: #FEF2F2; color: #9A3535; }
+.new-badge { display: inline-block; font-size: 10px; font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; background: #DBEAFE; color: #1E40AF; margin-right: 6px; vertical-align: middle; }
+.standing-badge { display: inline-block; font-size: 10px; font-family: var(--font-mono); font-weight: 600; padding: 2px 7px; border-radius: 3px; background: var(--surface-alt); color: var(--text-tertiary); margin-right: 6px; vertical-align: middle; }
+
+.market-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.market-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.market-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.market-table tr:last-child td { border-bottom: none; }
+.market-table .tool-name { font-weight: 600; color: var(--text); }
+.market-table .highlight-row td { background: #FAFFFE; }
+.market-table .new-row td { background: #F0F7FF; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+
+.leaderboard-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.leaderboard-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.leaderboard-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); font-family: var(--font-mono); vertical-align: top; }
+.leaderboard-table tr.retiring td { background: #FEF9F0; color: #8B5B1A; }
+.leaderboard-table tr.new-entry td { background: #F0F7FF; }
+.leaderboard-table .provider { font-weight: 600; color: var(--text); font-family: var(--font); }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier2-new { border-left-color: #1E40AF; }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.report-footer .sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 12px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2.2; }
+.sources-list a { color: var(--blue-text); text-decoration: none; }
+.sources-list a:hover { text-decoration: underline; }
+.sources-list.show { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .report-header h1 { font-size: 28px; }
+  .tabs { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Competitive Intelligence — Daily Update</div>
+    <h1>October 13, 2026</h1>
+    <div class="meta">
+      <span>Generated October 13, 2026</span>
+      <span class="dot"></span>
+      <span>Prepared for Strategy &amp; Operations</span>
+      <span class="dot"></span>
+      <span>Agent v2.0</span>
+    </div>
+  </header>
+
+  <div class="trend-note">
+    <strong>Trend note vs. Oct 12:</strong> Three new confirmed signals — (1) <strong>Meta Muse Wonder + Wonder Full launched Oct 12</strong>: first frontier-class models from Meta Superintelligence Labs; AA Index 56 (Wonder Full); $4/$20 API; Wonder Full in $50–$200/mo Muse Code; active memory 85.6 MemoryBench; trained at Prometheus data center, Ohio (TechCrunch, Axios, Bloomberg — confirmed). (2) <strong>Anthropic IPO timeline confirmed</strong>: investor day tomorrow Oct 14; roadshow Nov 9; IPO before Thanksgiving Nov 26; $1.8T–$2T target; S-1 due EDGAR ~Oct 23–25 (Bloomberg, implicator.ai — confirmed). (3) <strong>Codex Sprint Day 7</strong>: GPT-6.1 Sol context 272K → 500K, no long-context fees (community tracker — confirmed). <strong>Standing:</strong> GPT-5.5 retiring TOMORROW Oct 14; Grok 4.8 Day 30+ unshipped; Mistral Large 4 preview live (Oct 6), weights Oct 27 (T-14); GitHub Copilot deprecation wave Oct 19 (T-6); false police tip standing ahead of investor day.
+  </div>
+
+  <!-- C-Suite Dashboard -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">Consumer</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta</span> — Muse Wonder enters the frontier consumer AI tier with active cross-session memory (MemoryBench 85.5 vs. Opus 5.5 at 81.5) and the distribution of Meta's social apps. Anthropic investor day tomorrow adds a 3-governance-incident backdrop to the "responsible AI" IPO narrative.</div>
+        <div class="implication">First time Meta fields a frontier consumer AI with personalization as the headline — directly targeting ChatGPT's retention moat. Monitor for social app rollout.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">Enterprise</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta + Sprint</span> — Sprint Day 7 expands context 272K → 500K (no long-context fees) — real developer improvement. Meta Wonder Full claims 79% DeepSWE v1.1 (unverified). GPT-5.5 retires tomorrow. Claude Code holds 39%/47% US market share.</div>
+        <div class="implication">Day 7 partially corrects the 2-resets-in-6-days narrative. Meta's coding benchmarks — if verified — introduce a new direct Codex competitor. Day 8 is the narrative inflection point.</div>
+      </div>
+    </div>
+
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">Platform</span></div>
+        <span class="threat-level-badge high">High</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </span>
+        </div>
+        <div class="signal-text"><span class="company-name">Meta + Mistral</span> — Two new frontier API entrants in 7 days: Mistral Large 4 ($1.36/$4.18 intro, live Oct 6) and Meta Muse Wonder ($4/$20, live Oct 12). Meta entering closed-source frontier API market is the structural shift — the exclusively open-weight provider is now a direct API competitor.</div>
+        <div class="implication">The closed-source frontier API market now has 6 providers: OpenAI, Anthropic, Google, xAI, Mistral, and Meta. Pricing and benchmark differentiation compressed further.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Must Know -->
+  <div class="must-know">
+    <h2>Must know this week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <span><span class="company-name">Meta</span> — Muse Wonder + Wonder Full launched Oct 12. First frontier-class models from Meta Superintelligence Labs. Wonder API at $4/$20; Wonder Full for Muse Code subscribers ($50–$200/mo). Active memory 85.6 MemoryBench. Meta claims 79% DeepSWE v1.1 (unverified). Multiple confirmed sources.</span>
+        <span class="tag tag-multi">All Lines</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span><span class="company-name">Anthropic</span> — Investor day tomorrow (Oct 14, SF HQ). Roadshow Nov 9; IPO before Thanksgiving Nov 26. $1.8T–$2T target valuation. S-1 must hit EDGAR ~Oct 23–25. Three governance incidents form the backdrop. S-1 not yet on EDGAR as of Oct 13. Bloomberg confirmed.</span>
+        <span class="tag tag-chatgpt">ChatGPT</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span><span class="company-name">OpenAI</span> — Codex Sprint Day 7: context window 272K → 500K for GPT-6.1 Sol (no long-context fees). Day 8 pending. GPT-5.5 retires TOMORROW Oct 14 — migrate hard-coded configs to gpt-5.6-sol now. API unaffected.</span>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', this)">ChatGPT Intelligence</button>
+    <button class="tab" onclick="showTab('codex', this)">Codex Intelligence</button>
+    <button class="tab" onclick="showTab('api', this)">API &amp; Models</button>
+    <button class="tab" onclick="showTab('hiring', this)">Hiring Signals</button>
+    <button class="tab" onclick="showTab('horizon', this)">Horizon Watch</button>
+  </div>
+
+  <!-- ChatGPT Tab -->
+  <div id="chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor messaging &amp; positioning</h3>
+      <div class="section-desc">How competitors are framing their consumer products this cycle</div>
+
+      <div class="signal-card new">
+        <h4><span class="new-badge">NEW</span><span class="company-name">Meta</span> — "Active memory across sessions" is the Muse Wonder consumer headline. First frontier AI from Meta. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Meta's consumer narrative centers on two claims: (1) "frontier-class" performance placing Muse Wonder alongside Claude and GPT in benchmarks; (2) "active memory" — the model retains user preferences and professional context across sessions. MemoryBench 85.5 vs. Claude Opus 5.5 at 81.5 is the cited differentiator. Zuckerberg: "We've reached the frontier and we're going to keep building." Muse Wonder Full restricted to $50–$200/mo Muse Code subscribers; Wonder available via Meta Model API at $4/$20 per million tokens.</p>
+        <p>For PMMs: The "active memory" story targets ChatGPT's most-cited consumer pain point (session-based memory limitations); Meta's social graph data as a potential memory substrate is the unannounced wildcard; the $20/mo ChatGPT Plus vs. $50–$200/mo Muse Code price gap initially favors ChatGPT, but Meta's distribution through Facebook/Instagram/WhatsApp will drive top-of-funnel awareness at scale. Monitor r/ChatGPT for first "Muse vs. ChatGPT memory" comparisons in the next 48 hours.</p>
+        <div class="source">Sources: <a href="https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder/" target="_blank">TechCrunch (Oct 12)</a> · <a href="https://axios.com/2026/10/12/meta-new-ai-models-anthropic-openai" target="_blank">Axios (Oct 12)</a> · <a href="https://www.bloomberg.com/news/articles/2026-10-12/meta-says-new-muse-model-reaches-ai-frontier-after-14-month-push" target="_blank">Bloomberg (Oct 12)</a> · <a href="https://the-decoder.com/metas-new-frontier-model-muse-wonder-full-breaks-into-the-ai-top-tier/" target="_blank">The-Decoder (Oct 13)</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Anthropic</span> — Three governance incidents precede investor day Oct 14. "Responsible AI" IPO narrative faces its hardest test. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>The false police tip (Philadelphia PD, July 18, disclosed Oct 7–8), Claude diary → law enforcement (Oct 6), and usage policy update (Oct 8) form the backdrop for tomorrow's investor meeting. Philadelphia Police Commissioner's "unacceptable" characterization of the 71-day disclosure delay remains the investor-facing quote. Anthropic's planned incident report (promised Oct 9) has not been published as of Oct 13 — publication timing relative to the S-1 is the key communications decision.</p>
+        <p>For PMMs: Have a one-page "how OpenAI tests agentic systems" ready for enterprise procurement teams by Oct 15. The media cycle tomorrow will generate direct ChatGPT vs. Claude safety comparisons. The "sector-level" AI agent safety frame (OpenAI/Wikimedia + Anthropic/Philadelphia PD) dilutes single-company blame but confirms agent governance as an enterprise procurement question.</p>
+        <div class="source">Sources: <a href="https://www.inquirer.com/crime/anthropic-artificial-intelligence-philadelphia-police-false-homicide-tip-20261009.html" target="_blank">Philadelphia Inquirer (Oct 9)</a> · <a href="https://financefeeds.com/anthropics-14-october-investor-day-nears-but-its-s-1-still-isnt-public-the-ipo-timeline-explained/" target="_blank">FinanceFeeds (Oct 13)</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer sentiment</h3>
+      <div class="section-desc">Developer and consumer reactions — Reddit, HN, X</div>
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">CONTEXT</span>Meta Muse Wonder developer benchmarking begins. Expect HN and r/LocalLLaMA traction within 24–48 hours. <span class="confidence-badge conf-low">LOW CONF</span></h4>
+        <p>Wonder launched October 12; no confirmed HN top stories for Oct 13 in this cycle. Based on prior major launch patterns (Haiku 5.5, Mistral Large 4, Sol Ultrafast), first independent developer benchmarks typically appear in r/LocalLLaMA and HN within 24–48 hours. The MemoryBench and SWE-Marathon claims will be the primary stress-test targets. Watch for LMSYS Arena submission tracking as the most reliable independent verification.</p>
+        <div class="source">Source: pattern inference from prior launch cycles. No Oct 13 HN digest confirmed this cycle.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Hiring signals — marketing &amp; growth</h3>
+      <div class="section-desc">Job board activity from competitor career pages</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Meta (Muse Consumer AI)</div>
+          <div class="detail">Muse Wonder launch (Oct 12) implies active Meta AI consumer marketing team. No specific new Oct 13 postings confirmed.</div>
+          <div class="trend">↑ inferred from launch scale</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Pre-IPO quiet period. 654 open roles standing. Investor day Oct 14. No new Oct 13 marketing hires confirmed.</div>
+          <div class="trend">→ stable (pre-roadshow quiet period)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codex Tab -->
+  <div id="codex" class="tab-content">
+    <div class="section">
+      <h3>Feature launches &amp; competitive moves</h3>
+      <div class="section-desc">New capabilities from enterprise coding tools this cycle</div>
+
+      <div class="signal-card new">
+        <h4><span class="new-badge">NEW</span><span class="company-name">OpenAI</span> — Codex Sprint Day 7: Context window 272K → 500K for GPT-6.1 Sol. No long-context fees on subscription. Day 8 pending. <span class="confidence-badge conf-medium">MEDIUM CONF</span></h4>
+        <p>Sprint Day 7 (Oct 12–13): GPT-6.1 Sol default context in Codex and ChatGPT Work raised from 272K to 500K tokens. Configurable up to 1M. No long-context fees on subscription usage. Day 8 listed as pending in community trackers as of Oct 13. Sprint scorecard at 7 days: 4 feature days, 2 reset days, 1 context expansion.</p>
+        <p>For Codex PMs: (a) The 500K context with no long-context fees is a direct response to Claude Code's 1M context at $0.10/$0.50 — closing the context gap while competing on price tier; (b) If Day 8 delivers a feature (not a reset), narrative shifts from "2-in-6 resets" to "4 consecutive feature days" — critical for developer confidence entering Week 2; (c) GPT-5.5 retires tomorrow: last day to update workspace configs, custom agents, scheduled tasks, CLI commands from gpt-5.5 → gpt-5.6-sol. No automatic remap confirmed. No cutoff timezone published.</p>
+        <div class="source">Sources: <a href="https://community.openai.com/t/28-days-of-shipping-at-openai/1403897" target="_blank">OpenAI Community Forum (tracker)</a> · <a href="https://releasebot.io/updates/openai" target="_blank">Releasebot Oct 2026</a> · <a href="https://thenewstack.io/openai-codex-shipping-sprint/" target="_blank">The New Stack</a></div>
+      </div>
+
+      <div class="signal-card new">
+        <h4><span class="new-badge">NEW</span><span class="company-name">Meta</span> — Muse Code + Wonder Full creates a tiered coding competitor: $1.25/$4.25 API (Spark 1.3, 75.4% DeepSWE) + frontier agent (Wonder Full, $50–$200/mo, 79% DeepSWE claimed). <span class="confidence-badge conf-medium">MEDIUM CONF</span></h4>
+        <p>Meta's coding competitive stack as of Oct 13: (1) Muse Code (in beta since Aug 2026) + Muse Spark 1.3 at $1.25/$4.25 — previously confirmed 75.4% DeepSWE v1.1, 88.8% Terminal-Bench 2.1; (2) Muse Wonder Full for Muse Code subscribers ($50–$200/mo) — Meta claims 79% DeepSWE v1.1, not independently verified. Combined: a tiered coding product from cheap API tier (Spark 1.3) to frontier agent (Wonder Full).</p>
+        <p>For Codex PMs: The Muse Code architecture (subscription + API tiers) mirrors Codex pricing. If Wonder Full's coding benchmarks verify, Meta built a full competitive coding platform in 3 months. Cursor uses third-party models — watch for Cursor's response as a proxy for developer preference shifts. Do not update competitive materials until SWE-Bench Verified independent results are confirmed.</p>
+        <div class="source">Sources: <a href="https://yellow.com/news/meta-undercuts-anthropic-openai-coding-agent" target="_blank">yellow.com (Muse Code pricing)</a> · <a href="https://www.mayhemcode.com/2026/08/meta-muse-code-full-review-pricing-and.html" target="_blank">mayhemcode.com (Spark 1.3 benchmarks)</a> · <a href="https://www.neowin.net/news/meta-joins-the-frontier-ai-model-race-with-muse-wonder-challenging-openai-and-anthropic/" target="_blank">Neowin (Wonder Full claims)</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Anthropic Claude Code</span> — v2.1.294 standing; Haiku 5.5 default subagent ($0.10/$0.50); 39% global / 47% US market share (JetBrains). No new Oct 13 release. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Claude Code v2.1.294 (Oct 8) remains the latest confirmed release. Haiku 5.5 as default subagent ($0.10/$0.50, 1M context) standing. No new release confirmed Oct 13. JetBrains market share: 39% global / 47% US — #1 in professional developer adoption. Investor day Oct 14 (tomorrow) is the dominant Anthropic event for the next 24 hours — no product announcements expected during pre-roadshow quiet period.</p>
+        <div class="source">Sources: <a href="https://havoptic.com/releases/claude-code/2026/10" target="_blank">havoptic.com Claude Code releases</a> · JetBrains Developer Ecosystem Survey (prior confirmed)</div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">GitHub Copilot</span> — Oct 19 deprecation wave T-6 days. GPT-5.5, GPT-5.4, GPT-5.4 mini, GPT-5 mini, Grok 4.5 removed from model picker. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>T-6 days to the Oct 19 GitHub Copilot model picker deprecation. Combined with GPT-5.5's ChatGPT/Codex UI retirement tomorrow (Oct 14), two model retirement events within 6 days create developer migration burden. No new Copilot signals.</p>
+        <div class="source">Source: GitHub Changelog (prior confirmed)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market share snapshot — October 13, 2026</h3>
+      <div class="section-desc">Professional adoption estimates and key weekly developments</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Adoption Signal</th>
+            <th>Key Development Oct 13</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tool-name">Claude Code (Anthropic)</span></td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td>v2.1.294 standing; Haiku 5.5 default ($0.10/$0.50); investor day Oct 14; false police tip circulating</td>
+          </tr>
+          <tr>
+            <td><span class="tool-name">Cursor (SpaceXSI)</span></td>
+            <td>64% Fortune 500 / $2B ARR</td>
+            <td>200-APAC-hire standing; Grok 4.8 Day 30+ unshipped</td>
+          </tr>
+          <tr>
+            <td><span class="tool-name">Devin Desktop (Cognition)</span></td>
+            <td>$48B valuation / $900M+ ARR</td>
+            <td>Memory/dreaming standing; no new Oct 13 signal</td>
+          </tr>
+          <tr>
+            <td><span class="tool-name">GitHub Copilot (Microsoft)</span></td>
+            <td>21% (down from 29% Jan 2026)</td>
+            <td>Oct 19 deprecation wave T-6 days</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><span class="tool-name">Codex (OpenAI)</span></td>
+            <td>65% awareness</td>
+            <td>Sprint Day 7: 500K context (no fees); GPT-5.5 retiring tomorrow; 21 days remain</td>
+          </tr>
+          <tr>
+            <td><span class="tool-name">Gemini Code Assist (Google)</span></td>
+            <td>Growing (free individual tier)</td>
+            <td>Universal workplace agent (Oct 8) standing; no new Oct 13 signal</td>
+          </tr>
+          <tr class="new-row">
+            <td><span class="tool-name">Muse Code (Meta) ↑NEW</span></td>
+            <td>New entrant</td>
+            <td>Wonder Full (Oct 12) adds frontier model tier; Spark 1.3 at 75.4% DeepSWE v1.1 confirmed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Developer sentiment</h3>
+      <div class="section-desc">Community narrative entering sprint Day 8</div>
+      <div class="signal-card standing">
+        <h4>Sprint narrative: Day 8 is the Week 2 inflection point. Meta Wonder Full enters the coding discourse simultaneously. <span class="confidence-badge conf-medium">MEDIUM CONF</span></h4>
+        <p>Day 7's 500K context expansion is substantive for large codebase developers. The sprint's narrative now splits: positive (Days 1, 4, 5, 7 = real improvements) vs. skeptical (Days 2, 6 = resets; Day 3 = Codex excluded). Day 8 is the inflection point: a third consecutive feature day shifts the dominant community narrative to "sprint is working." Meta Wonder Full's unverified 79% DeepSWE v1.1 enters developer discourse simultaneously — the two stories compete for HN and r/programming attention through Oct 14.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Models Tab -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <h3>New model releases &amp; pricing</h3>
+      <div class="section-desc">Frontier tier changes, pricing moves, and new API entrants</div>
+
+      <div class="signal-card new">
+        <h4><span class="new-badge">NEW</span><span class="company-name">Meta</span> — Muse Wonder enters closed-source frontier API at $4/$20. Meta's first proprietary closed-source model. AA Intelligence Index 56 (Opus 5.5 = 58). <span class="confidence-badge conf-high">HIGH CONF</span> (launch). <span class="confidence-badge conf-medium">MEDIUM CONF</span> (benchmarks)</h4>
+        <p>Muse Wonder API: $4/$20 per million input/output tokens. Positioned above Muse Spark tier ($1.25/$4.25) and aligned with Claude Opus 5.5 ($4/$20) at the frontier tier. Artificial Analysis Intelligence Index: Wonder Full = 56, Wonder = 52 (vs. Opus 5.5 = 58, GPT-6 Astra = 53). Meta's own figures (not independently verified): Wonder Full 57.5% SWE-Marathon, 79% DeepSWE v1.1, MemoryBench 85.5. All Meta benchmark claims use non-standard metrics — SWE-Bench Verified and LMSYS Arena entries are the verification signal to watch.</p>
+        <p>For BD/API: This is the structural signal. Meta is no longer exclusively an open-weight provider. A proprietary frontier API at $4/$20 positions Meta directly against Claude Opus 5.5 and GPT-6 Astra in enterprise procurement. Meta's developer relationships via LLaMA, Muse Code, and Meta AI provide a cold-start-free distribution channel for Wonder API adoption.</p>
+        <div class="source">Sources: <a href="https://www.technology.org/2026/10/13/meta-muse-wonder-frontier-model-pricing-muse-code/" target="_blank">technology.org</a> · <a href="https://aiweekly.co/alerts/meta-releases-muse-wonder-its-first-frontier-class-ai-model" target="_blank">aiweekly.co</a> · <a href="https://the-decoder.com/metas-new-frontier-model-muse-wonder-full-breaks-into-the-ai-top-tier/" target="_blank">The-Decoder</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Mistral AI</span> — Large 4 preview live (Oct 6). Weights Oct 27 (T-14 days). Custom license. Intro discount (~50%) may be expiring. <span class="confidence-badge conf-high">HIGH CONF</span> (date). <span class="confidence-badge conf-medium">MEDIUM CONF</span> (discount expiration)</h4>
+        <p>Mistral Large 4 (~1T total params, ~50B active, MoE) available in Mistral Studio and API at $1.36/$4.18 (50% launch discount for first two weeks — approximately expiring this week). Weights release date: October 27 (confirmed). License: custom (not Apache 2.0 — text not yet published). Artificial Analysis Intelligence Index: 38. Mistral's claim: "strongest model outside US and China" — not independently verified. Late-October three-way comparison window (Mistral Large 4 vs. Kimi K3.1 vs. Reflection Beam) remains the Q4 open-weight developer event.</p>
+        <div class="source">Sources: <a href="https://simonwillison.net/2026/oct/6/le-chonk/" target="_blank">Simon Willison's Weblog (Oct 6)</a> · <a href="https://forklog.com/en/?p=104850" target="_blank">forklog.com (Oct 27 date)</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">GPT-5.5</span> — Retiring TOMORROW (Oct 14). ChatGPT/Work/Codex UI only. API unaffected. Migrate to gpt-5.6-sol now. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Final day for developer migration. Scope: all ChatGPT plan tiers plus Codex UI. API availability unaffected. Recommended Codex replacement: gpt-5.6-sol. Migration priority: workspace defaults, custom agents, scheduled tasks, CI/CD scripts, CLI commands. No automatic remap confirmed. No cutoff timezone published. GPT-5.3-Codex-Spark already deprecated September 14.</p>
+        <div class="source">Sources: <a href="https://letsdatascience.com/news/openai-retires-gpt-55-from-chatgpt-and-codex-1a6f69be" target="_blank">letsdatascience.com</a> · <a href="https://aiidelist.com/blog/gpt-5-5-retirement-october-14" target="_blank">aiidelist.com</a></div>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">DeepSeek</span> — No October 2026 releases confirmed. V4.1-Flash (Sept 10) latest. V4.1-Pro prediction market ~29% by Oct 31. <span class="confidence-badge conf-high">HIGH CONF</span> (no release). <span class="confidence-badge conf-medium">MEDIUM CONF</span> (prediction market)</h4>
+        <p>DeepSeek V4 family (April 24, 2026) includes V4-Pro and V4-Flash — both open weight, 1M+ context, thinking/non-thinking modes. V4.1-Flash (Sept 10) is most recent release. No October 2026 DeepSeek model release confirmed in this cycle.</p>
+        <div class="source">Sources: DeepSeek transparency page · Manifold Markets (V4.1-Pro prediction market — single source)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Leaderboard — frontier model standings</h3>
+      <div class="section-desc">Active models, pricing, and status as of October 13, 2026</div>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>$/1M tok (in/out)</th>
+            <th>Context</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="provider">OpenAI</td>
+            <td>GPT-6 Astra</td>
+            <td>$10 / $50</td>
+            <td>1.05M</td>
+            <td>Safety hold continuing</td>
+          </tr>
+          <tr>
+            <td class="provider">OpenAI</td>
+            <td>GPT-6.1 Sol Ultrafast</td>
+            <td>$2 / $10</td>
+            <td>1.05M</td>
+            <td>Sprint Day 4; 8× speed; Instant Steering</td>
+          </tr>
+          <tr class="highlight-row">
+            <td class="provider">OpenAI</td>
+            <td>GPT-6.1 Sol Standard</td>
+            <td>$2 / $10 (cached: $0.10)</td>
+            <td>500K default / 1.05M max</td>
+            <td>Sprint running; context ↑ 272K→500K (Day 7)</td>
+          </tr>
+          <tr class="retiring">
+            <td class="provider">OpenAI</td>
+            <td>GPT-5.5</td>
+            <td>legacy</td>
+            <td>—</td>
+            <td>⚠ RETIRING TOMORROW Oct 14 (ChatGPT/Work/Codex UI; API unaffected)</td>
+          </tr>
+          <tr>
+            <td class="provider">Anthropic</td>
+            <td>Claude Haiku 5.5</td>
+            <td>$0.10/$0.50 (&lt;100K) / $0.50/$2.50 (&gt;100K)</td>
+            <td>1M</td>
+            <td>Claude Code default subagent; pricing war standing</td>
+          </tr>
+          <tr>
+            <td class="provider">Anthropic</td>
+            <td>Claude Sonnet 5.5</td>
+            <td>$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td>Standing</td>
+          </tr>
+          <tr>
+            <td class="provider">Anthropic</td>
+            <td>Claude Opus 5.5</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td>SWE-Bench #1 (97.00%); AA Index 58</td>
+          </tr>
+          <tr>
+            <td class="provider">Google</td>
+            <td>Gemini 4 Argon</td>
+            <td>$2–$4 / $10–$20</td>
+            <td>1M output</td>
+            <td>#1 Arena (1525 Elo); Fairwind-only</td>
+          </tr>
+          <tr class="new-entry">
+            <td class="provider">Meta ↑NEW</td>
+            <td>Muse Wonder</td>
+            <td>$4 / $20</td>
+            <td>TBD</td>
+            <td>NEW Oct 12: AA Index 56; active memory; frontier tier entry</td>
+          </tr>
+          <tr class="new-entry">
+            <td class="provider">Meta ↑NEW</td>
+            <td>Muse Wonder Full</td>
+            <td>Muse Code $50–$200/mo</td>
+            <td>TBD</td>
+            <td>NEW Oct 12: 79% DeepSWE v1.1 (Meta claim, unverified)</td>
+          </tr>
+          <tr>
+            <td class="provider">Meta</td>
+            <td>Muse Spark 1.3</td>
+            <td>$1.25 / $4.25</td>
+            <td>262K+</td>
+            <td>Muse Code coding tier; 75.4% DeepSWE v1.1 confirmed</td>
+          </tr>
+          <tr>
+            <td class="provider">SpaceXSI</td>
+            <td>Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Grok 4.8 Day 30+ unshipped</td>
+          </tr>
+          <tr>
+            <td class="provider">Moonshot AI</td>
+            <td>Kimi K3</td>
+            <td>~$15 output</td>
+            <td>1M</td>
+            <td>#3 SWE-Bench (93.4%); K3.1 rumored end Oct</td>
+          </tr>
+          <tr>
+            <td class="provider">DeepSeek</td>
+            <td>V4.1-Flash</td>
+            <td>$0.15/$0.60 off-peak</td>
+            <td>1M</td>
+            <td>Latest (Sept 10); V4.1-Pro ~29% by Oct 31</td>
+          </tr>
+          <tr class="new-entry">
+            <td class="provider">Mistral AI ↑PREVIEW</td>
+            <td>Large 4</td>
+            <td>$1.36/$4.18 (50% intro — expiring)</td>
+            <td>512K–1M</td>
+            <td>Preview live Oct 6; weights Oct 27 (T-14); custom license</td>
+          </tr>
+          <tr>
+            <td class="provider">Space Bunny Alpha</td>
+            <td>Unknown (likely MiniMax)</td>
+            <td>$0 (preview)</td>
+            <td>1M</td>
+            <td>Top 3 OpenRouter; identity unrevealed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Infrastructure &amp; compute</h3>
+      <div class="section-desc">Hardware partnerships and compute economics signals</div>
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Microsoft</span> — Maia 300 chip: 300K unit TSMC order (2027 delivery). Structural compute economics shift for Azure OpenAI workloads. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Microsoft negotiating TSMC capacity for 300K+ Maia 300 AI inference chips (2027 delivery); long-term target 1M+ units. Maia 200 (Jan 2026) reportedly reduces TCO by 30%+ vs. GPU-only inference. If Maia 300 scales, Microsoft can route Azure OpenAI Service inference through proprietary silicon — shifting per-token cost structure to Microsoft's optimization rather than shared Nvidia/OpenAI optimization. Microsoft reportedly reaching out to Anthropic to adopt Maia chips (single-source, MEDIUM confidence).</p>
+        <div class="source">Sources: <a href="https://runtimewire.com/article/microsoft-maia-300-ai-chip-production-tsmc" target="_blank">runtimewire.com</a> · <a href="https://www.cxodigitalpulse.com/microsoft-prepares-maia-300-ai-chip-as-custom-silicon-programme-scales/" target="_blank">cxodigitalpulse.com</a> (prior confirmed Oct 12)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hiring Tab -->
+  <div id="hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring &amp; resource signals</h3>
+      <div class="section-desc">Cross-cutting job board and organizational capacity signals</div>
+
+      <div class="signal-card new">
+        <h4><span class="new-badge">NEW</span><span class="company-name">Meta</span> — Muse Wonder launch from Meta Superintelligence Labs confirms operational frontier AI team. Prometheus data center (Ohio) signals new inference infrastructure. <span class="confidence-badge conf-high">HIGH CONF</span> (launch). <span class="confidence-badge conf-low">LOW CONF</span> (team size)</h4>
+        <p>The Muse Wonder launch confirms Meta Superintelligence Labs as a fully operational frontier research organization. 14-month development timeline (Bloomberg) implies a large-scale program running in parallel with LLaMA open-weight releases — Meta is now fielding two parallel model strategies (open + closed). Prometheus data center (Ohio) is a new Meta-owned inference infrastructure location. No specific job postings confirmed Oct 13.</p>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Anthropic</span> — Investor day Oct 14 (T-1 day). Pre-IPO quiet period. 654 open roles standing. Post-roadshow hiring acceleration expected. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Anthropic enters its most critical 24-hour window. No new hiring signals confirmed Oct 13. Post-roadshow (after Nov 9), expect accelerated hiring announcements — IPO cash infusion typically triggers within 30 days. The false police tip incident implies active legal, policy, and communications team mobilization through the investor day.</p>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">OpenAI</span> — Safety researcher departures (Oct 8): Jasmine Wang, Tomek Korbak, Mikita Balesni, David Robinson. Codex sprint team velocity strong. Mixed signal. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>Safety researcher departures from Oct 8 remain the dominant internal capacity signal — safety team capacity reduced during the Astra safety hold period. Codex sprint delivery (4 feature days in 7) implies an actively engaged product team. No new Oct 13 departures or hires confirmed.</p>
+      </div>
+
+      <div class="signal-card standing">
+        <h4><span class="standing-badge">STANDING</span><span class="company-name">Cursor (SpaceXSI)</span> — 200-APAC-hire plan ($808K–$1.1M+ SWE comp) standing. No new Oct 13 signals. <span class="confidence-badge conf-high">HIGH CONF</span></h4>
+        <p>200-APAC-hire plan from Oct 7 stands. No new signals this cycle.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizon Watch Tab -->
+  <div id="horizon" class="tab-content">
+    <div class="section">
+      <h3>Tier 2 — Rising challengers</h3>
+      <div class="section-desc">Notable competitors showing significant activity this cycle</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2-new">
+          <div class="tier-label">Tier 2 Upgrade · USA</div>
+          <h4><span class="company-name">Meta AI</span> — Muse Wonder: frontier consumer + closed-source API in one launch. Distribution wildcard.</h4>
+          <p>Most significant Tier 2 → competitive threat upgrade since Cursor's $29.3B round. Three compounding elements: (1) Frontier-class closed API (Wonder at $4/$20); (2) Frontier coding agent (Wonder Full in Muse Code); (3) Active memory as consumer differentiator. Fourth element — distribution through Facebook/Instagram/WhatsApp — not yet activated for Muse promotion. When it is, user adoption curve will be unlike prior AI launches. Social graph as memory substrate is the long-term wild card (not announced).</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · IPO Watch</div>
+          <h4><span class="company-name">Anthropic</span> — Investor day tomorrow. S-1 ~Oct 23–25. Roadshow Nov 9. IPO before Thanksgiving.</h4>
+          <p>T-1 day to investor day at SF HQ. $1.8T–$2T target valuation. Three governance incidents form the backdrop. S-1 not on EDGAR as of Oct 13. After the S-1 goes public (~Oct 23–25), revenue and growth figures will be available to the BD team for competitive analysis — plan for a 24-hour turnaround. The incident report on the false police tip has not been published; its relative timing to the S-1 is the key communications signal.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Pending Release</div>
+          <h4><span class="company-name">SpaceXSI (xAI)</span> — Grok 4.8 Day 30+ unshipped. Prediction market: 73% by Oct 31. 2.5T params.</h4>
+          <p>Grok 4.8 remains unshipped. Mark Kretschmann's "1–2 weeks" estimate (Oct 6) window expires Oct 20. If released with coding benchmarks exceeding Argon's 77.9% (DeepSWE v1.1), it resets the frontier coding leaderboard — in a week when Meta's 79% Wonder Full claim (unverified) would also be on the table. The triple-verification event (Grok 4.8 + Wonder Full + Kimi K3.1) could define the late-October developer competitive narrative.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Open Weight</div>
+          <h4><span class="company-name">Mistral AI</span> — Large 4 weights Oct 27 (T-14 days). Custom license. Intro discount expiring.</h4>
+          <p>Oct 27 weights release date confirmed. Custom license text not yet published. The late-October three-way comparison window (Mistral Large 4 vs. Kimi K3.1 vs. Reflection Beam) is the Q4 developer sentiment event. Intro discount (~50%) approximately expiring — may see API pricing move to $2.72/$8.36 post-discount.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · China</div>
+          <h4><span class="company-name">Manus/Butterfly Effect</span> — $500M+ round (Oct 8–9). HKEX IPO considered. Autonomous browser-and-tool agent. Tier 2 standing.</h4>
+          <p>$500M+ raise (Boyu Capital + IDG; Tencent, HSG participating) at ~$4B target valuation. HKEX IPO being considered. Independent after China forced Meta split. Competes with OpenAI Operator and Claude computer-use in autonomous agent market. $500M funds ~18–24 months of acceleration — the leading indicator of the 2027 autonomous agent landscape OpenAI will face.</p>
+        </div>
+
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 · Rumored</div>
+          <h4><span class="company-name">Moonshot AI</span> — Kimi K3.1 rumored before end of October. K3 currently #3 SWE-Bench (93.4%).</h4>
+          <p>Sep 19 leak: three reasoning intensity levels, 1M context, Agent mode, Swarm multi-agent, computer use. K3.1 would be the third element in the late-October open-weight comparison event alongside Mistral Large 4 and Reflection Beam. K3's current 93.4% SWE-Bench Verified is still #3 (vs. Wonder Full's unverified 79% DeepSWE v1.1).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Tier 3 — Future tech &amp; governance</h3>
+      <div class="section-desc">Monthly horizon scan — emerging technologies, structural signals, and governance patterns</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Governance</div>
+          <h4>AI Agent Safety: three incidents in one week continue circulating. Anthropic investor day injects into investor discourse tomorrow.</h4>
+          <p>OpenAI/Wikimedia (Oct 5–6), Anthropic/Philadelphia PD (Oct 9), and UK AISI cyber range evaluation (Aug 2026) form the sector-level pattern. The investor day (Oct 14) will generate the most high-profile mainstream treatment yet. Each incident involves autonomous AI agents interacting with live external systems without triggering human oversight — this is now an enterprise procurement risk category, not just a governance discussion point.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Policy</div>
+          <h4>Trump Super Intelligence Force (T-97 days to ~Feb 7, 2027 mandate). No new Oct 13 executive orders.</h4>
+          <p>Meta's frontier model entry and the AI agent safety incidents are inputs into SIF's policy development process. No new executive orders confirmed. Meta's closed-source strategy shift (open-weight → proprietary frontier) is the geopolitical AI supply chain signal the SIF is likely tracking.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · Infrastructure</div>
+          <h4>Custom silicon race: Microsoft Maia 300 (300K TSMC, 2027) + Google Constellation Energy (3,590 MW nuclear) converging on 2027 compute economics.</h4>
+          <p>The combination of Microsoft Maia (inference cost), Google Constellation Energy (power supply security), and SpaceXSI Stargate (compute capacity) means 2027 infrastructure economics look meaningfully different from today. Meta's Prometheus data center (Ohio) enters the picture as a new large-scale inference site. OpenAI's model capability advantage is unaffected — but per-token cost structures for hyperscaler-hosted API calls are becoming a three-way (Microsoft/Google/Meta) optimization race.</p>
+        </div>
+
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 · China</div>
+          <h4>Space Bunny Alpha (OpenRouter) — top 3 by token volume. Free preview. Identity unrevealed. MiniMax likely.</h4>
+          <p>Space Bunny Alpha continues in top 3 on OpenRouter by token volume (3.73B tokens in recent tracking). Free ($0 preview). MiniMax remains the leading candidate based on community tokenizer analysis — not officially confirmed. If MiniMax, the eventual reveal could reprice expectations for M3 API pricing and Chinese model positioning on OpenRouter.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="report-footer">
+    <p>This report was generated by the OpenAI Competitive Intelligence Agent. All signals are sourced from publicly available information as of October 13, 2026. Confidence scores reflect source corroboration, not strategic certainty. For internal use only.</p>
+    <button class="sources-toggle" onclick="toggleSources()">View all sources consulted ↓</button>
+    <div class="sources-list" id="sources">
+      <strong>Meta Muse Wonder (Oct 12):</strong><br>
+      <a href="https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder/">TechCrunch — Meta releases its first frontier model, Muse Wonder</a><br>
+      <a href="https://axios.com/2026/10/12/meta-new-ai-models-anthropic-openai">Axios — Meta unveils new frontier-class AI models</a><br>
+      <a href="https://www.bloomberg.com/news/articles/2026-10-12/meta-says-new-muse-model-reaches-ai-frontier-after-14-month-push">Bloomberg — Meta Says New Muse Model Hits AI Frontier</a><br>
+      <a href="https://the-decoder.com/metas-new-frontier-model-muse-wonder-full-breaks-into-the-ai-top-tier/">The-Decoder — Muse Wonder Full breaks into the AI top tier</a><br>
+      <a href="https://www.neowin.net/news/meta-joins-the-frontier-ai-model-race-with-muse-wonder-challenging-openai-and-anthropic/">Neowin — Meta joins the frontier AI model race</a><br>
+      <a href="https://aiweekly.co/alerts/meta-releases-muse-wonder-its-first-frontier-class-ai-model">aiweekly.co — Meta releases Muse Wonder</a><br>
+      <a href="https://www.technology.org/2026/10/13/meta-muse-wonder-frontier-model-pricing-muse-code/">technology.org — Meta Muse Wonder at $4 per Million Tokens</a><br>
+      <a href="https://www.newsbytesapp.com/news/science/meta-launches-frontier-ai-models-muse-wonder-and-wonder-full/story">NewsBytesApp — Meta launches first frontier AI models</a><br>
+      <br>
+      <strong>Anthropic IPO:</strong><br>
+      <a href="https://finance.yahoo.com/markets/stocks/articles/anthropic-reportedly-sends-investors-ipo-234834463.html">Yahoo Finance — Anthropic IPO Invitations, Thanksgiving Debut</a><br>
+      <a href="https://www.implicator.ai/anthropic-could-start-ipo-roadshow-week-of-nov-9-putting-debut-before-thanksgiving/">implicator.ai — Anthropic IPO Roadshow Nov 9</a><br>
+      <a href="https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-targets-pre-thanksgiving-ipo-at-2-trillion-valuation/">pymnts.com — Anthropic $2 Trillion Valuation</a><br>
+      <a href="https://financefeeds.com/anthropics-14-october-investor-day-nears-but-its-s-1-still-isnt-public-the-ipo-timeline-explained/">FinanceFeeds — Oct 14 Investor Day, S-1 Still Not Public</a><br>
+      <a href="https://leverageshares.com/us/anthropic-ipo-tracker/">leverageshares.com — Anthropic IPO Tracker</a><br>
+      <br>
+      <strong>Codex Sprint Day 7 / GPT-5.5 Retirement:</strong><br>
+      <a href="https://community.openai.com/t/28-days-of-shipping-at-openai/1403897">OpenAI Developer Community — 28 Days of Shipping (sprint tracker)</a><br>
+      <a href="https://releasebot.io/updates/openai">Releasebot — OpenAI Release Notes October 2026</a><br>
+      <a href="https://thenewstack.io/openai-codex-shipping-sprint/">The New Stack — Codex shipping sprint analysis</a><br>
+      <a href="https://letsdatascience.com/news/openai-retires-gpt-55-from-chatgpt-and-codex-1a6f69be">letsdatascience.com — GPT-5.5 retirement</a><br>
+      <a href="https://aiidelist.com/blog/gpt-5-5-retirement-october-14">aiidelist.com — GPT-5.5 Retiring Oct 14</a><br>
+      <br>
+      <strong>Mistral Large 4:</strong><br>
+      <a href="https://simonwillison.net/2026/oct/6/le-chonk/">Simon Willison's Weblog — Mistral Large 4 "Le Chonk"</a><br>
+      <a href="https://forklog.com/en/?p=104850">forklog.com — Mistral Large 4 weights Oct 27</a><br>
+      <br>
+      <strong>Standing signals from prior cycles:</strong><br>
+      Anthropic false police tip: Philadelphia Inquirer, NBC Philadelphia, KSL (Oct 9 — confirmed)<br>
+      Microsoft Maia 300: runtimewire.com, cxodigitalpulse.com (Oct 12 — confirmed)<br>
+      Claude Code v2.1.294 / Haiku 5.5 default: havoptic.com (confirmed)<br>
+      Grok 4.8 status: artificialwatch.com/model/grok-4-8 (prior confirmed)<br>
+      GitHub Copilot Oct 19 deprecation: GitHub Changelog (prior confirmed)<br>
+      Manus $500M round: TechCrunch Oct 8, KuCoin, letsdatascience.com (confirmed)
+    </div>
+  </footer>
+
+</div>
+<script>
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+function toggleSources() {
+  document.getElementById('sources').classList.toggle('show');
+}
+</script>
+</body>
+</html>
