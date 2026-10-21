@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Competitive Intelligence — October 21, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9A92;
+  --border: #E8E7E2;
+  --border-light: #F0EFEA;
+  --accent: #1D1D1B;
+  --blue-text: #1E40AF;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 32px; }
+
+.report-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.report-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+.report-header h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px; }
+.report-header .meta { font-size: 14px; color: var(--text-secondary); display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.report-header .meta span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); display: inline-block; }
+
+.trend-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px 20px; margin-bottom: 40px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.trend-note strong { color: var(--text); }
+
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+.threat-card { background: var(--accent); color: #FAFAF8; border-radius: 16px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.threat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.threat-card-header { padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.threat-card-header .product-name { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.threat-card-header .product-sub { font-size: 12px; font-weight: 400; opacity: 0.5; margin-left: 8px; }
+.threat-level-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; }
+.threat-level-badge.high { background: rgba(220,38,38,0.2); color: #F87171; }
+.threat-level-badge.medium { background: rgba(217,119,6,0.2); color: #FBBF24; }
+.threat-level-badge.low { background: rgba(22,163,74,0.2); color: #4ADE80; }
+.threat-card-body { padding: 16px 24px 20px; }
+.confidence-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.confidence-label { font-size: 11px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(250,250,248,0.35); }
+.confidence-dots { display: flex; gap: 4px; }
+.confidence-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.confidence-dot.filled { background: rgba(250,250,248,0.6); }
+.threat-card-body .signal-text { font-size: 13px; line-height: 1.55; color: rgba(250,250,248,0.85); margin-bottom: 12px; }
+.threat-card-body .signal-text .company-name { font-weight: 600; color: #FAFAF8; }
+.threat-card-body .implication { font-size: 12px; color: rgba(250,250,248,0.5); padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-style: italic; }
+
+.must-know { background: var(--surface); border-radius: 16px; padding: 28px 32px; margin-bottom: 48px; border: 1px solid var(--border); }
+.must-know h2 { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+.must-know-list { list-style: none; }
+.must-know-list li { padding: 14px 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 16px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: var(--text); }
+.must-know-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.must-know-list .num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-tertiary); min-width: 20px; padding-top: 2px; }
+.must-know-list .company-name { font-weight: 600; }
+.must-know-list .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.tag-chatgpt { background: #F5F0E8; color: #8B7355; }
+.tag-codex { background: #EDE8F5; color: #5B4A8A; }
+.tag-api { background: #E8F0F5; color: #4A6E8A; }
+.tag-multi { background: #E8F5EC; color: #2D6A4F; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--surface-alt); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; color: var(--text-secondary); border: none; background: transparent; font-family: var(--font); }
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section { margin-bottom: 36px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.section .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 12px; transition: border-color 0.2s; }
+.signal-card:hover { border-color: var(--text-tertiary); }
+.signal-card.new-signal { border-left: 3px solid #2563EB; }
+.signal-card.standing-signal { border-left: 3px solid var(--border); }
+.signal-card.unknown-signal { border-left: 3px solid #D97706; }
+.signal-card h4 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.signal-card h4 .company-name { font-weight: 700; }
+.signal-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.signal-card p:last-of-type { margin-bottom: 0; }
+.signal-card .source { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px; }
+.signal-card .source a { color: var(--blue-text); text-decoration: none; }
+.signal-card .confidence-inline { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 6px; font-style: italic; }
+.badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-family: var(--font-mono); }
+.badge-new { background: #DBEAFE; color: #1E40AF; }
+.badge-standing { background: #F3F4F6; color: #6B7280; }
+.badge-unknown { background: #FEF3C7; color: #D97706; }
+.badge-watch { background: #FCE7F3; color: #9D174D; }
+.badge-update { background: #D1FAE5; color: #065F46; }
+
+.market-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+.market-table th { text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); border-bottom: 1px solid var(--border); background: var(--surface-alt); }
+.market-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+.market-table td:first-child { font-weight: 600; color: var(--text); }
+.market-table tr:last-child td { border-bottom: none; }
+.market-table .highlight-row td { background: #FFFBEB; }
+.market-table .new-row td { background: #EFF6FF; }
+
+.hiring-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.hiring-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.hiring-card .company { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.hiring-card .detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.hiring-card .trend { font-size: 12px; font-family: var(--font-mono); margin-top: 8px; color: var(--text-secondary); }
+
+.horizon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.horizon-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 3px solid var(--text-tertiary); }
+.horizon-card.tier2 { border-left-color: var(--accent); }
+.horizon-card.tier3 { border-left-color: var(--text-tertiary); }
+.horizon-card .tier-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.horizon-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.horizon-card h4 .company-name { font-weight: 700; }
+.horizon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.sprint-bar { margin: 12px 0; }
+.sprint-bar-label { font-size: 12px; font-family: var(--font-mono); color: var(--text-tertiary); margin-bottom: 6px; }
+.sprint-days { display: flex; gap: 3px; flex-wrap: wrap; }
+.sprint-day { width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--font-mono); font-weight: 600; }
+.sprint-day.feature { background: #D1FAE5; color: #065F46; }
+.sprint-day.reset { background: #FEE2E2; color: #991B1B; }
+.sprint-day.unknown { background: #FEF3C7; color: #92400E; }
+.sprint-day.remaining { background: var(--border-light); color: var(--text-tertiary); }
+
+.report-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.report-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.sources-toggle { font-size: 13px; color: var(--text-secondary); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border: none; background: none; font-family: var(--font); text-decoration: underline; text-underline-offset: 2px; }
+.sources-list { display: none; margin-top: 16px; }
+.sources-list.show { display: block; }
+.sources-list h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; margin-top: 16px; color: var(--text-secondary); }
+.sources-list h4:first-child { margin-top: 0; }
+.sources-list ul { list-style: none; }
+.sources-list li { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 2; }
+.sources-list li a { color: var(--blue-text); text-decoration: none; }
+.sources-list li a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dashboard .threat-card { animation: fadeIn 0.5s ease both; }
+.dashboard .threat-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard .threat-card:nth-child(3) { animation-delay: 0.2s; }
+.must-know { animation: fadeIn 0.5s ease 0.3s both; }
+
+@media (max-width: 768px) {
+  .container { padding: 24px 16px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .hiring-grid, .horizon-grid { grid-template-columns: 1fr; }
+  .tabs { flex-wrap: wrap; }
+  .tab { flex: unset; width: calc(50% - 4px); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="report-header">
+    <div class="eyebrow">OpenAI Strategy &amp; Operations · Competitive Intelligence</div>
+    <h1>Daily Intelligence Report</h1>
+    <div class="meta">
+      <span>October 21, 2026</span>
+      <span class="dot"></span>
+      <span>Generated automatically</span>
+      <span class="dot"></span>
+      <span>Classification: Internal Use Only</span>
+    </div>
+  </header>
+
+  <!-- TREND NOTE -->
+  <div class="trend-note">
+    <strong>Trend note vs. Oct 20:</strong> Four new signals: (1) <strong>Codex Sprint Day 15 = RESET (Oct 20)</strong> — recovery narrative interrupted; 8F/6R through Day 15 (53% feature rate); 13 days remain needing 69%+ rate for defensible 17+ finish. (2) <strong>Claude Code v2.1.304–306 (Oct 19–21)</strong> — three more releases in three days (/auto-mode-setup, 5-hr limit warning, Linux sandbox, cloud login fix); six Anthropic releases in six days. (3) <strong>Blacksmith $1B valuation (Oct 21)</strong> — Sequoia $66M Series C; AI code-testing startup at 10,000+ enterprise customers, 90M checks/week. (4) <strong>Google Gemini for Government Services (Oct 20)</strong> — agentic AI in preview for US federal/state/local agencies; Missouri + DHHS launch customers; Accenture Federal FDE partnership. Standing: Anthropic S-1 not on EDGAR (window Oct 21–31); Mistral Large 4 weights T-6 days (Oct 27); Grok 4.8 Day 38+ unshipped; Qwen 4 no weights; Meta Muse Spark Open BenchLM coding rank #44/150 (independent, low).
+  </div>
+
+  <!-- C-SUITE DASHBOARD -->
+  <div class="dashboard">
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">ChatGPT</span><span class="product-sub">PMM</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <div class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </div>
+        </div>
+        <div class="signal-text">
+          Anthropic S-1 window is <strong>any day Oct 21–31</strong>. No EDGAR filing confirmed as of report generation — the 4–6 week "Claude vs. ChatGPT" press cycle begins within hours of filing. Google launched Gemini for Government Services (Oct 20) with Accenture Federal Services — a new distribution encirclement in a sector OpenAI has been cultivating. Google also launched Gemini personal intelligence in Android Auto (Oct 20), adding a B2C daily commute use case.
+        </div>
+        <div class="implication">PMM media readiness must be activation-ready daily through Oct 31. Prepare specific capability comparison vs. Fable 5.1, Comscore prompt share response, and user-base scale narrative.</div>
+      </div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">Codex</span><span class="product-sub">PM</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <div class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </div>
+        </div>
+        <div class="signal-text">
+          Sprint Day 15 = RESET (Oct 20). <strong>8 features, 6 resets</strong> through Day 15. 13 days remain; needs 9+ features (69%+) to reach defensible 17-total finish. Claude Code shipped v2.1.304–306 in the same window — six Anthropic releases to Codex's sprint. Blacksmith's $1B valuation (today) validates code-validation as a structural market. Oct 30 Pro limit reduction T-9 days; subscriber communication overdue.
+        </div>
+        <div class="implication">Day 15 resets the recovery narrative from Days 11/12/14. Day 16 (today) is the next critical sprint test. Proactive Pro subscriber communication on Oct 30 change is urgent.</div>
+      </div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-card-header">
+        <div><span class="product-name">API &amp; Models</span><span class="product-sub">BD</span></div>
+        <span class="threat-level-badge high">HIGH</span>
+      </div>
+      <div class="threat-card-body">
+        <div class="confidence-line">
+          <span class="confidence-label">Confidence</span>
+          <div class="confidence-dots">
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+            <span class="confidence-dot filled"></span>
+          </div>
+        </div>
+        <div class="signal-text">
+          Mistral Large 4 open weights arrive in <strong>T-6 days (Oct 27)</strong>. Three-entrant open-weight comparison window: Muse Spark Open (Oct 15) + DeepSeek V4.1-Flash-1017 (Oct 17) + Mistral Large 4 (Oct 27). Qwen 4 is the wildcard. BenchLM's independent coding rank for Meta Muse Spark Open at #44/150 undercuts Meta's "most capable US open-weight" claim for coding workloads.
+        </div>
+        <div class="implication">BD should have enterprise positioning document (open-weight vs. OpenAI API tradeoffs: latency, SLAs, compliance, support) ready before Oct 27. Cite BenchLM #44 to counter Meta's self-reported claim.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUST KNOW THIS WEEK -->
+  <div class="must-know">
+    <h2>Must Know This Week</h2>
+    <ul class="must-know-list">
+      <li>
+        <span class="num">01</span>
+        <div><span class="company-name">OpenAI (Codex)</span> — Sprint Day 15 = RESET (Oct 20). Recovery narrative interrupted. Scorecard: 8F/6R through Day 15 (53% rate, down from 57%). Needs 9/13 remaining days (69%+) to reach defensible 17+ features. "Cooking with Codex" video accompanied reset — new narrative framing attempt. Day 16 (today) is the next sprint test.</div>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <div><span class="company-name">Anthropic (Claude Code)</span> — v2.1.304–306 shipped Oct 19–21 (six releases in six days total). Highlights: /auto-mode-setup guided environment scan, Pro/Max 5-hour limit warning, Mods human-approval gate, Linux namespace sandbox, cloud session login fix. Highest-velocity delivery week since Claude Code GA — maintained while Codex sprint had Day 15 reset.</div>
+        <span class="tag tag-codex">Codex</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <div><span class="company-name">Blacksmith</span> — AI code-testing startup hits $1B valuation (Sequoia $66M Series C, Oct 21). 10,000+ enterprise customers, 90M validation checks/week, 17x ARR YoY. Structural signal: AI coding tools (Codex, Claude Code, Cursor) are driving code output faster than teams can validate it — creating a durable infrastructure market downstream.</div>
+        <span class="tag tag-multi">Multi</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chatgpt', this)">ChatGPT (PMM)</button>
+    <button class="tab" onclick="showTab('codex', this)">Codex (PM)</button>
+    <button class="tab" onclick="showTab('api', this)">API &amp; Models (BD)</button>
+    <button class="tab" onclick="showTab('hiring', this)">Hiring</button>
+    <button class="tab" onclick="showTab('horizon', this)">Horizon Watch</button>
+  </div>
+
+  <!-- TAB: CHATGPT -->
+  <div id="tab-chatgpt" class="tab-content active">
+    <div class="section">
+      <h3>Competitor Messaging &amp; Positioning</h3>
+      <div class="section-desc">Consumer AI chat — messaging, sentiment, marketing, UX reactions</div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-watch">DAILY WATCH</span><span class="company-name">Anthropic</span> — S-1 window: Oct 21–31. No EDGAR filing confirmed as of report generation. IPO press cycle begins within hours of filing.</h4>
+        <p>Anthropic S-1 (confidential submission filed June 1, 2026; day 143 elapsed) remains absent from EDGAR as of Oct 21. The updated best estimate — Oct 21–31 public filing, Nov 9–16 roadshow, Nov 18–24 IPO — is based on SEC 15-day rule applied to Manifold market data (post-Nov 3 midterms signal from Reuters, MEDIUM confidence). Every day in the Oct 21–31 window is a potential filing day. The PMM rapid-response protocol should be on activation-ready status: "Claude vs. ChatGPT" coverage will begin within hours of EDGAR publication. The S-1 will disclose FY2026 revenue (~$16.8B based on Oct 14 investor day), user base, revenue mix, customer concentration, and headcount — all will be used in press comparisons.</p>
+        <p>For PMMs: Prepare specific capability comparison vs. Fable 5.1/Opus 5.5 at $4/$20; have Comscore Q2 prompt share context (ChatGPT 50% vs. prior 70%) response language ready; lead with user base scale and daily active usage depth vs. Anthropic's enterprise-weighted mix.</p>
+        <div class="confidence-inline">Confidence: MEDIUM on Oct 21–31 window (Manifold/Reuters — secondary). HIGH on S-1 not yet filed (confirmed).</div>
+        <div class="source">Sources: <a href="https://forkast.news/anthropics-public-s-1-still-missing-from-edgar-as-october-ipo-window-opens/">Forkast</a> · <a href="https://manifold.markets/AlexMiller3a5e/when-will-anthropics-public-s1-come">Manifold Markets</a> · <a href="https://leverageshares.com/us/anthropic-ipo-tracker/">Leverage Shares IPO Tracker</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="badge badge-new">NEW</span><span class="company-name">Google</span> — Gemini for Government Services preview (Oct 20) + Gemini in Android Auto (Oct 20). Two distribution expansions in one day.</h4>
+        <p><strong>Government:</strong> Google Public Sector launched Gemini for Government Services in preview on October 20 — purpose-built agentic AI for US federal, state, and local agencies. Launch customers: State of Missouri, US Department of Health and Human Services. Use cases: document intake, public records work, procurement review, grant spending analysis with human oversight at consequential steps. Partner ecosystem: Accenture Federal Services deployed "Launchpads" of Forward Deployed Engineers (FDEs) at government agencies; SZNS Solutions launched a FOIA and redaction agent.</p>
+        <p><strong>Vehicles:</strong> Google launched Gemini personal intelligence in Android Auto on October 20, with Google Built-in vehicle integration following. This integrates Gemini's connected Google services into the daily commute context — a consumer use case ChatGPT has no direct equivalent for.</p>
+        <p>For PMMs: Google's government AI launch with named agency customers (Missouri, DHHS) and Accenture FDE distribution is the first major government-sector agentic deployment from a top lab. If OpenAI does not have equivalent federal commitments with named agencies, this creates a procurement narrative gap with federal IT buyers.</p>
+        <div class="confidence-inline">Confidence: HIGH on launch and partners (Google Press Corner Oct 20, FedScoop, TechCrunch — confirmed).</div>
+        <div class="source">Sources: <a href="https://www.googlecloudpresscorner.com/2026-10-20-Google-Public-Sector-Launches-Gemini-for-Government-Services">Google Press Corner</a> · <a href="https://fedscoop.com/google-launches-gemini-for-government-services/">FedScoop</a> · <a href="https://techcrunch.com/2026/10/20/google-is-bringing-a-more-personal-version-of-its-gemini-ai-assistant-to-your-car">TechCrunch (vehicles)</a></div>
+      </div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">xAI</span> — Grok 4.8 Day 38+ unshipped. Polymarket ~13% by Oct 31, ~46% by Nov 30. No new consumer signals.</h4>
+        <p>No new xAI consumer signals Oct 20–21. Grok 4.8 (2.5T params, C++ stack) remains unshipped at Day 38+ since Sept 13 naming. No post-training timeline. Standing: Grok Voice 1.0 at Starlink customer support (~70% resolution rate, xAI self-reported).</p>
+        <div class="confidence-inline">Confidence: HIGH on unshipped. MEDIUM on Polymarket odds (stale late September data).</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Customer Sentiment</h3>
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">GitHub Copilot</span> — Three-wave October deprecation completed Oct 19. Developer migration fatigue at peak. Ongoing window.</h4>
+        <p>No new Copilot signals Oct 20–21. Three-wave October deprecation cycle (6 models retired Oct 19) complete. Developer migration fatigue represents an ongoing opportunity for ChatGPT and Codex BD to reach enterprise developers in transition.</p>
+        <div class="confidence-inline">Confidence: HIGH on deprecation completion (prior confirmed).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: CODEX -->
+  <div id="tab-codex" class="tab-content">
+    <div class="section">
+      <h3>Feature Launches &amp; Competitive Moves</h3>
+      <div class="section-desc">AI coding tools — features, benchmarks, enterprise signals, developer sentiment</div>
+
+      <div class="signal-card unknown-signal">
+        <h4><span class="badge badge-unknown">KEY WATCH</span><span class="company-name">OpenAI (Codex)</span> — Sprint Day 15 = RESET (Oct 20). Day 16 (today) status UNKNOWN. 8F/6R through Day 15. 13 days remain.</h4>
+
+        <!-- Sprint visualization -->
+        <div class="sprint-bar">
+          <div class="sprint-bar-label">28-day sprint scorecard (through Day 15)</div>
+          <div class="sprint-days">
+            <div class="sprint-day feature" title="Day 1: Feature — GPT-6 faster default">1</div>
+            <div class="sprint-day reset" title="Day 2: Reset">2</div>
+            <div class="sprint-day feature" title="Day 3: Feature (ChatGPT-only)">3</div>
+            <div class="sprint-day feature" title="Day 4: Feature">4</div>
+            <div class="sprint-day feature" title="Day 5: Feature">5</div>
+            <div class="sprint-day reset" title="Day 6: Reset">6</div>
+            <div class="sprint-day feature" title="Day 7: Feature">7</div>
+            <div class="sprint-day reset" title="Day 8: Reset">8</div>
+            <div class="sprint-day feature" title="Day 9: Feature">9</div>
+            <div class="sprint-day reset" title="Day 10: Reset">10</div>
+            <div class="sprint-day feature" title="Day 11: Feature — Capacity">11</div>
+            <div class="sprint-day feature" title="Day 12: Feature — Settings">12</div>
+            <div class="sprint-day reset" title="Day 13: Reset">13</div>
+            <div class="sprint-day feature" title="Day 14: Feature — Message editing">14</div>
+            <div class="sprint-day reset" title="Day 15: Reset — Cooking with Codex video">15</div>
+            <div class="sprint-day unknown" title="Day 16: UNKNOWN (today)">16</div>
+            <div class="sprint-day remaining" title="Day 17 — remaining">17</div>
+            <div class="sprint-day remaining" title="Day 18">18</div>
+            <div class="sprint-day remaining" title="Day 19">19</div>
+            <div class="sprint-day remaining" title="Day 20">20</div>
+            <div class="sprint-day remaining" title="Day 21">21</div>
+            <div class="sprint-day remaining" title="Day 22">22</div>
+            <div class="sprint-day remaining" title="Day 23">23</div>
+            <div class="sprint-day remaining" title="Day 24">24</div>
+            <div class="sprint-day remaining" title="Day 25">25</div>
+            <div class="sprint-day remaining" title="Day 26">26</div>
+            <div class="sprint-day remaining" title="Day 27">27</div>
+            <div class="sprint-day remaining" title="Day 28">28</div>
+          </div>
+        </div>
+
+        <p>Day 15 (Oct 20): "Cooking with Codex" video + global usage reset at 6:33 AM UTC. Forum post title: "A Reset to Keep Cooking with Codex." Sprint scorecard through Day 15: Feature days = 1, 4, 5, 7, 9, 11, 12, 14 (8); Reset days = 2, 6, 8, 10, 13, 15 (6). Feature rate: 8/15 = 53.3% (down from 57.1% through Day 14). Recovery path to 17+ features: needs 9/13 remaining days as features (69.2%).</p>
+        <p>For Codex PMs: The "Cooking with Codex" multimedia reset framing is new — an attempt to inject narrative energy into a reset day. Day 16 (today, Oct 21) is the next critical data point. The Oct 30 Pro limit reduction (T-9 days) requires immediate proactive subscriber communication if not already sent.</p>
+        <div class="confidence-inline">Confidence: HIGH on Day 15 = reset (OpenAI forum + multiple trackers confirmed). UNKNOWN on Day 16.</div>
+        <div class="source">Sources: <a href="https://community.openai.com/t/a-reset-to-keep-cooking-with-codex-day-15-of-28-days-of-quality-of-life-improvements-and-or-a-full-reset/1403525">OpenAI Developer Community — Day 15</a> · <a href="https://codex-resets.com/">codex-resets.com</a> · <a href="https://codex-reset.com/">codex-reset.com</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="badge badge-new">NEW</span><span class="company-name">Anthropic (Claude Code)</span> — v2.1.304–306 (Oct 19–21). Six releases in six days (v2.1.301–306). Highlights: /auto-mode-setup, 5-hr limit warning, Linux sandbox, cloud login fix.</h4>
+        <p><strong>v2.1.304 (Oct 19, 76 CLI changes):</strong> /auto-mode-setup — guided project scan that teaches Auto Mode about the local environment; Pro/Max 5-hour usage limit warning before resuming an old conversation that would consume significant allowance; tool.check decider:"person" in Mods requiring human approval before tool execution; fix for --worktree deleting branch without confirmation. Added Code Review levels (review depth configuration).</p>
+        <p><strong>v2.1.305 (Oct 20):</strong> Linux namespace sandbox support (sandbox.allowNestedUserNamespaces for enterprise deployments requiring sandboxed execution); fix for Vertex/Bedrock/gateway provider failures when tool search was rejected; smarter retry logic.</p>
+        <p><strong>v2.1.306 (Oct 21):</strong> Fix for claude -p reporting "Not logged in" in cloud sessions without env vars; fix for API error being replaced by "prompt is too long" in heavy-MCP-tool sessions.</p>
+        <p>For Codex PMs: Six Claude Code releases in six days is Anthropic's highest-velocity delivery week since GA. The /auto-mode-setup addresses the top developer complaint about agentic tools (context blindness); the 5-hour limit warning is sophisticated subscriber UX; Linux sandbox supports enterprise deployment requirements. The sprint contrast is structural.</p>
+        <div class="confidence-inline">Confidence: HIGH on v2.1.304–305 (GitHub releases, dev.classmethod.jp — confirmed). MEDIUM on v2.1.306 (secondary mirror only).</div>
+        <div class="source">Sources: <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.304">GitHub v2.1.304</a> · <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.305">GitHub v2.1.305</a> · <a href="https://dev.classmethod.jp/en/articles/20261020-cc-updates-v2-1-304/">dev.classmethod.jp</a> · <a href="https://aicoder.com/news/news-20261020-claude-code-2-1-304-auto-mode-setup-resume-usage-warning">AICoder</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="badge badge-new">NEW TODAY</span><span class="company-name">Blacksmith</span> — $1B valuation (Sequoia $66M Series C). AI code-testing startup. 10,000+ enterprise customers, 90M validation checks/week, 17x ARR.</h4>
+        <p>Fortune reported exclusively today that Blacksmith, an AI code-testing/CI startup, raised $66M from Sequoia Capital at a $1B valuation. Total funding: ~$124.5M. Prior round: $45M Series B (Peak XV / GV) at $550M valuation in August. Metrics: 10,000+ enterprise customers (2x from August), 90M validation checks/week (18x from start of year), 17x ARR year-over-year. Use case: continuous integration (CI) and code validation for AI-written code — the company's pitch is that Codex/Claude Code/Cursor now generate code faster than engineering teams can validate it.</p>
+        <p>For Codex PMs and BD: Blacksmith is not a Codex competitor — it is a structural beneficiary and potential integration partner. The 17x ARR growth is direct evidence that AI coding tools are driving real downstream demand. A Codex-native integration with CI/validation tooling (closing the write→validate loop) would differentiate Codex in enterprise sales where the full development workflow matters. Evaluate partnership or integration conversation with Blacksmith.</p>
+        <div class="confidence-inline">Confidence: HIGH (Fortune exclusive Oct 21, Startup Fortune, CryptoBriefing — multiple confirmed). MEDIUM on "17x ARR" (Fortune — single primary source).</div>
+        <div class="source">Sources: <a href="https://fortune.com/2026/10/21/exclusive-ai-code-testing-startup-blacksmith-hits-1-billion-valuation-as-ai-written-code-surges/">Fortune (exclusive)</a> · <a href="https://startupfortune.com/blacksmith-hits-1-billion-valuation-two-months-after-its-last-round/">Startup Fortune</a> · <a href="https://cryptobriefing.com/blacksmith-1-billion-valuation-sequoia-series-c/">CryptoBriefing</a></div>
+      </div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Cognition / Devin Desktop</span> — Argon 75% off T-6 days (Oct 27). Devin Local (Rust, 30% token-efficient) in preview. $1B ARR standing.</h4>
+        <p>Cognition Gemini 4 Argon 75% off expires in T-6 days (Oct 27). After Oct 27, new Devin Desktop users lose cost-parity advantage vs. Codex. BD should identify Codex enterprise prospects currently in Devin Desktop evaluation and time retention outreach to the Oct 27 expiry. Devin Local (Rust rewrite, up to 30% more token-efficient, subagent support) remains in preview — no release date. $1B ARR and $48B valuation standing.</p>
+        <div class="confidence-inline">Confidence: HIGH on Oct 27 expiry and $1B ARR (prior confirmed). MEDIUM on Devin Local Rust timeline (secondary).</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Market Share Snapshot</h3>
+      <table class="market-table">
+        <thead>
+          <tr><th>Tool</th><th>Adoption</th><th>Key Development Oct 19–21</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude Code (Anthropic)</td>
+            <td>39% global / 47% US — #1 (JetBrains)</td>
+            <td>v2.1.304–306: /auto-mode-setup, 5-hr limit warning, Linux sandbox, login fix; SWE-Bench #1 (97%) standing</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Codex (OpenAI)</td>
+            <td>65% awareness</td>
+            <td>Day 15 = reset; Day 16 UNKNOWN; 8F/6R; Oct 30 limit change T-9 days</td>
+          </tr>
+          <tr>
+            <td>Cursor / SpaceXSI</td>
+            <td>64% Fortune 500 / $2B ARR</td>
+            <td>No new signals Oct 19–21; Grok 4.8 unshipped (Day 38+)</td>
+          </tr>
+          <tr>
+            <td>Devin Desktop / Cognition</td>
+            <td>$1B ARR / $48B valuation</td>
+            <td>Argon 75% off T-6 days; Devin Local (Rust) in preview</td>
+          </tr>
+          <tr>
+            <td>GitHub Copilot (Microsoft)</td>
+            <td>~21%</td>
+            <td>Oct 19 deprecation completed; migration fatigue peak</td>
+          </tr>
+          <tr>
+            <td>Gemini Antigravity (Google)</td>
+            <td>Growing</td>
+            <td>Government Services (Oct 20); Android Auto (Oct 20); reliability concerns standing</td>
+          </tr>
+          <tr class="new-row">
+            <td>Blacksmith</td>
+            <td>10,000+ enterprises</td>
+            <td><strong>NEW Oct 21:</strong> $1B valuation, $66M Sequoia Series C, 90M checks/week</td>
+          </tr>
+          <tr>
+            <td>Muse Code / Muse Spark Open (Meta)</td>
+            <td>New entrant</td>
+            <td>BenchLM coding rank #44/150 (independent); no SWE-Bench score found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: API & MODELS -->
+  <div id="tab-api" class="tab-content">
+    <div class="section">
+      <h3>Model Releases &amp; Pricing</h3>
+      <div class="section-desc">Developer platform — model releases, pricing, partnerships, open-source ecosystem</div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-watch">T-6 DAYS</span><span class="company-name">Mistral AI</span> — Large 4 weights arrive Oct 27. Custom license. $1.36/$4.18 API (verify). 1.05T MoE, 1M context. Three-entrant open-weight comparison event.</h4>
+        <p>Mistral Large 4 open-weight release confirmed Oct 27 (some Hugging Face sources show Oct 31). Specs: 1.05T parameters, ~49B active (MoE), 1.6B vision encoder, 1M context. Custom Mistral license (not Apache 2.0). API pricing: $1.36/$4.18 per 1M tokens (prior report cited $0.68/$2.09 from a discounted source — $1.36/$4.18 is the current best estimate; verify against mistral.ai). Coding performance: Mistral acknowledged coding trails frontier models at launch. When weights drop, r/LocalLLaMA and OpenRouter will produce a three-way open-weight comparison (Muse Spark Open vs. DeepSeek V4.1-Flash-1017 vs. Mistral Large 4) within 48 hours.</p>
+        <p>For BD: The week of Oct 27 is the most consequential developer sentiment event for open-weight models in Q4 2026. A Mistral Large 4 or Muse Spark Open victory in coding workloads deepens open-weight share; if neither matches DeepSeek's performance, DeepSeek's Chinese-origin moat strengthens. Prepare competitive positioning document before Oct 25.</p>
+        <div class="confidence-inline">Confidence: HIGH on Oct 27 date (multiple confirmed). MEDIUM on $1.36/$4.18 pricing (secondary, conflicts with prior — verify primary).</div>
+        <div class="source">Sources: <a href="https://www.mindstudio.ai/blog/mistral-large-4-pricing-open-weights">MindStudio</a> · <a href="https://www.marktechpost.com/2026/10/06/mistral-ai-releases-mistral-large-4-le-chonk-a-1-05t-parameter-open-weight-multimodal-moe/">MarkTechPost</a></div>
+      </div>
+
+      <div class="signal-card new-signal">
+        <h4><span class="badge badge-update">UPDATE</span><span class="company-name">Meta (Muse Spark Open)</span> — BenchLM independent coding rank: #44/150. Contradicts Meta's "most capable US open-weight" claim for coding workloads. No SWE-Bench Verified score found.</h4>
+        <p>BenchLM's independent October 2026 model ranking places Meta Muse Spark Open at coding rank #44 out of 150 tracked models — significantly below GLM-5 (~95.8% SWE-Bench Verified) and Kimi K3 (~93.4%). No SWE-Bench Verified score for Muse Spark Open has been published as of Oct 21.</p>
+        <p>Separate data point: Meta Muse Spark 1.3 (a later closed model version, not open-weight) scored 75.4 on DeepSWE v1.1, which Meta claims is first place — but MindStudio disputes this based on hands-on testing. The two data points reflect different models and different benchmark methodologies.</p>
+        <p>For BD: Cite BenchLM #44/150 as the independent coding rank for Muse Spark Open (the open-weight version). GLM-5 (MIT) and Kimi K3 (MIT) remain the definitive open-weight coding leaders. No US open-weight challenger has emerged above them in coding workloads.</p>
+        <div class="confidence-inline">Confidence: HIGH on BenchLM #44 (BenchLM Oct 2026 — independent). LOW on Muse Spark Open SWE-Bench (not found). MEDIUM on Muse Spark 1.3 DeepSWE #1 (Meta-reported, disputed).</div>
+        <div class="source">Sources: <a href="https://benchlm.ai/models/muse-spark">BenchLM — Muse Spark (October 2026)</a> · <a href="https://www.mindstudio.ai/blog/meta-muse-spark-1-3-benchmark-confusion">MindStudio — Muse Spark 1.3 Benchmark Confusion</a></div>
+      </div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">DeepSeek</span> — V4.1-Flash-1017 (HLE 42.6); Search/Fetch APIs ($0.75/1K); free window through ~Oct 31. No new signals Oct 20–21.</h4>
+        <p>No new DeepSeek signals this cycle. V4.1-Flash-1017 (Oct 17 update, HLE 42.6 ↑ from 36.8, MIT license, same pricing) and Search/Fetch APIs ($0.75/1K requests, 2-week free window for Claude Code/Codex users through ~Oct 31) remain standing from prior report.</p>
+        <div class="confidence-inline">Confidence: HIGH on standing signals (prior confirmed).</div>
+      </div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Alibaba / Qwen 4</span> — Announced Sep 22 at Apsara Conference. No weights released as of Oct 21. "October" timing from anonymous sources only.</h4>
+        <p>No new Qwen 4 signals. An Oct 18 check found no Qwen 4 weights available. "End of October" timing from anonymous sources, not confirmed by Alibaba. If Qwen 4 ships before Oct 27, it reshapes the open-weight comparison window. 27B open-weight tier unconfirmed. Licensing not disclosed.</p>
+        <div class="confidence-inline">Confidence: HIGH on no release (no weights confirmed). LOW on October timing (anonymous).</div>
+      </div>
+
+      <div class="signal-card standing-signal">
+        <h4><span class="badge badge-standing">STANDING</span><span class="company-name">Microsoft</span> — MAI-Base-2 post-training in progress. No Foundry partners, no Azure pricing. First signal likely Nov–Dec 2026.</h4>
+        <p>No new MAI-Base-2 signals Oct 20–21. Pre-training completed Oct 15; post-training on Microsoft infrastructure ongoing. No public endpoint or Foundry partner announcements.</p>
+        <div class="confidence-inline">Confidence: HIGH on pre-training completion (prior confirmed). LOW on post-training timeline.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>API Leaderboard (October 21, 2026)</h3>
+      <table class="market-table">
+        <thead>
+          <tr><th>Provider / Model</th><th>Input / Output ($/1M tok)</th><th>Context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td>OpenAI — GPT-6.1 Sol</td>
+            <td>$2 / $10</td>
+            <td>1.05M</td>
+            <td>Sprint Day 15 = reset; Day 16 UNKNOWN; Oct 30 limit T-9 days</td>
+          </tr>
+          <tr>
+            <td>Anthropic — Claude Fable 5.1 / Opus 5.5</td>
+            <td>$4 / $20</td>
+            <td>1M</td>
+            <td>SWE-Bench #1 (97.00%); v2.1.306 shipped Oct 21</td>
+          </tr>
+          <tr>
+            <td>Anthropic — Claude Sonnet 5.5</td>
+            <td>$2 / $10 (PERMANENT)</td>
+            <td>1M</td>
+            <td>Plugins official; six releases in six days</td>
+          </tr>
+          <tr>
+            <td>Anthropic — Claude Haiku 5.5</td>
+            <td>$0.10 / $0.50 (&lt;100K)</td>
+            <td>1M</td>
+            <td>Claude Code default subagent; 1.33s latency</td>
+          </tr>
+          <tr>
+            <td>Google — Gemini 4 Argon</td>
+            <td>$2 / $10 intro → $4 / $20 Dec 1</td>
+            <td>1M output</td>
+            <td>Government Services (Oct 20); Dec 1 cliff T-41 days</td>
+          </tr>
+          <tr>
+            <td>Microsoft — MAI-Base-2</td>
+            <td>TBD (Foundry)</td>
+            <td>TBD</td>
+            <td>Post-training in progress; no partners</td>
+          </tr>
+          <tr class="new-row">
+            <td>Meta — Muse Spark Open</td>
+            <td>TBD (API)</td>
+            <td>1M</td>
+            <td><strong>BenchLM coding #44/150 (independent)</strong>; no SWE-Bench</td>
+          </tr>
+          <tr>
+            <td>SpaceXSI — Grok 4.7</td>
+            <td>$2 / $6</td>
+            <td>500K</td>
+            <td>Grok 4.8 Day 38+ unshipped; Polymarket ~13% Oct 31</td>
+          </tr>
+          <tr>
+            <td>DeepSeek — V4.1-Flash-1017</td>
+            <td>$0.15 / $0.60 off-peak</td>
+            <td>1M</td>
+            <td>HLE 42.6; Search/Fetch APIs free window ~Oct 31</td>
+          </tr>
+          <tr>
+            <td>Alibaba — Qwen 4</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td>No weights; "October" timing anonymous</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Mistral AI — Large 4</td>
+            <td>$1.36 / $4.18 (verify)</td>
+            <td>1M</td>
+            <td><strong>Weights T-6 days (Oct 27); custom license</strong></td>
+          </tr>
+          <tr>
+            <td>Moonshot AI — Kimi K3</td>
+            <td>$3 / $15</td>
+            <td>1M</td>
+            <td>No new signals; K3 current</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: HIRING -->
+  <div id="tab-hiring" class="tab-content">
+    <div class="section">
+      <h3>Hiring &amp; Resource Signals</h3>
+      <div class="section-desc">Cross-cutting job board analysis and organizational signals</div>
+      <div class="hiring-grid">
+        <div class="hiring-card">
+          <div class="company">Anthropic</div>
+          <div class="detail">Pre-IPO quiet period. S-1 filing (any day Oct 21–31) will be the most significant headcount disclosure of the year. Six Claude Code releases in six days signals engineering team at sustained high operational tempo.</div>
+          <div class="trend">Confidence: LOW on specific hires. HIGH on S-1 as disclosure event.</div>
+        </div>
+        <div class="hiring-card" style="border-left: 3px solid #2563EB;">
+          <div class="company">Blacksmith <span style="font-size:11px; font-weight:400; color: #2563EB;">NEW TODAY</span></div>
+          <div class="detail">40 → ~75 employees by year-end target. Most new $66M Series C funding goes to computing capacity. Engineering and infrastructure hiring. New entrant in AI coding ecosystem.</div>
+          <div class="trend">Confidence: HIGH (Fortune exclusive confirmed).</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Google</div>
+          <div class="detail">Gemini for Government Services (Oct 20) + Accenture FDE partnership implies active Google Public Sector BD, technical account teams, and government solutions engineering. Gemini in vehicles implies platform partnership team. No specific hires confirmed.</div>
+          <div class="trend">Confidence: LOW on specific hires.</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">OpenAI</div>
+          <div class="detail">Safety researcher departures (Oct 8: Jasmine Wang, Tomek Korbak, Mikita Balesni, David Robinson — WSJ) standing. No new hires or departures confirmed Oct 19–21. Sprint Day 15 reset noted; no team change signals.</div>
+          <div class="trend">Confidence: HIGH on safety departures (WSJ — prior). LOW on Oct 21 hires.</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Cognition / Devin</div>
+          <div class="detail">$1B ARR + $48B valuation implies continued aggressive hiring capacity. Devin Local (Rust rewrite) in preview implies active engineering team. No specific Oct 19–21 hires confirmed.</div>
+          <div class="trend">Confidence: HIGH on ARR/valuation. LOW on specific hires.</div>
+        </div>
+        <div class="hiring-card">
+          <div class="company">Cursor / SpaceXSI</div>
+          <div class="detail">No new hiring signals Oct 19–21. SpaceXSI acquisition of Cursor (closed Aug 14) implies organizational integration underway. No specific new roles confirmed.</div>
+          <div class="trend">Confidence: LOW on specific hires.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: HORIZON -->
+  <div id="tab-horizon" class="tab-content">
+    <div class="section">
+      <h3>Horizon Watch</h3>
+      <div class="section-desc">Tier 2 challengers (weekly scan) + Tier 3 future tech (monthly)</div>
+      <div class="horizon-grid">
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — DAILY WATCH</div>
+          <h4><span class="company-name">Anthropic</span> — IPO S-1</h4>
+          <p>S-1 window: Oct 21–31 (any day). No EDGAR filing confirmed. Roadshow ~Nov 9–16, IPO ~Nov 18–24. Check EDGAR daily: sec.gov/cgi-bin/browse-edgar → "Anthropic, PBC" → Form S-1 or S-1/A (non-confidential). This is the most consequential competitive document of Q4 2026. The day it files, activate PMM rapid-response protocol.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — T-6 DAYS</div>
+          <h4><span class="company-name">Mistral AI</span> — Large 4 Weights Oct 27</h4>
+          <p>Open-weight release confirmed Oct 27 (some sources: Oct 31). Three-entrant comparison: Muse Spark Open + DeepSeek V4.1-Flash + Mistral Large 4. Qwen 4 is wildcard. BD competitive positioning document needed by Oct 25. The winner defines developer open-weight defaults for Q4 2026.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — T-41 DAYS</div>
+          <h4><span class="company-name">Google DeepMind</span> — Gemini 4 Argon Dec 1 Pricing Cliff</h4>
+          <p>Intro pricing ($2/$10) expires Dec 1 → standard ($4/$20). Enterprise API customers face 2x cost increase. Gemini for Government Services (Oct 20) adds new distribution. Antigravity authentication reliability concerns standing.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — T-6 DAYS</div>
+          <h4><span class="company-name">Cognition / Devin</span> — Argon 75% Off Expires Oct 27</h4>
+          <p>Devin Desktop Argon 75% discount expires Oct 27. After that date, new users lose cost-parity vs. Codex. BD: identify Codex prospects in Devin evaluation and time outreach to Oct 27. Devin Local (Rust, 30% token-efficient) in preview — potential next-gen launch Q4 2026 or Q1 2027.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — DAY 38+</div>
+          <h4><span class="company-name">SpaceXSI</span> — Grok 4.8 Still Unshipped</h4>
+          <p>Day 38+ since Sept 13 naming. Polymarket: ~13% by Oct 31, ~46% by Nov 30. No post-training timeline. No new signals Oct 20–21. Grok Voice 1.0 at Starlink (~70% resolution, self-reported) the only current commercial signal.</p>
+        </div>
+        <div class="horizon-card tier2">
+          <div class="tier-label">Tier 2 — QUEUE</div>
+          <h4><span class="company-name">Alibaba / Qwen 4</span> — No Weights Released</h4>
+          <p>Announced Sep 22 at Apsara Conference. No weights released as of Oct 21. "End of October" from anonymous sources only. If shipped before Oct 27, enters the open-weight comparison window as a fourth entrant. Watch: qwen.ai and Hugging Face (Qwen org).</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — GOVERNANCE</div>
+          <h4>Benchmark Integrity Crisis</h4>
+          <p>Six active benchmark credibility issues: SWE-Bench loophole, Argon High Mode, MAI-Base-2 self-reported efficiency, Meta Muse Wonder Full inaccessible, Muse Spark 1.3 DeepSWE disputed, Muse Spark Open #44/150 vs. Meta "most capable US" claim. Cite adoption metrics (JetBrains, Comscore, OpenRouter) not self-reported benchmarks.</p>
+        </div>
+        <div class="horizon-card tier3">
+          <div class="tier-label">Tier 3 — GOVERNANCE</div>
+          <h4>Trump Super Intelligence Force</h4>
+          <p>120-day mandate: T-88 days to ~Feb 7, 2027 deliverable on AI capability evaluation standards. No new executive orders Oct 20–21.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <p>Report generated by Competitive Intelligence Agent · OpenAI Strategy &amp; Operations · October 21, 2026</p>
+    <button class="sources-toggle" onclick="document.querySelector('.sources-list').classList.toggle('show')">▸ View all sources</button>
+    <div class="sources-list">
+      <h4>Codex Sprint Day 15 = Reset (Oct 20)</h4>
+      <ul>
+        <li><a href="https://community.openai.com/t/a-reset-to-keep-cooking-with-codex-day-15-of-28-days-of-quality-of-life-improvements-and-or-a-full-reset/1403525">OpenAI Developer Community — Day 15 Reset</a></li>
+        <li><a href="https://codex-resets.com/">codex-resets.com — Codex Limit Reset Tracker</a></li>
+        <li><a href="https://codex-reset.com/">codex-reset.com — Codex Reset Tracker</a></li>
+        <li><a href="https://codexresets.com/">codexresets.com — Did Codex Reset Today?</a></li>
+      </ul>
+      <h4>Claude Code v2.1.304–306 (Oct 19–21)</h4>
+      <ul>
+        <li><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.304">GitHub — anthropics/claude-code Release v2.1.304</a></li>
+        <li><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.305">GitHub — anthropics/claude-code Release v2.1.305</a></li>
+        <li><a href="https://dev.classmethod.jp/en/articles/20261020-cc-updates-v2-1-304/">dev.classmethod.jp — v2.1.303 to v2.1.304 updates</a></li>
+        <li><a href="https://aicoder.com/news/news-20261020-claude-code-2-1-304-auto-mode-setup-resume-usage-warning">AICoder — Claude Code 2.1.304</a></li>
+        <li><a href="https://mixed-news.com/en/claude-code-warns-old-chat-five-hour-limit-2-1-304">mixed-news.com — 5-hour limit warning</a></li>
+        <li><a href="https://releasebot.io/updates/anthropic/claude-code">Releasebot — Claude Code October 2026</a></li>
+      </ul>
+      <h4>Blacksmith $1B Valuation (Oct 21)</h4>
+      <ul>
+        <li><a href="https://fortune.com/2026/10/21/exclusive-ai-code-testing-startup-blacksmith-hits-1-billion-valuation-as-ai-written-code-surges/">Fortune — Blacksmith $1B Valuation (Exclusive)</a></li>
+        <li><a href="https://startupfortune.com/blacksmith-hits-1-billion-valuation-two-months-after-its-last-round/">Startup Fortune — Blacksmith $1B</a></li>
+        <li><a href="https://cryptobriefing.com/blacksmith-1-billion-valuation-sequoia-series-c/">CryptoBriefing — Blacksmith Sequoia Series C</a></li>
+      </ul>
+      <h4>Google Gemini for Government Services + Android Auto (Oct 20)</h4>
+      <ul>
+        <li><a href="https://www.googlecloudpresscorner.com/2026-10-20-Google-Public-Sector-Launches-Gemini-for-Government-Services">Google Press Corner — Gemini for Government Services</a></li>
+        <li><a href="https://fedscoop.com/google-launches-gemini-for-government-services/">FedScoop — Google Gemini Government</a></li>
+        <li><a href="https://finance.yahoo.com/technology/ai/articles/accenture-federal-services-google-public-114700272.html">Yahoo Finance — Accenture Federal Services + Google</a></li>
+        <li><a href="https://techcrunch.com/2026/10/20/google-is-bringing-a-more-personal-version-of-its-gemini-ai-assistant-to-your-car">TechCrunch — Gemini in vehicles</a></li>
+      </ul>
+      <h4>Meta Muse Spark Open Benchmarks</h4>
+      <ul>
+        <li><a href="https://benchlm.ai/models/muse-spark">BenchLM — Muse Spark (October 2026, #44/150 coding)</a></li>
+        <li><a href="https://www.mindstudio.ai/blog/meta-muse-spark-1-3-benchmark-confusion">MindStudio — Muse Spark 1.3 Benchmark Dispute</a></li>
+      </ul>
+      <h4>Anthropic IPO / S-1 (Standing)</h4>
+      <ul>
+        <li><a href="https://forkast.news/anthropics-public-s-1-still-missing-from-edgar-as-october-ipo-window-opens/">Forkast — S-1 Missing from EDGAR</a></li>
+        <li><a href="https://manifold.markets/AlexMiller3a5e/when-will-anthropics-public-s1-come">Manifold Markets — When will Anthropic's S-1 come</a></li>
+      </ul>
+      <h4>Mistral Large 4 (Standing — T-6 Days)</h4>
+      <ul>
+        <li><a href="https://www.mindstudio.ai/blog/mistral-large-4-pricing-open-weights">MindStudio — Mistral Large 4 Pricing</a></li>
+        <li><a href="https://www.marktechpost.com/2026/10/06/mistral-ai-releases-mistral-large-4-le-chonk-a-1-05t-parameter-open-weight-multimodal-moe/">MarkTechPost — Mistral Large 4</a></li>
+      </ul>
+      <h4>Grok 4.8 (Standing)</h4>
+      <ul>
+        <li><a href="https://artificialwatch.com/model/grok-4-8">ArtificialWatch — Grok 4.8 tracker</a></li>
+        <li><a href="https://www.thinkfacility.com/models/grok-4-8/">ThinkFacility — Is Grok 4.8 out yet?</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
